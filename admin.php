@@ -721,7 +721,8 @@ function fetchContacts()
                                         <?= strval($order['order_id']) ?>
                                     </td>
                                     <td cell-name="Status">
-                                        <form action="php/update_status.php" method="POST" class="d-flex justify-content-center align-items-center flex-column">
+                                        <form action="php/update_status.php" method="POST"
+                                            class="d-flex justify-content-center align-items-center flex-column">
                                             <input type="hidden" name="orderId" value="<?= strval($order['order_id']) ?>">
                                             <select class="form-select" style="width: fit-content;" name="newStatus">
                                                 <option value="Processing" <?= ($order['status'] == 'Processing') ? 'selected' : '' ?>>Processing
