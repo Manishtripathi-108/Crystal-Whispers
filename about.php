@@ -230,71 +230,63 @@ include "php/functions.php";
           <div class="carousel-inner">
 
             <?php
-            $sql = "SELECT
-                      name as username,
-                      shop_review as review,
-                      user_profilePhoto as userImage
-                    FROM
-                      users
-                    WHERE shop_review IS NOT NULL
-                    LIMIT 6";
-            $Test_Result = $conn->query($sql);
-
-            if ($Test_Result->num_rows > 0) {
-              $i = 0;
-              while ($row = $Test_Result->fetch_assoc()) {
-                echo '<div class="carousel-item ' . ($i == 0 ? 'active' : '') . '">
-                <div class="row">
-                      <div class="col-md-11 col-lg-10 mx-auto">
-                        <div class="box">
-                          <div class="img-box">
-                            <img src="images/users/' . $row['userImage'] . '">
+            $shopReviewData = fetchShopReviews();
+            $i = 0;
+            if ($shopReviewData):
+              foreach ($shopReviewData as $shopReview):
+                ?>
+                <div class="carousel-item <?= ($i == 0 ? 'active' : '') ?> ">
+                  <div class="row">
+                    <div class="col-md-11 col-lg-10 mx-auto">
+                      <div class="box">
+                        <div class="img-box">
+                          <img src="images/users/<?= $shopReview['UserImage'] ?>">
+                        </div>
+                        <div class="detail-box">
+                          <div class="name">
+                            <h6>
+                              <?= $shopReview['UserName'] ?>
+                            </h6>
                           </div>
-                          <div class="detail-box">
-                            <div class="name">
-                              <h6>
-                                ' . $row['username'] . '
-                              </h6>
-                            </div>
-                            <p>
-                              "' . $row['review'] . '"
-                            </p>
-                            <i class="fa fa-quote-left" aria-hidden="true"></i>
-                          </div>
+                          <p>
+                            "
+                            <?= $shopReview['review'] ?>"
+                          </p>
+                          <i class="fa fa-quote-left" aria-hidden="true"></i>
                         </div>
                       </div>
                     </div>
                   </div>
-                ';
-                $i++;
-              }
-            } else {
-              echo '<div class="carousel-item">
-                      <div class="row">
-                            <div class="col-md-11 col-lg-10 mx-auto">
-                              <div class="box">
-                                <div class="img-box">
-                                  <img src="images/client.jpg" alt="Client Image 2">
-                                </div>
-                                <div class="detail-box">
-                                  <div class="name">
-                                    <h6>
-                                      Alex Turner
-                                    </h6>
-                                  </div>
-                                  <p>
-                                    "The quality of the jewelry at Crystal Whispers is unparalleled. Each piece tells a
-                                    unique story, and I appreciate the artistry that goes into every creation."
-                                  </p>
-                                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                </div>
+                <?php $i++;
+              endforeach;
+
+            else:
+              ?>
+              <div class="carousel-item active">
+                <div class="row">
+                  <div class="col-md-11 col-lg-10 mx-auto">
+                    <div class="box">
+                      <div class="img-box">
+                        <img src="images/client.jpg" alt="Client Image 2">
+                      </div>
+                      <div class="detail-box">
+                        <div class="name">
+                          <h6>
+                            Alex Turner
+                          </h6>
                         </div>
-                        ';
-            }
-            ?>
+                        <p>
+                          "The quality of the jewelry at Crystal Whispers is unparalleled. Each piece tells a unique
+                          story, and I appreciate the artistry that goes into every creation."
+                        </p>
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endif; ?>
 
           </div>
           <div class="carousel_btn-container">
