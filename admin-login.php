@@ -1,7 +1,7 @@
 <?php
 include "php/functions.php";
 
-if (isset($_SESSION['admin_id'])) {
+if (isset($_SESSION['AdminID'])) {
     header("Location: admin.php");
     exit();
 }
@@ -9,7 +9,7 @@ if (isset($_SESSION['admin_id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function validateAdminLogin($adminName, $adminPassword, $conn)
     {
-        $sql = "SELECT admin_id, password FROM admins WHERE username = ?";
+        $sql = "SELECT AdminID, password FROM admins WHERE AdminName = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "s", $adminName);
         mysqli_stmt_execute($stmt);
@@ -18,10 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result) {
             if ($row = mysqli_fetch_assoc($result)) {
-                $storedPassword = $row['password'];
+                $storedPassword = $row['AdminPassword'];
 
                 if (password_verify($adminPassword, $storedPassword)) {
-                    $_SESSION['admin_id'] = $row['admin_id'];
+                    $_SESSION['AdminID'] = $row['AdminID'];
                     unset($_SESSION["adminLoginMessage"]);
                     $stmt->close();
                     header('Location: admin.php');
