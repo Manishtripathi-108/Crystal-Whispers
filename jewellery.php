@@ -130,15 +130,18 @@ include "php/functions.php";
 
                 <!-- display -->
                 <div class="form-floating">
-                  <select name="show" class="form-select" style="width: 200px;" id="show">
+                  <select name="OrderBy" class="form-select" style="width: 200px;" id="OrderBy">
                     <option>All Products</option>
-                    <option value="1" <?php echo (isset($_GET['show']) && $_GET['show'] == '1') ? 'selected' : ''; ?>>
+                    <option value="1" <?php echo (isset($_GET['OrderBy']) && $_GET['OrderBy'] == '1') ? 'selected' : ''; ?>>
                       Latest Products</option>
-                    <option value="2" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
+                    <option value="2" <?php echo (isset($_GET['OrderBy']) && $_GET['OrderBy'] == '2') ? 'selected' : ''; ?>>
                       Bestsellers</option>
-                    <!-- <option value="3">Top Rated</option> -->
+                    <option value="3" <?php echo (isset($_GET['OrderBy']) && $_GET['OrderBy'] == '3') ? 'selected' : ''; ?>>
+                      Discount</option>
+                    <option value="4" <?php echo (isset($_GET['OrderBy']) && $_GET['OrderBy'] == '4') ? 'selected' : ''; ?>>
+                      Top Rated</option>
                   </select>
-                  <label for="show">Order By</label>
+                  <label for="OrderBy">Order By</label>
                 </div>
 
                 <input name="display-filter" type="hidden" value="yes">
@@ -166,57 +169,57 @@ include "php/functions.php";
       $gender = isset($_GET['gender']) ? $_GET['gender'] : 'All';
       $material = isset($_GET['material']) ? $_GET['material'] : 'All';
       $occasion = isset($_GET['occasion']) ? $_GET['occasion'] : 'All';
-      $show = isset($_GET['show']) ? $_GET['show'] : '0';
+      $OrderBy = isset($_GET['OrderBy']) ? $_GET['OrderBy'] : '0';
 
-      $sql = "SELECT
-            p.product_id,
-            p.product_name,
-            p.gender,
-            p.price,
-            p.discount,
-            p.material,
-            p.occasion,
-            i.img_1,
-            c.category_name AS category
-        FROM
-            products p
-        JOIN
-            product_img i ON p.product_id = i.img_to_pro
-        JOIN
-            categories c ON p.category = c.ID
-        WHERE 1";
+      // $sql = "SELECT
+      //       p.product_id,
+      //       p.product_name,
+      //       p.gender,
+      //       p.price,
+      //       p.discount,
+      //       p.material,
+      //       p.occasion,
+      //       i.img_1,
+      //       c.category_name AS category
+      //   FROM
+      //       products p
+      //   JOIN
+      //       product_img i ON p.product_id = i.img_to_pro
+      //   JOIN
+      //       categories c ON p.category = c.ID
+      //   WHERE 1";
 
-      if ($category !== 'All') {
-        $sql .= " AND p.category = '$category'";
-      }
+      // if ($category !== 'All') {
+      //   $sql .= " AND p.category = '$category'";
+      // }
 
-      if ($gender !== 'All') {
-        $sql .= " AND p.gender = '$gender'";
-      }
+      // if ($gender !== 'All') {
+      //   $sql .= " AND p.gender = '$gender'";
+      // }
 
-      if ($material !== 'All') {
-        $sql .= " AND p.material = '$material'";
-      }
+      // if ($material !== 'All') {
+      //   $sql .= " AND p.material = '$material'";
+      // }
 
-      if ($occasion !== 'All') {
-        $sql .= " AND p.occasion = '$occasion'";
-      }
+      // if ($occasion !== 'All') {
+      //   $sql .= " AND p.occasion = '$occasion'";
+      // }
 
-      $sql .= " ORDER BY ";
+      // $sql .= " ORDER BY ";
 
-      switch ($show) {
-        case '1':
-          $sql .= "p.date_added DESC";
-          break;
-        case '2':
-          $sql .= "p.units_sold DESC";
-          break;
-        default:
-          $sql .= "p.date_added DESC";
-      }
+      // switch ($OrderBy) {
+      //   case '1':
+      //     $sql .= "p.date_added DESC";
+      //     break;
+      //   case '2':
+      //     $sql .= "p.units_sold DESC";
+      //     break;
+      //   default:
+      //     $sql .= "p.date_added DESC";
+      // }
 
-      $sql .= " LIMIT 50";
-      $result = $conn->query($sql);
+      // $sql .= " LIMIT 50";
+      // $result = $conn->query($sql);
 
       echo '
         <section class="shop_section layout_padding">
