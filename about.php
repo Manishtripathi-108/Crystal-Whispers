@@ -61,9 +61,6 @@ include "php/functions.php";
                 our
                 collections today.
               </p>
-              <!-- <a href="about.php">
-              Read More
-            </a> -->
             </div>
           </div>
         </div>
@@ -180,28 +177,33 @@ include "php/functions.php";
             every jewelry piece. Meet the creative minds behind our elegant designs and exquisite craftsmanship.
           </p>
           <div class="team-members team-carousel">
-            <?php $workersData = fetchWorkerDetails();
-            foreach ($workersData as $worker): ?>
-              <div class="team-member">
-                <div class="img-container">
-                  <div class="img-inner">
-                    <div class="inner-skew"
-                      style="background-repeat: no-repeat;background-size: cover;object-fit: contain;background-image: url(images/workers/<?= $worker['image'] ?>);">
-                      <span data-position="<?= htmlspecialchars($worker['position']) ?>"></span>
-                      <!-- <img src=""> -->
+            <?php
+            $workersData = fetchWorkerDetails();
+            if (!empty ($workersData)):
+              foreach ($workersData as $worker): ?>
+                <div class="team-member">
+                  <div class="img-container">
+                    <div class="img-inner">
+                      <div class="inner-skew"
+                        style="background-repeat: no-repeat;background-size: cover;object-fit: contain;background-image: url(images/workers/<?= $worker['image'] ?>);">
+                        <span data-position="<?= htmlspecialchars($worker['position']) ?>"></span>
+                        <!-- <img src=""> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-container">
+                    <h3>
+                      <?= $worker['name'] ?>
+                    </h3>
+                    <div>
+                      <?= $worker['description'] ?>
                     </div>
                   </div>
                 </div>
-                <div class="text-container">
-                  <h3>
-                    <?= $worker['name'] ?>
-                  </h3>
-                  <div>
-                    <?= $worker['description'] ?>
-                  </div>
-                </div>
-              </div>
-            <?php endforeach; ?>
+              <?php endforeach;
+            else: ?>
+              <p>No workers data available.</p>
+            <?php endif; ?>
           </div>
           <div class="d-flex gap-2 justify-content-center align-items-center">
             <button class="prev-button simple-btn" onclick="prevSlide()">
@@ -228,11 +230,10 @@ include "php/functions.php";
         </div>
         <div id="testimonialCarousel" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner">
-
             <?php
             $shopReviewData = fetchShopReviews();
             $i = 0;
-            if ($shopReviewData):
+            if (!empty ($shopReviewData)):
               foreach ($shopReviewData as $shopReview):
                 ?>
                 <div class="carousel-item <?= ($i == 0 ? 'active' : '') ?> ">
