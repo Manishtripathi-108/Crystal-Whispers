@@ -1,11 +1,11 @@
 <?php
 include "php/functions.php";
 
-if (!isset($_SESSION['admin_id'])) {
+if (!isset($_SESSION['AdminID'])) {
     header("Location: admin-login.php");
     exit();
 } else {
-    $admin = $_SESSION['admin_id'];
+    $admin = $_SESSION['AdminID'];
 }
 
 $productMessage = isset($_SESSION['productMessage']) ? $_SESSION['productMessage'] : "";
@@ -27,11 +27,11 @@ function isActive($page, $activePage)
 function fetchAdminDetails()
 {
     global $conn;
-    $admin = $_SESSION['admin_id'];
+    $admin = $_SESSION['AdminID'];
     $sql = "SELECT 
-            admin_pic as profilePic, 
-            username as adminName
-            FROM admins WHERE admin_id = '$admin'";
+            AdminImage, 
+            AdminName
+            FROM admins WHERE AdminID = '$admin'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $row = mysqli_fetch_assoc($result);
@@ -170,10 +170,10 @@ function fetchContacts()
             <section class="sideNav col-md-auto layout_padding">
                 <div class="profile p-2">
                     <?php $adminDetails = fetchAdminDetails(); ?>
-                    <img src="images/admin/<?= $adminDetails['profilePic'] ?>" class="mx-auto d-block mb-2"
+                    <img src="images/admin/<?= $adminDetails['AdminImage'] ?>" class="mx-auto d-block mb-2"
                         alt="Profile Image">
                     <div class="user-name text-center">
-                        <?= $adminDetails['adminName'] ?>
+                        <?= $adminDetails['AdminName'] ?>
                     </div>
                 </div>
 

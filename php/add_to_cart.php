@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"]) && isset
 // Function to check if the product is already in the cart
 function doesCartExist($conn, $userID, $productID)
 {
-    $sql = "SELECT * FROM cart WHERE userID = ? AND ProductID = ?";
+    $sql = "SELECT CartID FROM cart WHERE UserID = ? AND ProductID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $userID, $productID);
     $stmt->execute();
@@ -39,8 +39,8 @@ function doesCartExist($conn, $userID, $productID)
 function updateCart($conn, $userID, $productID)
 {
     $sql = !isset($_POST["quantity"])
-        ? "UPDATE cart SET quantity = CASE WHEN quantity = 0 THEN 1 ELSE LEAST(quantity + 1, 5) END WHERE userID = ? AND ProductID = ?"
-        : "UPDATE cart SET quantity = ? WHERE userID = ? AND ProductID = ?";
+        ? "UPDATE cart SET Quantity = CASE WHEN Quantity = 0 THEN 1 ELSE LEAST(Quantity + 1, 5) END WHERE UserID = ? AND ProductID = ?"
+        : "UPDATE cart SET Quantity = ? WHERE UserID = ? AND ProductID = ?";
 
     $stmt = $conn->prepare($sql);
 
@@ -58,7 +58,7 @@ function updateCart($conn, $userID, $productID)
 function addToCart($conn, $userID, $productID)
 {
     $quantity = !isset($_POST["quantity"]) ? 1 : $_POST["quantity"];
-    $sql = "INSERT INTO cart (`userID`, `quantity`, `ProductID`) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO cart (`UserID`, `Quantity`, `ProductID`) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sss", $userID, $quantity, $productID);
     $stmt->execute();
