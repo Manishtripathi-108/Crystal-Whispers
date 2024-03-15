@@ -79,77 +79,61 @@ include "php/functions.php";
         <div class="row">
 
           <?php
-          $sql = "SELECT
-                    p.product_id,
-                    p.product_name,
-                    p.gender,
-                    p.price,
-                    p.discount,
-                    i.img_1,
-                    c.category_name AS category
-                    FROM
-                      products p
-                    JOIN
-                      product_img i ON p.product_id = i.img_to_pro
-                    JOIN
-                      categories c ON p.category = c.ID
-                    ORDER BY 
-                    p.date_added DESC
-                  LIMIT 8";
-          $result = $conn->query($sql);
+          $productData = fetchProducts();
+          if ($productData):
+            foreach ($productData as $product):
+              ?>
+              <div class="col-sm-6 col-md-4 col-lg-3 p-3">
+                <a class="text-reset" href="Product-details.php?pro=<?= $product['id'] ?>">
+                  <div class="product-card">
+                    <div class="p-badge">
 
-          if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-              $getRating = "SELECT AVG(rating) AS rating FROM reviews WHERE product_id=" . $row['product_id'];
-              $rating = $conn->query($getRating);
-              $rating = $rating->fetch_assoc();
-              $rating = round($rating['rating']);
-              echo '
-            <div class="col-sm-6 col-md-4 col-lg-3 p-3">
-            <a class="text-reset" href="Product-details.php?pro=' . $row['product_id'] . '">
-              <div class="product-card">
-                <div class="p-badge">';
+                      <?php
+                      $rating = $product['rating'];
+                      if ($rating > 0) {
+                        for ($i = 1; $i <= $rating; $i++) {
+                          echo '<i class="fa fa-star"></i>';
+                        }
+                      } else {
+                        echo '<i class="fa fa-star-o"></i>';
+                      }
+                      ?>
 
-              if ($rating > 0) {
-                for ($i = 1; $i <= $rating; $i++) {
-                  echo '<i class="fa fa-star"></i>';
-                }
-              } else {
-                echo '<i class="fa fa-star-o"></i>';
-              }
-
-              echo '
-                      </div>
-                      <div class="product-tumb d-flex justify-content-center align-items-center">
-                        <img 
-                          src="images/products/' . $row['img_1'] . '" 
-                          alt="Product Image">
-                      </div>
-                      <div class="product-details">
-                        <span class="product-category">' . $row['gender'] . ',' . $row['category'] . '</span>
-                        <h5><a href="Product-details.php?pro=' . $row['product_id'] . '">' . $row['product_name'] . '</a></h5>
-                        <div class="product-bottom-details d-flex justify-content-between align-items-center">
-                          <div class="product-price">
-                          <small>₹' . number_format($row['price'], 2) . '</small>
-                          ₹' . number_format(($row['price'] * ((100 - $row['discount']) / 100)), 2) .
-                '</div>
-                          <div class="product-links">
-                            <form method="post" action="php/add_to_cart.php">
-                              <input type="hidden" name="product_id" value="' . $row['product_id'] . '">
-                              <button type="submit"><i class="fa fa-shopping-cart"></i></button>
-                            </form>
-                          </div>
+                    </div>
+                    <div class="product-tumb d-flex justify-content-center align-items-center">
+                      <img src="images/products/<?= $product['image'] ?>" alt="Product Image">
+                    </div>
+                    <div class="product-details">
+                      <span class="product-category">
+                        <?= $product['Gender'] . ', ' . $product['category'] ?>
+                      </span>
+                      <h5><a href="Product-details.php?pro=<?= $product['id'] ?>">
+                          <?= $product['name'] ?>
+                        </a></h5>
+                      <div class="product-bottom-details d-flex justify-content-between align-items-center">
+                        <div class="product-price">
+                          <small>₹
+                            <?= number_format($product['price'], 2) ?>
+                          </small>
+                          ₹
+                          <?= number_format(($product['price'] * ((100 - $product['discount']) / 100)), 2) ?>
+                        </div>
+                        <div class="product-links">
+                          <form method="post" action="php/add_to_cart.php">
+                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                            <button type="submit"><i class="fa fa-shopping-cart"></i></button>
+                          </form>
                         </div>
                       </div>
                     </div>
-                  </a>
-                  </div>';
-            }
-          } else {
+                  </div>
+                </a>
+              </div>
+              <?php
+            endforeach;
+          else:
             echo "We apologize, but there are no products available at the moment. Please check back later or contact our support team for assistance.";
-          }
-
-          $result->close();
+          endif;
           ?>
 
         </div>

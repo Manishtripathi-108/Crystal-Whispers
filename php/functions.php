@@ -127,7 +127,7 @@ function getCartQuantity()
 {
     global $conn;
 
-    $sql = "SELECT SUM(quantity) AS totalQuantity FROM cart WHERE userID =" . $_SESSION['user_id'];
+    $sql = "SELECT SUM(Quantity) AS totalQuantity FROM cart WHERE userID =" . $_SESSION['user_id'];
     $result = $conn->query($sql);
 
     if ($result) {
@@ -318,7 +318,7 @@ function getScripts()
 // move items from cart to order_items (confirm order)
 function moveItemsFromCartToOrder($conn, $userID, $order_id)
 {
-    $sql = "SELECT productID, quantity FROM cart WHERE userID = $userID";
+    $sql = "SELECT ProductID, Quantity FROM cart WHERE UserID = $userID";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -326,13 +326,13 @@ function moveItemsFromCartToOrder($conn, $userID, $order_id)
             $productID = $row['productID'];
             $quantity = $row['quantity'];
 
-            $insertOrderItems = "INSERT INTO order_items (orderID, productID, quantity) VALUES (?, ?, ?)";
+            $insertOrderItems = "INSERT INTO order_items (OrderID, ProductID, Quantity) VALUES (?, ?, ?)";
             $insertOrderItemsStmt = $conn->prepare($insertOrderItems);
             $insertOrderItemsStmt->bind_param("iii", $order_id, $productID, $quantity);
             $inOrderItems = $insertOrderItemsStmt->execute();
 
             if ($inOrderItems) {
-                $deleteCartItems = "DELETE FROM cart WHERE userID = $userID";
+                $deleteCartItems = "DELETE FROM cart WHERE UserID = $userID";
                 $conn->query($deleteCartItems);
             }
         }
@@ -342,26 +342,26 @@ function moveItemsFromCartToOrder($conn, $userID, $order_id)
 // update units_sold and stock in products table (confirm order)
 function updateProductDetails($conn, $userID)
 {
-    $sql = "SELECT productID, quantity FROM cart WHERE userID = $userID";
+    $sql = "SELECT ProductID, Quantity FROM cart WHERE UserID = $userID";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $productID = $row['productID'];
-            $quantity = $row['quantity'];
+            $productID = $row['ProductID'];
+            $quantity = $row['Quantity'];
 
-            $sql_product_details = "SELECT units_sold, stock_quantity FROM products WHERE product_id = $productID";
+            $sql_product_details = "SELECT ProductUnitsSold, ProductStock FROM Products WHERE ProductID = $productID";
             $result_product_details = $conn->query($sql_product_details);
 
             if ($result_product_details->num_rows > 0) {
                 $row_product_details = $result_product_details->fetch_assoc();
-                $units_sold = $row_product_details['units_sold'];
-                $stock = $row_product_details['stock_quantity'];
+                $units_sold = $row_product_details['ProductUnitsSold'];
+                $stock = $row_product_details['ProductStock'];
 
                 $units_sold += $quantity;
                 $stock -= $quantity;
 
-                $updateProductDetails = "UPDATE products SET units_sold = $units_sold, stock_quantity = $stock WHERE product_id = $productID";
+                $updateProductDetails = "UPDATE Products SET ProductUnitsSold = $units_sold, ProductStock = $stock WHERE product_id = $productID";
                 $conn->query($updateProductDetails);
             }
         }
@@ -369,14 +369,96 @@ function updateProductDetails($conn, $userID)
 }
 
 // insert order details into the orders table (confirm order)
-function insertOrderDetails($conn, $userID, $name, $email, $phone, $paymentMethod, $shippingAddress, $msgSeller, $totalAmount)
+function insertOrderDetails($conn, $userID, $name, $email, $phone, $payMethod, $shipAddress, $msgSeller, $totalAmount)
 {
-    $insertOrderStmt = $conn->prepare("INSERT INTO orders (user_id, receiver_name, email, phone, payment_method, shipping_address, msg_seller, total_amount)
+    $insertOrderStmt = $conn->prepare("INSERT INTO orders (UserID, ReceiverName, email, phone, PayMethod, ShipAddress, MsgSeller, TotalAmount)
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $insertOrderStmt->bind_param("issssssd", $userID, $name, $email, $phone, $paymentMethod, $shippingAddress, $msgSeller, $totalAmount);
+    $insertOrderStmt->bind_param("issssssd", $userID, $name, $email, $phone, $payMethod, $shipAddress, $msgSeller, $totalAmount);
     $inOrders = $insertOrderStmt->execute();
 
     return $inOrders;
+}
+
+
+function fetchProducts($category = "All", $gender = "All", $material = "All", $occasion = "All", $OrderBy = 0, $limit = 12)
+{
+    global $conn;
+
+    $sql = "SELECT
+            p.ProductID,
+            p.ProductName,
+            p.ProductTargetGender,
+            p.ProductPrice,
+            p.ProductDiscount,
+            p.ProductOccasion,
+            p.ProductRating,
+            i.img_1,
+            c.CategoryName
+        FROM
+            Products p
+        JOIN
+            product_img i ON p.ProductID = i.ProductID
+        JOIN
+            Categories c ON p.CategoryID = c.CategoryID
+        WHERE 1";
+
+    if ($category !== 'All') {
+        $sql .= " AND p.CategoryID = '$category'";
+    }
+
+    if ($gender !== 'All') {
+        $sql .= " AND p.ProductTargetGender = '$gender'";
+    }
+
+    if ($material !== 'All') {
+        $sql .= " AND p.ProductMaterial = '$material'";
+    }
+
+    if ($occasion !== 'All') {
+        $sql .= " AND p.ProductOccasion = '$occasion'";
+    }
+
+    $sql .= " ORDER BY ";
+
+    switch ($OrderBy) {
+        case '1':
+            $sql .= "p.ProductCreatedAt DESC";
+            break;
+        case '2':
+            $sql .= "p.ProductUnitsSold DESC";
+            break;
+        case '3':
+            $sql .= "p.ProductDiscount DESC";
+            break;
+        case '4':
+            $sql .= "p.ProductRating DESC";
+            break;
+        default:
+            $sql .= "p.ProductID DESC";
+    }
+
+    $sql .= " LIMIT " . $limit;
+    $result = $conn->query($sql);
+    if ($result) {
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $productDetails = array(
+                    'id' => $row['ProductID'],
+                    'name' => $row['ProductName'],
+                    'price' => $row['ProductPrice'],
+                    'image' => $row['ProductImage'],
+                    'category' => $row['CategoryName'],
+                    'rating' => $row['ProductRating'],
+                    'discount' => $row['ProductDiscount'],
+                    'Gender' => $row['ProductTargetGender']
+                );
+                $productData[] = $productDetails;
+            }
+            return $productData;
+        }
+    }else {
+        // echo "Error executing query: " . $conn->error;
+    }
 }
 
 // fetch worker details to about page
@@ -384,9 +466,9 @@ function fetchWorkerDetails()
 {
     global $conn;
 
-    $sql = "SELECT name, position, image, description
+    $sql = "SELECT WorkerName, WorkerPosition, WorkerImage, WorkerDescription
             FROM workers
-            WHERE description IS NOT NULL AND description != 'No Description Available'
+            WHERE WorkerDescription IS NOT NULL AND WorkerDescription != 'No Description Available'
             LIMIT 18;";
     $result = $conn->query($sql);
     $workersData = array();
@@ -394,14 +476,43 @@ function fetchWorkerDetails()
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $workerInfo = array(
-                'name' => $row['name'],
-                'position' => $row['position'],
-                'image' => $row['image'],
-                'description' => $row['description']
+                'name' => $row['WorkerName'],
+                'position' => $row['WorkerPosition'],
+                'image' => $row['WorkerImage'],
+                'description' => $row['WorkerDescription']
             );
             $workersData[] = $workerInfo;
         }
+        return $workersData;
     }
-    return $workersData;
 }
+
+function fetchShopReviews()
+{
+    global $conn;
+
+    $sql = "SELECT 
+                UserName,
+                ShopReview,
+                UserImage
+            FROM Users
+            WHERE ShopReview IS NOT NULL
+            LIMIT 6";
+    $Test_Result = $conn->query($sql);
+
+    if ($Test_Result->num_rows > 0) {
+
+        while ($row = $Test_Result->fetch_assoc()) {
+            $shopReview = array(
+                'UserName' => $row['UserName'],
+                'review' => $row['ShopReview'],
+                'UserImage' => $row['UserImage']
+            );
+            $shopReviewData[] = $shopReview;
+        }
+
+        return $shopReviewData;
+    }
+}
+
 ?>
