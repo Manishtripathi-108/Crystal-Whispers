@@ -1,17 +1,27 @@
 <?php
+session_start();
 include "php/functions.php";
 
-if (isset($_SESSION['AdminID'])) {
+if (isset ($_SESSION['AdminID'])) {
     header("Location: admin.php");
     exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    function validateAdminLogin($adminName, $adminPassword, $conn)
+    function validateAdminLogin($ADMIN_NAME, $ADMIN_PASS)
     {
+        global $conn;
+
         $sql = "SELECT AdminID, password FROM admins WHERE AdminName = ?";
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "s", $adminName);
+
+        if (!$stmt) {
+            $_SESSION["adminLoginMessage"] = "Something went wrong. Please try again.";
+            header('Location: admin-login.php');
+            exit;
+        }
+
+        mysqli_stmt_bind_param($stmt, "s", $ADMIN_NAME);
         mysqli_stmt_execute($stmt);
 
         $result = mysqli_stmt_get_result($stmt);
@@ -20,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($row = mysqli_fetch_assoc($result)) {
                 $storedPassword = $row['AdminPassword'];
 
-                if (password_verify($adminPassword, $storedPassword)) {
+                if (password_verify($ADMIN_PASS, $storedPassword)) {
                     $_SESSION['AdminID'] = $row['AdminID'];
                     unset($_SESSION["adminLoginMessage"]);
                     $stmt->close();
@@ -43,15 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if (isset($_POST['admin_name'], $_POST['admin_pass'])) {
-        $adminName = $_POST['admin_name'];
-        $adminPassword = $_POST['admin_pass'];
+    if (isset ($_POST['admin_name'], $_POST['admin_pass'])) {
+        define('ADMIN_NAME', $_POST['admin_name']);
+        define('ADMIN_PASS', $_POST['admin_pass']);
 
-        validateAdminLogin($adminName, $adminPassword, $conn);
+        validateAdminLogin($ADMIN_NAME, $ADMIN_PASS);
     }
 }
 
-$adminLoginMessage = isset($_SESSION["adminLoginMessage"]) ? $_SESSION["adminLoginMessage"] : "";
+$adminLoginMessage = isset ($_SESSION["adminLoginMessage"]) ? $_SESSION["adminLoginMessage"] : "";
 unset($_SESSION["adminLoginMessage"]);
 ?>
 
