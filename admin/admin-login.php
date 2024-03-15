@@ -1,63 +1,53 @@
 <?php
-session_start();
-include "php/functions.php";
+include "../php/functions.php";
 
 if (isset ($_SESSION['AdminID'])) {
-    header("Location: admin.php");
+    header("Location: index.php");
     exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    function validateAdminLogin($ADMIN_NAME, $ADMIN_PASS)
-    {
-        global $conn;
+    if (isset ($_POST['admin_name'], $_POST['admin_pass'])) {
+        $adminName = $_POST['admin_name'];
+        $adminPassword = $_POST['admin_pass'];
 
-        $sql = "SELECT AdminID, password FROM admins WHERE AdminName = ?";
-        $stmt = mysqli_prepare($conn, $sql);
+        try {
+            $sql = "SELECT AdminID, AdminPassword FROM admins WHERE AdminName = ?";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Error: " . $conn->error);
+            }
+            $stmt->bind_param("s", $adminName);
+            $stmt->execute();
 
-        if (!$stmt) {
-            $_SESSION["adminLoginMessage"] = "Something went wrong. Please try again.";
-            header('Location: admin-login.php');
-            exit;
-        }
+            $result = $stmt->get_result();
 
-        mysqli_stmt_bind_param($stmt, "s", $ADMIN_NAME);
-        mysqli_stmt_execute($stmt);
-
-        $result = mysqli_stmt_get_result($stmt);
-
-        if ($result) {
-            if ($row = mysqli_fetch_assoc($result)) {
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
                 $storedPassword = $row['AdminPassword'];
 
-                if (password_verify($ADMIN_PASS, $storedPassword)) {
+                // Verify password
+                if (password_verify($adminPassword, $storedPassword)) {
                     $_SESSION['AdminID'] = $row['AdminID'];
                     unset($_SESSION["adminLoginMessage"]);
                     $stmt->close();
-                    header('Location: admin.php');
+                    header('Location: index.php');
                     exit;
                 } else {
                     $_SESSION["adminLoginMessage"] = "Incorrect password. Please try again.";
-                    header('Location: admin-login.php');
-                    exit;
                 }
             } else {
                 $_SESSION["adminLoginMessage"] = "No admin found with the provided username.";
-                header('Location: admin-login.php');
-                exit;
             }
-        } else {
-            $_SESSION["adminLoginMessage"] = "Something went wrong. Please try again.";
+
+            $stmt->close();
+            header('Location: admin-login.php');
+            exit;
+        } catch (Exception $e) {
+            $_SESSION["adminLoginMessage"] = $e->getMessage();
             header('Location: admin-login.php');
             exit;
         }
-    }
-
-    if (isset ($_POST['admin_name'], $_POST['admin_pass'])) {
-        define('ADMIN_NAME', $_POST['admin_name']);
-        define('ADMIN_PASS', $_POST['admin_pass']);
-
-        validateAdminLogin($ADMIN_NAME, $ADMIN_PASS);
     }
 }
 
@@ -140,7 +130,16 @@ unset($_SESSION["adminLoginMessage"]);
     <!-- Footer -->
 
     <!-- Get Scripts -->
-    <?php getScripts(); ?>
+    <?php
+    $jsFiles = array(
+        'jquery-3.4.1.min.js',
+        'bootstrap.js',
+        'bootstrap.bundle.js',
+        'custom.js'
+    );
+
+    addJsFiles("../", $jsFiles);
+    ?>
     <!-- End Scripts -->
 </body>
 

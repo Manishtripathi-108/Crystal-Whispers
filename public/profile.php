@@ -39,11 +39,11 @@ $stmt->close();
 
 
 // error msg
-$profileMessage = isset($_SESSION["profileMessage"]) ? $_SESSION["profileMessage"] : "";
+$profileMessage = isset ($_SESSION["profileMessage"]) ? $_SESSION["profileMessage"] : "";
 unset($_SESSION["profileMessage"]);
 
 // active page
-$activePage = isset($_POST['page']) ? $_POST['page'] : "Profile";
+$activePage = isset ($_POST['page']) ? $_POST['page'] : "Profile";
 
 function isActive($page, $activePage)
 {
@@ -89,7 +89,7 @@ function isActive($page, $activePage)
     <main id="user-profile-page" class="use-side-nav animate__fadeIn d-flex align-items-center">
         <div class="row m-0 gap-3 w-100">
 
-        <!-- sideNav -->
+            <!-- sideNav -->
             <section class="sideNav col-md-auto layout_padding">
                 <div class="profile p-2">
                     <img src="images/users/<?php echo $user_profilePhoto; ?>" class="mx-auto d-block mb-2"
@@ -305,7 +305,7 @@ function isActive($page, $activePage)
                     </table>
                 </div>
             </section>
-            <!-- End orders -->           
+            <!-- End orders -->
 
             <!-- Contact Us -->
             <section class="contact_us col-md animate__fadeInUp layout_padding overflow-auto vh-100 me-3
@@ -415,7 +415,16 @@ function isActive($page, $activePage)
     <!-- End footer -->
 
     <!-- Get Scripts -->
-    <?php getScripts(); ?>
+    <?php
+    $jsFiles = array(
+        'jquery-3.4.1.min.js',
+        'bootstrap.js',
+        'bootstrap.bundle.js',
+        'custom.js'
+    );
+
+    addJsFiles("../", $jsFiles);
+    ?>
     <!-- End Scripts -->
 
 </body>

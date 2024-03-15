@@ -5,7 +5,7 @@ include "connection.php";
 // check user login
 function checkGetUserLoginStatus($returnID = false, $redirect = false)
 {
-    if (isset($_SESSION['user_id'])) {
+    if (isset ($_SESSION['user_id'])) {
         if ($returnID) {
             return $_SESSION['user_id'];
         } else {
@@ -23,7 +23,7 @@ function checkGetUserLoginStatus($returnID = false, $redirect = false)
 //header
 function getHeader($title = null, $notGetLogin = null)
 {
-    if (isset($_SESSION['user_id']) && is_null($notGetLogin)) {
+    if (isset ($_SESSION['user_id']) && is_null($notGetLogin)) {
         $cartQuantity = getCartQuantity();
 
         echo '
@@ -36,7 +36,7 @@ function getHeader($title = null, $notGetLogin = null)
                     </button>
 
                     <a class="navbar-brand" href="index.php">
-                        <img src="icon/favicon.png" alt="Crystal Whispers">
+                        <img src="../assets/icon/favicon.png" alt="Crystal Whispers">
                         <span>Crystal Whispers</span>
                     </a>
                     
@@ -46,7 +46,7 @@ function getHeader($title = null, $notGetLogin = null)
                             class="position-absolute top-0 translate-middle badge border border-light rounded-circle theme-bg-color">
                             ' . $cartQuantity . '
                             </span>
-                            <img src="icon/shopping-cart.svg" alt="Cart">
+                            <img src="../assets/icon/shopping-cart.svg" alt="Cart">
                         </a>
                     </div>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -63,7 +63,7 @@ function getHeader($title = null, $notGetLogin = null)
                                 </li>
                                 <li class="nav-item ' . ($title == 'Profile' ? 'active' : '') . '">
                                     <a class="nav-link op-btn" id="profile-button" href="Profile.php">
-                                    <img src="icon/Profile.svg" alt="Profile">
+                                    <img src="../assets/icon/Profile.svg" alt="Profile">
                                     </a>
                                 </li>
                             </ul>
@@ -74,7 +74,7 @@ function getHeader($title = null, $notGetLogin = null)
                                     class="position-absolute top-0 translate-middle badge border border-light rounded-circle theme-bg-color">
                                     ' . $cartQuantity . '
                                     </span>
-                                <img src="icon/shopping-cart.svg" alt="Cart">
+                                <img src="../assets/icon/shopping-cart.svg" alt="Cart">
                             </a>
                     </div>
                     </div>
@@ -93,7 +93,7 @@ function getHeader($title = null, $notGetLogin = null)
                     </button>
 
                     <a class="navbar-brand" href="index.php">
-                    <img src="icon/favicon.png" alt="Crystal Whispers">
+                    <img src="../assets/icon/favicon.png" alt="Crystal Whispers">
                     <span>Crystal Whispers</span>
                     </a>
 
@@ -141,7 +141,7 @@ function getCartQuantity()
 //footer
 function getFooter()
 {
-    if (isset($_SESSION['sbsAlert'])) {
+    if (isset ($_SESSION['sbsAlert'])) {
         echo '<div id="signup_alert" class="alert' . ($_SESSION['sbsAlert'] == "Error! Please try again" ? " alert-danger" : " alert-success") . '
         alert-dismissible fade show" role="alert">
                 ' . $_SESSION['sbsAlert'] . '
@@ -182,7 +182,7 @@ function getFooter()
                     var scrollPosition = window.scrollY;
                     document.getElementById("scrollPoint").value = scrollPosition;
                 }
-                var scrollPosition = ' . (isset($_SESSION['scrollPoint']) ? $_SESSION['scrollPoint'] : 0) . ';
+                var scrollPosition = ' . (isset ($_SESSION['scrollPoint']) ? $_SESSION['scrollPoint'] : 0) . ';
                 window.scrollTo(0, scrollPosition);
             </script>
         </section>
@@ -194,16 +194,16 @@ function getFooter()
             </div>
             <div class="d-flex justify-content-around align-items-center gap-4">
                 <a href="" class="mr-4 text-reset">
-                <img src="icon/facebook.svg" alt="Facebook">
+                <img src="../assets/icon/facebook.svg" alt="Facebook">
                 </a>
                 <a href="" class="mr-4 text-reset">
-                <img src="icon/twitter.svg" alt="Twitter">
+                <img src="../assets/icon/twitter.svg" alt="Twitter">
                 </a>
                 <a href="" class="mr-4 text-reset">
-                <img src="icon/instagram.svg" alt="Instagram">
+                <img src="../assets/icon/instagram.svg" alt="Instagram">
                 </a>
                 <a href="https://wa.me/916280600090" class="mr-4 text-reset">
-                <img src="icon/whatsapp.svg" alt="whatsapp">
+                <img src="../assets/icon/whatsapp.svg" alt="whatsapp">
                 </a>
             </div>
         </section>
@@ -214,7 +214,7 @@ function getFooter()
                 <div class="row mt-3 justify-content-around">
                     <div class="col-md-3 text-center col-lg-3 mb-4">
                         <h6 class="text-uppercase fw-bold mb-4">
-                            <img width="50" src="icon/favicon.png" alt="Icon">
+                            <img width="50" src="../assets/icon/favicon.png" alt="Icon">
                             <span class="shop-name">Crystal Whispers</span>
                         </h6>
                         <p>
@@ -259,24 +259,24 @@ function getFooter()
                     <div class="col-12 col-sm-5 mb-md-0 mb-4 row">
                         <h6 class="col-12 text-center text-sm-start col fw-bold mb-4 theme-color">Contact</h6>
                         <p class="col-sm-12 d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
-                            <img src="icon/address.png" alt="address"> <span>Sadar Bazar, Barnala, <br>
+                            <img src="../assets/icon/address.png" alt="address"> <span>Sadar Bazar, Barnala, <br>
                                 Punjab-148101.</span>
                         </p>
                         <p class="col-sm-12 d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
                             <a href="mailto:crystalwhisper@gmail.com">
-                                <img src="icon/email.png" alt="email">
+                                <img src="../assets/icon/email.png" alt="email">
                                 <span>crystals@gmail.com</span>
                             </a>
                         </p>
                         <p class="col-sm-12 d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
                             <a href="tel:+916280600090">
-                                <img src="icon/phone.png" alt="phone">
+                                <img src="../assets/icon/phone.png" alt="phone">
                                 <span>+91 62806-00090</span>
                             </a>
                         </p>
                         <p class="col-sm-12 d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
                             <a href="https://wa.me/916280600090" target="_blank">
-                                <img src="icon/whatsapp.png" alt="whatsapp">
+                                <img src="../assets/icon/whatsapp.png" alt="whatsapp">
                                 <span>+91 62806-00090</span>
                             </a>
                         </p>
@@ -294,25 +294,9 @@ function getFooter()
     </footer>
     ';
 
-    if (isset($_SESSION['scrollPoint'])) {
+    if (isset ($_SESSION['scrollPoint'])) {
         unset($_SESSION['scrollPoint']);
     }
-}
-
-//get scripts
-function getScripts()
-{
-    echo '
-    <!-- font awesome -->
-    <script src="https://kit.fontawesome.com/34176f497f.js" crossorigin="anonymous"></script>
-    <!-- jQery -->
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <!-- bootstrap js -->
-    <script src="js/bootstrap.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
-    <!-- custom js -->
-    <script src="js/custom.js"></script>
-    ';
 }
 
 // move items from cart to order_items (confirm order)
@@ -379,7 +363,7 @@ function insertOrderDetails($conn, $userID, $name, $email, $phone, $payMethod, $
     return $inOrders;
 }
 
-
+// fetch products
 function fetchProducts($category = "All", $gender = "All", $material = "All", $occasion = "All", $OrderBy = 0, $limit = 12)
 {
     global $conn;
@@ -456,12 +440,10 @@ function fetchProducts($category = "All", $gender = "All", $material = "All", $o
             }
             return $productData;
         }
-    }else {
-        // echo "Error executing query: " . $conn->error;
     }
 }
 
-// fetch worker details to about page
+// fetch worker details
 function fetchWorkerDetails()
 {
     global $conn;
@@ -487,6 +469,7 @@ function fetchWorkerDetails()
     }
 }
 
+// fetch shop reviews
 function fetchShopReviews()
 {
     global $conn;
@@ -512,6 +495,23 @@ function fetchShopReviews()
         }
 
         return $shopReviewData;
+    }
+}
+
+
+// add css files
+function addCssFiles($toDir, $cssFiles)
+{
+    foreach ($cssFiles as $cssFile) {
+        echo '<link rel="stylesheet" type="text/css" href="' . $toDir . 'assets/css/' . $cssFile . '" />' . PHP_EOL;
+    }
+}
+
+// add js files
+function addJsFiles($toDir, $jsFiles)
+{
+    foreach ($jsFiles as $jsFile) {
+        echo '<script src="' . $toDir . 'assets/js/' . $jsFile . '"></script>' . PHP_EOL;
     }
 }
 

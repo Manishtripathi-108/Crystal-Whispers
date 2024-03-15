@@ -7,10 +7,10 @@ if (checkGetUserLoginStatus()) {
     exit;
 }
 
-$loginMessage = isset($_SESSION["loginMessage"]) ? $_SESSION["loginMessage"] : "";
-$Message = isset($_SESSION["Message"]) ? $_SESSION["Message"] : "";
-$signUpName = isset($_SESSION["signUpName"]) ? $_SESSION["signUpName"] : "";
-$Email = isset($_SESSION["Email"]) ? $_SESSION["Email"] : "";
+$loginMessage = isset ($_SESSION["loginMessage"]) ? $_SESSION["loginMessage"] : "";
+$Message = isset ($_SESSION["Message"]) ? $_SESSION["Message"] : "";
+$signUpName = isset ($_SESSION["signUpName"]) ? $_SESSION["signUpName"] : "";
+$Email = isset ($_SESSION["Email"]) ? $_SESSION["Email"] : "";
 
 unset($_SESSION["signUpName"]);
 unset($_SESSION["Email"]);
@@ -35,14 +35,18 @@ unset($_SESSION["Message"]);
 
     <title>Crystal Whispers</title>
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-    <!-- animation css -->
-    <link rel="stylesheet" href="css/animation.css">
+    <!-- Get Styles -->
+    <?php
+    $cssFiles = array(
+        'bootstrap.css',
+        'style.css',
+        'responsive.css',
+        'animation.css'
+    );
+
+    addCssFiles("../", $cssFiles);
+    ?>
+    <!-- End Styles -->
 
 </head>
 
@@ -100,7 +104,8 @@ unset($_SESSION["Message"]);
                 ?>
 
                 <div class="form-floating mb-3">
-                    <input required name="signUpName" type="text" pattern="[a-zA-Z ]+" title="Only alphabets and spaces are allowed." class="form-control" id="signUpName"
+                    <input required name="signUpName" type="text" pattern="[a-zA-Z ]+"
+                        title="Only alphabets and spaces are allowed." class="form-control" id="signUpName"
                         value="<?php echo $signUpName; ?>" placeholder="Full Name">
                     <label for="signUpName">Full Name</label>
                 </div>
@@ -119,8 +124,8 @@ unset($_SESSION["Message"]);
                     </small>
                 </div>
                 <div class="form-floating mb-3">
-                    <input required name="confirmSignUpPassword" type="password" class="form-control" id="confirmSignupPassword"
-                        placeholder="Confirm Password">
+                    <input required name="confirmSignUpPassword" type="password" class="form-control"
+                        id="confirmSignupPassword" placeholder="Confirm Password">
                     <label for="confirmSignupPassword">Confirm Password</label>
                 </div>
                 <button title="Signup" type="submit" class="theme-btn">Signup</button>
@@ -145,7 +150,16 @@ unset($_SESSION["Message"]);
     <!-- Footer -->
 
     <!-- Get Scripts -->
-    <?php getScripts(); ?>
+    <?php
+    $jsFiles = array(
+        'jquery-3.4.1.min.js',
+        'bootstrap.js',
+        'bootstrap.bundle.js',
+        'custom.js'
+    );
+
+    addJsFiles("../", $jsFiles);
+    ?>
     <!-- End Scripts -->
 </body>
 

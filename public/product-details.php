@@ -109,14 +109,18 @@ function getReview($productID)
 
     <title>Crystal Whispers</title>
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-    <!-- animation css -->
-    <link rel="stylesheet" href="css/animation.css">
+    <!-- Get Styles -->
+    <?php
+    $cssFiles = array(
+        'bootstrap.css',
+        'style.css',
+        'responsive.css',
+        'animation.css'
+    );
+
+    addCssFiles("../", $cssFiles);
+    ?>
+    <!-- End Styles -->
 
 </head>
 
@@ -127,15 +131,15 @@ function getReview($productID)
     <!-- end header section -->
 
     <?php
-    if (isset($_SESSION['reviewSuccessMessage']) || isset($_SESSION['reviewErrorMessage'])) {
-        echo '<div id="signup_alert" class="alert' . (isset($_SESSION['reviewErrorMessage']) ? " alert-danger" : " alert-success") . '  alert-dismissible fade show" role="alert">
-            ' . (isset($_SESSION['reviewErrorMessage']) ? $_SESSION['reviewErrorMessage'] : $_SESSION['reviewSuccessMessage']) . '
+    if (isset ($_SESSION['reviewSuccessMessage']) || isset ($_SESSION['reviewErrorMessage'])) {
+        echo '<div id="signup_alert" class="alert' . (isset ($_SESSION['reviewErrorMessage']) ? " alert-danger" : " alert-success") . '  alert-dismissible fade show" role="alert">
+            ' . (isset ($_SESSION['reviewErrorMessage']) ? $_SESSION['reviewErrorMessage'] : $_SESSION['reviewSuccessMessage']) . '
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>';
 
-        if (isset($_SESSION['reviewErrorMessage'])) {
+        if (isset ($_SESSION['reviewErrorMessage'])) {
             unset($_SESSION['reviewErrorMessage']);
-        } else if (isset($_SESSION['reviewSuccessMessage'])) {
+        } else if (isset ($_SESSION['reviewSuccessMessage'])) {
             unset($_SESSION['reviewSuccessMessage']);
         }
     }
@@ -153,7 +157,7 @@ function getReview($productID)
                                 $product = fetchProductDetails($_GET["pro"]);
                                 $active = true;
                                 foreach (['img_1', 'img_2', 'img_3'] as $imgKey) {
-                                    if (!empty($product[$imgKey])) {
+                                    if (!empty ($product[$imgKey])) {
                                         echo '<div class="carousel-item ' . ($active ? 'active' : '') . '">
                                                     <img src="images/products/' . $product[$imgKey] . '" alt="">
                                                 </div>';
@@ -242,8 +246,8 @@ function getReview($productID)
                                     <div class="col-md-4 col-6 mb-3">
                                         <label class="mb-2 d-block">Weight</label>
                                         <div class="input-group mb-3" style="width: 100px;">
-                                            <input class="text-center" type="text" value="<?= $product['weight'].' g' ?>"
-                                                disabled>
+                                            <input class="text-center" type="text"
+                                                value="<?= $product['weight'] . ' g' ?>" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -314,7 +318,7 @@ function getReview($productID)
                                 <tr>
                                     <td>Weight</td>
                                     <td>
-                                        <?= $product['weight'].' g' ?>
+                                        <?= $product['weight'] . ' g' ?>
                                     </td>
                                 </tr>
                             </tbody>
@@ -408,7 +412,16 @@ function getReview($productID)
     <!-- End footer -->
 
     <!-- Get Scripts -->
-    <?php getScripts(); ?>
+    <?php
+    $jsFiles = array(
+        'jquery-3.4.1.min.js',
+        'bootstrap.js',
+        'bootstrap.bundle.js',
+        'custom.js'
+    );
+
+    addJsFiles("../", $jsFiles);
+    ?>
     <!-- End Scripts -->
 </body>
 

@@ -18,14 +18,18 @@ include "php/functions.php";
 
   <title>Crystal Whispers</title>
 
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-  <!-- Custom styles for this template -->
-  <link href="css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
-  <!-- animation css -->
-  <link rel="stylesheet" href="css/animation.css">
+  <!-- Get Styles -->
+  <?php
+  $cssFiles = array(
+    'bootstrap.css',
+    'style.css',
+    'responsive.css',
+    'animation.css'
+  );
+
+  addCssFiles("../", $cssFiles);
+  ?>
+  <!-- End Styles -->
 
 </head>
 
@@ -64,7 +68,7 @@ include "php/functions.php";
 
                     if ($cat_result->num_rows > 0) {
                       while ($row = $cat_result->fetch_assoc()) {
-                        if (isset($_GET['category']) && $row['ID'] == $_GET['category']) {
+                        if (isset ($_GET['category']) && $row['ID'] == $_GET['category']) {
                           echo '<option value="' . $row['ID'] . '"selected>' . $row['category_name'] . '</option>';
                         } else {
                           echo '<option value="' . $row['ID'] . '">' . $row['category_name'] . '</option>';
@@ -82,9 +86,9 @@ include "php/functions.php";
                 <div class="form-floating">
                   <select name="gender" class="form-select" style="width: 200px;" id="Gender">
                     <option>All</option>
-                    <option value="Male" <?php echo (isset($_GET['gender']) && $_GET['gender'] == 'Male') ? 'selected'
+                    <option value="Male" <?php echo (isset ($_GET['gender']) && $_GET['gender'] == 'Male') ? 'selected'
                       : ''; ?>>Male</option>
-                    <option value="Female" <?php echo (isset($_GET['gender']) && $_GET['gender'] == 'Female')
+                    <option value="Female" <?php echo (isset ($_GET['gender']) && $_GET['gender'] == 'Female')
                       ? 'selected' : ''; ?>>Female</option>
                   </select>
                   <label for="Gender">Gender</label>
@@ -94,11 +98,11 @@ include "php/functions.php";
                 <div class="form-floating">
                   <select name="material" class="form-select" style="width: 200px;" id="Material">
                     <option>All</option>
-                    <option value="Gold" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Gold')
+                    <option value="Gold" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Gold')
                       ? 'selected' : ''; ?>>Gold</option>
-                    <option value="Silver" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Silver')
+                    <option value="Silver" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Silver')
                       ? 'selected' : ''; ?>>Silver</option>
-                    <option value="Platinum" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Platinum')
+                    <option value="Platinum" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Platinum')
                       ? 'selected' : ''; ?>>Platinum</option>
                   </select>
                   <label for="Material">Material</label>
@@ -114,7 +118,7 @@ include "php/functions.php";
 
                     if ($occ_result->num_rows > 0) {
                       while ($row = $occ_result->fetch_assoc()) {
-                        if (isset($_GET['occasion']) && $row['ID'] == $_GET['occasion']) {
+                        if (isset ($_GET['occasion']) && $row['ID'] == $_GET['occasion']) {
                           echo '<option value="' . $row['ID'] . '" selected>' . $row['value'] . '</option>';
                         } else {
                           echo '<option value="' . $row['ID'] . '">' . $row['value'] . '</option>';
@@ -132,13 +136,13 @@ include "php/functions.php";
                 <div class="form-floating">
                   <select name="OrderBy" class="form-select" style="width: 200px;" id="OrderBy">
                     <option>All Products</option>
-                    <option value="1" <?php echo (isset($_GET['OrderBy']) && $_GET['OrderBy'] == '1') ? 'selected' : ''; ?>>
+                    <option value="1" <?php echo (isset ($_GET['OrderBy']) && $_GET['OrderBy'] == '1') ? 'selected' : ''; ?>>
                       Latest Products</option>
-                    <option value="2" <?php echo (isset($_GET['OrderBy']) && $_GET['OrderBy'] == '2') ? 'selected' : ''; ?>>
+                    <option value="2" <?php echo (isset ($_GET['OrderBy']) && $_GET['OrderBy'] == '2') ? 'selected' : ''; ?>>
                       Bestsellers</option>
-                    <option value="3" <?php echo (isset($_GET['OrderBy']) && $_GET['OrderBy'] == '3') ? 'selected' : ''; ?>>
+                    <option value="3" <?php echo (isset ($_GET['OrderBy']) && $_GET['OrderBy'] == '3') ? 'selected' : ''; ?>>
                       Discount</option>
-                    <option value="4" <?php echo (isset($_GET['OrderBy']) && $_GET['OrderBy'] == '4') ? 'selected' : ''; ?>>
+                    <option value="4" <?php echo (isset ($_GET['OrderBy']) && $_GET['OrderBy'] == '4') ? 'selected' : ''; ?>>
                       Top Rated</option>
                   </select>
                   <label for="OrderBy">Order By</label>
@@ -164,12 +168,12 @@ include "php/functions.php";
     <!-- End Filter -->
 
     <?php
-    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['display-filter'])) {
-      $category = isset($_GET['category']) ? $_GET['category'] : 'All';
-      $gender = isset($_GET['gender']) ? $_GET['gender'] : 'All';
-      $material = isset($_GET['material']) ? $_GET['material'] : 'All';
-      $occasion = isset($_GET['occasion']) ? $_GET['occasion'] : 'All';
-      $OrderBy = isset($_GET['OrderBy']) ? $_GET['OrderBy'] : '0';
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset ($_GET['display-filter'])) {
+      $category = isset ($_GET['category']) ? $_GET['category'] : 'All';
+      $gender = isset ($_GET['gender']) ? $_GET['gender'] : 'All';
+      $material = isset ($_GET['material']) ? $_GET['material'] : 'All';
+      $occasion = isset ($_GET['occasion']) ? $_GET['occasion'] : 'All';
+      $OrderBy = isset ($_GET['OrderBy']) ? $_GET['OrderBy'] : '0';
 
       // $sql = "SELECT
       //       p.product_id,
@@ -188,25 +192,25 @@ include "php/functions.php";
       //   JOIN
       //       categories c ON p.category = c.ID
       //   WHERE 1";
-
+    
       // if ($category !== 'All') {
       //   $sql .= " AND p.category = '$category'";
       // }
-
+    
       // if ($gender !== 'All') {
       //   $sql .= " AND p.gender = '$gender'";
       // }
-
+    
       // if ($material !== 'All') {
       //   $sql .= " AND p.material = '$material'";
       // }
-
+    
       // if ($occasion !== 'All') {
       //   $sql .= " AND p.occasion = '$occasion'";
       // }
-
+    
       // $sql .= " ORDER BY ";
-
+    
       // switch ($OrderBy) {
       //   case '1':
       //     $sql .= "p.date_added DESC";
@@ -217,10 +221,10 @@ include "php/functions.php";
       //   default:
       //     $sql .= "p.date_added DESC";
       // }
-
+    
       // $sql .= " LIMIT 50";
       // $result = $conn->query($sql);
-
+    
       echo '
         <section class="shop_section layout_padding">
           <div class="mx-5">
@@ -471,7 +475,16 @@ include "php/functions.php";
   <!-- End footer -->
 
   <!-- Get Scripts -->
-  <?php getScripts(); ?>
+  <?php
+  $jsFiles = array(
+    'jquery-3.4.1.min.js',
+    'bootstrap.js',
+    'bootstrap.bundle.js',
+    'custom.js'
+  );
+
+  addJsFiles("../", $jsFiles);
+  ?>
   <!-- End Scripts -->
 
 </body>

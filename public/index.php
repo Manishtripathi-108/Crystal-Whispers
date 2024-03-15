@@ -1,5 +1,5 @@
 <?php
-include "php/functions.php";
+include "../php/functions.php";
 ?>
 
 <!DOCTYPE html>
@@ -19,14 +19,18 @@ include "php/functions.php";
 
   <title>Crystal Whispers</title>
 
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-  <!-- Custom styles for this template -->
-  <link href="css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
-  <!-- animation css -->
-  <link rel="stylesheet" href="css/animation.css">
+  <!-- Get Styles -->
+  <?php
+  $cssFiles = array(
+    'bootstrap.css',
+    'style.css',
+    'responsive.css',
+    'animation.css'
+  );
+
+  addCssFiles("../", $cssFiles);
+  ?>
+  <!-- End Styles -->
 
 </head>
 
@@ -40,11 +44,11 @@ include "php/functions.php";
     <!-- display section -->
     <section class="display_section position-relative animate__fadeIn">
       <div class="display_img_container">
-        <img class="display-img" src="images/display 1.jpg" alt="display image">
-        <img class="display-img" src="images/display 3.jpg" alt="display image">
-        <img class="display-img" src="images/display 4.jpg" alt="display image">
-        <img class="display-img" src="images/display 5.jpg" alt="display image">
-        <img class="display-img" src="images/display 6.jpg" alt="display image">
+        <img class="display-img" src="../assets/images/home/display 1.jpg" alt="display image">
+        <img class="display-img" src="../assets/images/home/display 3.jpg" alt="display image">
+        <img class="display-img" src="../assets/images/home/display 4.jpg" alt="display image">
+        <img class="display-img" src="../assets/images/home/display 5.jpg" alt="display image">
+        <img class="display-img" src="../assets/images/home/display 6.jpg" alt="display image">
       </div>
       <div class="container">
         <div class="col-md-9 col-lg-8">
@@ -83,12 +87,12 @@ include "php/functions.php";
           if ($productData):
             foreach ($productData as $product):
               ?>
-              <div class="col-sm-6 col-md-4 col-lg-3 p-3">
-                <a class="text-reset" href="Product-details.php?pro=<?= $product['id'] ?>">
-                  <div class="product-card">
-                    <div class="p-badge">
+          <div class="col-sm-6 col-md-4 col-lg-3 p-3">
+            <a class="text-reset" href="Product-details.php?pro=<?= $product['id'] ?>">
+              <div class="product-card">
+                <div class="p-badge">
 
-                      <?php
+                  <?php
                       $rating = $product['rating'];
                       if ($rating > 0) {
                         for ($i = 1; $i <= $rating; $i++) {
@@ -99,40 +103,43 @@ include "php/functions.php";
                       }
                       ?>
 
+                </div>
+                <div class="product-tumb d-flex justify-content-center align-items-center">
+                  <img src="../assets/images/products/<?= $product['image'] ?>" alt="Product Image">
+                </div>
+                <div class="product-details">
+                  <span class="product-category">
+                    <?= $product['Gender'] . ', ' . $product['category'] ?>
+                  </span>
+                  <h5><a href="Product-details.php?pro=<?= $product['id'] ?>">
+                      <?= $product['name'] ?>
+                    </a></h5>
+                  <div class="product-bottom-details d-flex justify-content-between align-items-center">
+                    <div class="product-price">
+                      <small>₹
+                        <?= number_format($product['price'], 2) ?>
+                      </small>
+                      ₹
+                      <?= number_format(($product['price'] * ((100 - $product['discount']) / 100)), 2) ?>
                     </div>
-                    <div class="product-tumb d-flex justify-content-center align-items-center">
-                      <img src="images/products/<?= $product['image'] ?>" alt="Product Image">
-                    </div>
-                    <div class="product-details">
-                      <span class="product-category">
-                        <?= $product['Gender'] . ', ' . $product['category'] ?>
-                      </span>
-                      <h5><a href="Product-details.php?pro=<?= $product['id'] ?>">
-                          <?= $product['name'] ?>
-                        </a></h5>
-                      <div class="product-bottom-details d-flex justify-content-between align-items-center">
-                        <div class="product-price">
-                          <small>₹
-                            <?= number_format($product['price'], 2) ?>
-                          </small>
-                          ₹
-                          <?= number_format(($product['price'] * ((100 - $product['discount']) / 100)), 2) ?>
-                        </div>
-                        <div class="product-links">
-                          <form method="post" action="php/add_to_cart.php">
-                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                            <button type="submit"><i class="fa fa-shopping-cart"></i></button>
-                          </form>
-                        </div>
-                      </div>
+                    <div class="product-links">
+                      <form method="post" action="php/add_to_cart.php">
+                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                        <button type="submit"><i class="fa fa-shopping-cart"></i></button>
+                      </form>
                     </div>
                   </div>
-                </a>
+                </div>
               </div>
-              <?php
+            </a>
+          </div>
+          <?php
             endforeach;
           else:
-            echo "We apologize, but there are no products available at the moment. Please check back later or contact our support team for assistance.";
+            echo '
+            <div class="text-center p-3">
+              We apologize, but there are no products available at the moment. Please check back later or contact our support team for assistance.
+            </div>';
           endif;
           ?>
 
@@ -152,7 +159,7 @@ include "php/functions.php";
         <div class="row">
           <div class="col-md-6">
             <div class="img-box">
-              <img src="images/about-img.jpg" alt="About Us Image">
+              <img src="../assets/images/about/about-img.jpg" alt="About Us Image">
             </div>
           </div>
           <div class="col-md-6">
@@ -186,7 +193,7 @@ include "php/functions.php";
         <div class="row">
           <div class="col-md-7 px-0">
             <div class="box offer-box1">
-              <img src="images/o1.jpg" alt="">
+              <img src="../assets/images/o1.jpg" alt="">
               <div class="detail-box">
                 <h2>
                   Upto 15% Off
@@ -200,7 +207,7 @@ include "php/functions.php";
           </div>
           <div class="col-md-5 px-0">
             <div class="box offer-box2">
-              <img src="images/o2.jpg" alt="">
+              <img src="../assets/images/o2.jpg" alt="">
               <div class="detail-box">
                 <h2>
                   Upto 10% Off
@@ -212,7 +219,7 @@ include "php/functions.php";
               </div>
             </div>
             <div class="box offer-box3">
-              <img src="images/o3.jpg" alt="">
+              <img src="../assets/images/o3.jpg" alt="">
               <div class="detail-box">
                 <h2>
                   Upto 20% Off
@@ -239,73 +246,64 @@ include "php/functions.php";
         </div>
         <div id="testimonialCarousel" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner">
-
             <?php
-            $sql = "SELECT
-                      name as username,
-                      shop_review as review,
-                      user_profilePhoto as userImage
-                    FROM
-                      users
-                    WHERE shop_review IS NOT NULL
-                    LIMIT 6";
-            $Test_Result = $conn->query($sql);
-
-            if ($Test_Result->num_rows > 0) {
-              $i = 0;
-              while ($row = $Test_Result->fetch_assoc()) {
-                echo '<div class="carousel-item ' . ($i == 0 ? 'active' : '') . '">
-                <div class="row">
-                      <div class="col-md-11 col-lg-10 mx-auto">
-                        <div class="box">
-                          <div class="img-box">
-                            <img src="images/users/' . $row['userImage'] . '">
-                          </div>
-                          <div class="detail-box">
-                            <div class="name">
-                              <h6>
-                                ' . $row['username'] . '
-                              </h6>
-                            </div>
-                            <p>
-                              "' . $row['review'] . '"
-                            </p>
-                            <i class="fa fa-quote-left" aria-hidden="true"></i>
-                          </div>
-                        </div>
+            $shopReviewData = fetchShopReviews();
+            $i = 0;
+            if (!empty ($shopReviewData)):
+              foreach ($shopReviewData as $shopReview):
+                ?>
+            <div class="carousel-item <?= ($i == 0 ? 'active' : '') ?> ">
+              <div class="row">
+                <div class="col-md-11 col-lg-10 mx-auto">
+                  <div class="box">
+                    <div class="img-box">
+                      <img src="../assets/images/users/<?= $shopReview['UserImage'] ?>">
+                    </div>
+                    <div class="detail-box">
+                      <div class="name">
+                        <h6>
+                          <?= $shopReview['UserName'] ?>
+                        </h6>
                       </div>
+                      <p>
+                        "
+                        <?= $shopReview['review'] ?>"
+                      </p>
+                      <i class="fa fa-quote-left" aria-hidden="true"></i>
                     </div>
                   </div>
-                ';
-                $i++;
-              }
-            } else {
-              echo '<div class="carousel-item">
-                      <div class="row">
-                            <div class="col-md-11 col-lg-10 mx-auto">
-                              <div class="box">
-                                <div class="img-box">
-                                  <img src="images/client.jpg" alt="Client Image 2">
-                                </div>
-                                <div class="detail-box">
-                                  <div class="name">
-                                    <h6>
-                                      Alex Turner
-                                    </h6>
-                                  </div>
-                                  <p>
-                                    "The quality of the jewelry at Crystal Whispers is unparalleled. Each piece tells a
-                                    unique story, and I appreciate the artistry that goes into every creation."
-                                  </p>
-                                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        ';
-            }
-            ?>
+                </div>
+              </div>
+            </div>
+            <?php $i++;
+              endforeach;
+
+            else:
+              ?>
+            <div class="carousel-item active">
+              <div class="row">
+                <div class="col-md-11 col-lg-10 mx-auto">
+                  <div class="box">
+                    <div class="img-box">
+                      <img src="../assets/images/client.jpg" alt="Client Image 2">
+                    </div>
+                    <div class="detail-box">
+                      <div class="name">
+                        <h6>
+                          Alex Turner
+                        </h6>
+                      </div>
+                      <p>
+                        "The quality of the jewelry at Crystal Whispers is unparalleled. Each piece tells a unique
+                        story, and I appreciate the artistry that goes into every creation."
+                      </p>
+                      <i class="fa fa-quote-left" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <?php endif; ?>
 
           </div>
           <div class="carousel_btn-container">
@@ -329,7 +327,16 @@ include "php/functions.php";
   <!-- End footer -->
 
   <!-- Get Scripts -->
-  <?php getScripts(); ?>
+  <?php
+  $jsFiles = array(
+    'jquery-3.4.1.min.js',
+    'bootstrap.js',
+    'bootstrap.bundle.js',
+    'custom.js'
+  );
+
+  addJsFiles("../", $jsFiles);
+  ?>
   <!-- End Scripts -->
   <script>
     // Display Image Carousal

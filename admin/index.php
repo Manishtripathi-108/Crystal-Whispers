@@ -1,21 +1,21 @@
 <?php
-include "php/functions.php";
+include "../php/functions.php";
 
-if (!isset($_SESSION['AdminID'])) {
+if (!isset ($_SESSION['AdminID'])) {
     header("Location: admin-login.php");
     exit();
 } else {
     $admin = $_SESSION['AdminID'];
 }
 
-$productMessage = isset($_SESSION['productMessage']) ? $_SESSION['productMessage'] : "";
+$productMessage = isset ($_SESSION['productMessage']) ? $_SESSION['productMessage'] : "";
 unset($_SESSION['productMessage']);
 
-$workerMessage = isset($_SESSION['workerMessage']) ? $_SESSION['workerMessage'] : "";
+$workerMessage = isset ($_SESSION['workerMessage']) ? $_SESSION['workerMessage'] : "";
 unset($_SESSION['workerMessage']);
 
 // active page
-$activePage = isset($_SESSION['section']) ? $_SESSION['section'] : "Products";
+$activePage = isset ($_SESSION['section']) ? $_SESSION['section'] : "Products";
 unset($_SESSION['section']);
 
 function isActive($page, $activePage)
@@ -139,21 +139,25 @@ function fetchContacts()
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!-- Site Metas -->
-    <link rel="icon" href="icon/favicon.png" type="image/gif" />
+    <link rel="icon" href="../icon/favicon.png" type="image/gif" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
 
     <title>Crystal Whispers</title>
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-    <!-- animation css -->
-    <link rel="stylesheet" href="css/animation.css">
+    <!-- Get Styles -->
+    <?php
+    $cssFiles = array(
+        'bootstrap.css',
+        'style.css',
+        'responsive.css',
+        'animation.css'
+    );
+
+    addCssFiles("../", $cssFiles);
+    ?>
+    <!-- End Styles -->
 
 </head>
 
@@ -170,7 +174,7 @@ function fetchContacts()
             <section class="sideNav col-md-auto layout_padding">
                 <div class="profile p-2">
                     <?php $adminDetails = fetchAdminDetails(); ?>
-                    <img src="images/admin/<?= $adminDetails['AdminImage'] ?>" class="mx-auto d-block mb-2"
+                    <img src="../images/admin/<?= $adminDetails['AdminImage'] ?>" class="mx-auto d-block mb-2"
                         alt="Profile Image">
                     <div class="user-name text-center">
                         <?= $adminDetails['AdminName'] ?>
@@ -449,7 +453,7 @@ function fetchContacts()
 
                                                                 if ($cat_result->num_rows > 0) {
                                                                     while ($row = $cat_result->fetch_assoc()) {
-                                                                        if (isset($_GET['category']) && $row['ID'] == $_GET['category']) {
+                                                                        if (isset ($_GET['category']) && $row['ID'] == $_GET['category']) {
                                                                             echo '<option value="' . $row['ID'] . '"selected>' . $row['category_name'] . '</option>';
                                                                         } else {
                                                                             echo '<option value="' . $row['ID'] . '">' . $row['category_name'] . '</option>';
@@ -468,9 +472,9 @@ function fetchContacts()
                                                             <select name="gender" class="form-select"
                                                                 style="width: 150px;" id="Gender">
                                                                 <option>All</option>
-                                                                <option value="Male" <?php echo (isset($_GET['gender']) && $_GET['gender'] == 'Male') ? 'selected' : ''; ?>>
+                                                                <option value="Male" <?php echo (isset ($_GET['gender']) && $_GET['gender'] == 'Male') ? 'selected' : ''; ?>>
                                                                     Male</option>
-                                                                <option value="Female" <?php echo (isset($_GET['gender']) && $_GET['gender'] == 'Female') ? 'selected' : ''; ?>>
+                                                                <option value="Female" <?php echo (isset ($_GET['gender']) && $_GET['gender'] == 'Female') ? 'selected' : ''; ?>>
                                                                     Female</option>
                                                             </select>
                                                             <label for="Gender">Gender</label>
@@ -481,11 +485,11 @@ function fetchContacts()
                                                             <select name="material" class="form-select"
                                                                 style="width: 150px;" id="Material">
                                                                 <option>All</option>
-                                                                <option value="Gold" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Gold') ? 'selected' : ''; ?>>
+                                                                <option value="Gold" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Gold') ? 'selected' : ''; ?>>
                                                                     Gold</option>
-                                                                <option value="Silver" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Silver') ? 'selected' : ''; ?>>
+                                                                <option value="Silver" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Silver') ? 'selected' : ''; ?>>
                                                                     Silver</option>
-                                                                <option value="Platinum" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Platinum') ? 'selected' : ''; ?>>Platinum
+                                                                <option value="Platinum" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Platinum') ? 'selected' : ''; ?>>Platinum
                                                                 </option>
                                                             </select>
                                                             <label for="Material">Material</label>
@@ -502,7 +506,7 @@ function fetchContacts()
 
                                                                 if ($occ_result->num_rows > 0) {
                                                                     while ($row = $occ_result->fetch_assoc()) {
-                                                                        if (isset($_GET['occasion']) && $row['ID'] == $_GET['occasion']) {
+                                                                        if (isset ($_GET['occasion']) && $row['ID'] == $_GET['occasion']) {
                                                                             echo '<option value="' . $row['ID'] . '" selected>' . $row['value'] . '</option>';
                                                                         } else {
                                                                             echo '<option value="' . $row['ID'] . '">' . $row['value'] . '</option>';
@@ -521,17 +525,17 @@ function fetchContacts()
                                                             <select name="show" class="form-select"
                                                                 style="width: 150px;" id="show">
                                                                 <option>All Products</option>
-                                                                <option value="1" <?php echo (isset($_GET['show']) && $_GET['show'] == '1') ? 'selected' : ''; ?>>
+                                                                <option value="1" <?php echo (isset ($_GET['show']) && $_GET['show'] == '1') ? 'selected' : ''; ?>>
                                                                     Latest Products</option>
-                                                                <option value="2" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
+                                                                <option value="2" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
                                                                     Bestsellers</option>
-                                                                <option value="3" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
+                                                                <option value="3" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
                                                                     Product ID</option>
-                                                                <option value="4" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
+                                                                <option value="4" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
                                                                     Stock Quantity</option>
-                                                                <option value="5" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
+                                                                <option value="5" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
                                                                     Weight</option>
-                                                                <option value="6" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
+                                                                <option value="6" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
                                                                     Discount</option>
                                                             </select>
                                                             <label for="show">Order By</label>
@@ -579,11 +583,11 @@ function fetchContacts()
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $category = isset($_GET['category']) ? $_GET['category'] : 'All';
-                                            $gender = isset($_GET['gender']) ? $_GET['gender'] : 'All';
-                                            $material = isset($_GET['material']) ? $_GET['material'] : 'All';
-                                            $occasion = isset($_GET['occasion']) ? $_GET['occasion'] : 'All';
-                                            $show = isset($_GET['show']) ? $_GET['show'] : '0';
+                                            $category = isset ($_GET['category']) ? $_GET['category'] : 'All';
+                                            $gender = isset ($_GET['gender']) ? $_GET['gender'] : 'All';
+                                            $material = isset ($_GET['material']) ? $_GET['material'] : 'All';
+                                            $occasion = isset ($_GET['occasion']) ? $_GET['occasion'] : 'All';
+                                            $show = isset ($_GET['show']) ? $_GET['show'] : '0';
                                             $sql = "SELECT 
                                                     p.*,
                                                     i.img_1, 
@@ -763,7 +767,7 @@ function fetchContacts()
                                         </address>
                                     </td>
                                     <td cell-name="Items">
-                                        <?php if (!empty($order['items'])): ?>
+                                        <?php if (!empty ($order['items'])): ?>
                                             <ul>
                                                 <?php foreach ($order['items'] as $item): ?>
                                                     <li class="text-nowrap">
@@ -789,7 +793,7 @@ function fetchContacts()
                                 </tr>
                             <?php endforeach; ?>
 
-                            <?php if (empty($orders)): ?>
+                            <?php if (empty ($orders)): ?>
                                 <tr>
                                     <td class="text-center" colspan="13">No Order found</td>
                                 </tr>
@@ -1111,7 +1115,7 @@ function fetchContacts()
                                 </tr>
                             <?php endforeach; ?>
 
-                            <?php if (empty($contacts)): ?>
+                            <?php if (empty ($contacts)): ?>
                                 <tr>
                                     <td class="text-center" colspan="4">No Contacts found</td>
                                 </tr>
@@ -1269,7 +1273,16 @@ function fetchContacts()
 
 
     <!-- Get Scripts -->
-    <?php getScripts(); ?>
+    <?php
+    $jsFiles = array(
+        'jquery-3.4.1.min.js',
+        'bootstrap.js',
+        'bootstrap.bundle.js',
+        'custom.js'
+    );
+
+    addJsFiles("../", $jsFiles);
+    ?>
     <!-- End Scripts -->
 
 </body>

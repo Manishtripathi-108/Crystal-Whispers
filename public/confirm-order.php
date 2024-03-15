@@ -2,12 +2,12 @@
 include "php/functions.php";
 $userID = checkGetUserLoginStatus(true, true);
 
-$con_order = isset($_SESSION["confirm_order"]) ? "" : "";
+$con_order = isset ($_SESSION["confirm_order"]) ? "" : "";
 unset($_SESSION["confirm_order"]);
 
 $summary_arr = array(0);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['f_name']) && isset($_POST['l_name']) && isset($_POST['p_number']) && isset($_POST['email']) && isset($_POST['address']) && isset($_POST['address']) && isset($_POST['city']) && isset($_POST['zip']) && isset($_POST['msg_seller']) && isset($_POST['pay_method']) && isset($_POST['price'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset ($_POST['f_name']) && isset ($_POST['l_name']) && isset ($_POST['p_number']) && isset ($_POST['email']) && isset ($_POST['address']) && isset ($_POST['address']) && isset ($_POST['city']) && isset ($_POST['zip']) && isset ($_POST['msg_seller']) && isset ($_POST['pay_method']) && isset ($_POST['price'])) {
     $f_name = $_POST["f_name"];
     $l_name = $_POST["l_name"];
     $p_number = $_POST["p_number"];
@@ -57,14 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['f_name']) && isset($_P
 
     <title>Crystal Whispers</title>
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-    <!-- animation css -->
-    <link rel="stylesheet" href="css/animation.css">
+    <!-- Get Styles -->
+    <?php
+    $cssFiles = array(
+        'bootstrap.css',
+        'style.css',
+        'responsive.css',
+        'animation.css'
+    );
+
+    addCssFiles("../", $cssFiles);
+    ?>
+    <!-- End Styles -->
 
 </head>
 
@@ -264,7 +268,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['f_name']) && isset($_P
     <!-- End footer -->
 
     <!-- Get Scripts -->
-    <?php getScripts(); ?>
+    <?php
+    $jsFiles = array(
+        'jquery-3.4.1.min.js',
+        'bootstrap.js',
+        'bootstrap.bundle.js',
+        'custom.js'
+    );
+
+    addJsFiles("../", $jsFiles);
+    ?>
     <!-- End Scripts -->
 </body>
 

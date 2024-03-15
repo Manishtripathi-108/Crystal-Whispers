@@ -6,7 +6,7 @@ checkGetUserLoginStatus(false, true);
 $cat_arr = array();
 $summary_arr = array();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dltProduct_ID'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset ($_POST['dltProduct_ID'])) {
     $dltID = $_POST['dltProduct_ID'];
     dltProduct($dltID, $conn);
 }
@@ -36,14 +36,18 @@ function dltProduct($dltID, $conn)
 
     <title>Crystal Whispers</title>
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-    <!-- animation css -->
-    <link rel="stylesheet" href="css/animation.css">
+    <!-- Get Styles -->
+    <?php
+    $cssFiles = array(
+        'bootstrap.css',
+        'style.css',
+        'responsive.css',
+        'animation.css'
+    );
+
+    addCssFiles("../", $cssFiles);
+    ?>
+    <!-- End Styles -->
 
 </head>
 
@@ -78,7 +82,7 @@ function dltProduct($dltID, $conn)
                             <tbody>
 
                                 <?php
-                                if (isset($_SESSION["user_id"])) {
+                                if (isset ($_SESSION["user_id"])) {
                                     $sql = "SELECT * FROM cart WHERE userID =" . $_SESSION["user_id"];
                                     $cartTable = $conn->query($sql);
 
@@ -216,7 +220,7 @@ function dltProduct($dltID, $conn)
                 </div>
                 <div class="row m-0 justify-content-center">
                     <?php
-                    if (!empty($cat_arr)) {
+                    if (!empty ($cat_arr)) {
                         foreach ($cat_arr as $pCategory) {
                             $sql = "SELECT
                                     p.product_id,
@@ -302,7 +306,16 @@ function dltProduct($dltID, $conn)
     <!-- End footer -->
 
     <!-- Get Scripts -->
-    <?php getScripts(); ?>
+    <?php
+    $jsFiles = array(
+        'jquery-3.4.1.min.js',
+        'bootstrap.js',
+        'bootstrap.bundle.js',
+        'custom.js'
+    );
+
+    addJsFiles("../", $jsFiles);
+    ?>
     <!-- End Scripts -->
 </body>
 

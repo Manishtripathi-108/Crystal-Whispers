@@ -1,5 +1,5 @@
 <?php
-include "php/functions.php";
+include "../php/functions.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,21 +12,26 @@ include "php/functions.php";
   <!-- Mobile Metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <!-- Site Metas -->
-  <link rel="icon" href="icon/favicon.png" type="image/gif" />
+  <link rel="icon" href="../assets/icon/favicon.png" type="image/gif" />
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
 
   <title>Crystal Whispers</title>
 
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-  <!-- Custom styles for this template -->
-  <link href="css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
-  <!-- animation css -->
-  <link rel="stylesheet" href="css/animation.css">
+  <!-- Get Styles -->
+  <?php
+  $cssFiles = array(
+    'bootstrap.css',
+    'style.css',
+    'responsive.css',
+    'animation.css'
+  );
+
+  addCssFiles("../", $cssFiles);
+  ?>
+  <!-- End Styles -->
+
 
 </head>
 
@@ -43,7 +48,7 @@ include "php/functions.php";
         <div class="row">
           <div class="col-md-6">
             <div class="img-box">
-              <img src="images/about-img.jpg" alt="About Us Image">
+              <img src="../assets/images/about/about-img.jpg" alt="About Us Image">
             </div>
           </div>
           <div class="col-md-6">
@@ -96,7 +101,7 @@ include "php/functions.php";
           </div>
           <div class="col-md-6">
             <div class="img-box">
-              <img src="images/about-history.png" alt="Our History">
+              <img src="../assets/images/about/about-history.png" alt="Our History">
             </div>
           </div>
         </div>
@@ -110,7 +115,7 @@ include "php/functions.php";
         <div class="row">
           <div class="col-md-6">
             <div class="img-box">
-              <img src="images/mission-values.png" alt="Mission and Values">
+              <img src="../assets/images/about/mission-values.png" alt="Mission and Values">
             </div>
           </div>
           <div class="col-md-6">
@@ -158,7 +163,7 @@ include "php/functions.php";
           </div>
           <div class="col-md-6">
             <div class="img-box">
-              <img src="images/craftsmanship.jpeg" alt="Craftsmanship">
+              <img src="../assets/images/about/craftsmanship.jpeg" alt="Craftsmanship">
             </div>
           </div>
         </div>
@@ -185,7 +190,7 @@ include "php/functions.php";
                   <div class="img-container">
                     <div class="img-inner">
                       <div class="inner-skew"
-                        style="background-repeat: no-repeat;background-size: cover;object-fit: contain;background-image: url(images/workers/<?= $worker['image'] ?>);">
+                        style="background-repeat: no-repeat;background-size: cover;object-fit: contain;background-image: url(../assets/images/workers/<?= $worker['image'] ?>);">
                         <span data-position="<?= htmlspecialchars($worker['position']) ?>"></span>
                         <!-- <img src=""> -->
                       </div>
@@ -241,7 +246,7 @@ include "php/functions.php";
                     <div class="col-md-11 col-lg-10 mx-auto">
                       <div class="box">
                         <div class="img-box">
-                          <img src="images/users/<?= $shopReview['UserImage'] ?>">
+                          <img src="../assets/images/users/<?= $shopReview['UserImage'] ?>">
                         </div>
                         <div class="detail-box">
                           <div class="name">
@@ -269,7 +274,7 @@ include "php/functions.php";
                   <div class="col-md-11 col-lg-10 mx-auto">
                     <div class="box">
                       <div class="img-box">
-                        <img src="images/client.jpg" alt="Client Image 2">
+                        <img src="../assets/images/client.jpg" alt="Client Image 2">
                       </div>
                       <div class="detail-box">
                         <div class="name">
@@ -311,7 +316,16 @@ include "php/functions.php";
   <!-- End footer -->
 
   <!-- Get Scripts -->
-  <?php getScripts(); ?>
+  <?php
+  $jsFiles = array(
+    'jquery-3.4.1.min.js',
+    'bootstrap.js',
+    'bootstrap.bundle.js',
+    'custom.js'
+  );
+
+  addJsFiles("../", $jsFiles);
+  ?>
   <!-- End Scripts -->
 </body>
 
