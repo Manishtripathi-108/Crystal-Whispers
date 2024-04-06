@@ -59,7 +59,8 @@ unset($_SESSION["Message"]);
     <main class="login-page-container d-flex align-items-center justify-content-center animate__fadeIn">
         <div id="login-form" class="<?php echo ($Message == "") ? "" : "d-none"; ?>">
             <form action="../process_login.php" method="post">
-                <h3 class="pb-4" style="color:var(--theme-color); font-weight: bold; font-family:  Playfair Display, serif;">
+                <h3 class="pb-4"
+                    style="color:var(--theme-color); font-weight: bold; font-family:  Playfair Display, serif;">
                     Login
                 </h3>
                 <?php
