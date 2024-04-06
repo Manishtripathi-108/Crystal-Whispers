@@ -1,16 +1,16 @@
 <?php
-include "php/functions.php";
+include "../functions.php";
 
 // Redirect to Profile page if user is logged in
 if (checkGetUserLoginStatus()) {
-    header('Location: Profile.php');
+    header('Location: ../../Profile.php');
     exit;
 }
 
-$loginMessage = isset ($_SESSION["loginMessage"]) ? $_SESSION["loginMessage"] : "";
-$Message = isset ($_SESSION["Message"]) ? $_SESSION["Message"] : "";
-$signUpName = isset ($_SESSION["signUpName"]) ? $_SESSION["signUpName"] : "";
-$Email = isset ($_SESSION["Email"]) ? $_SESSION["Email"] : "";
+$loginMessage = isset($_SESSION["loginMessage"]) ? $_SESSION["loginMessage"] : "";
+$Message = isset($_SESSION["Message"]) ? $_SESSION["Message"] : "";
+$signUpName = isset($_SESSION["signUpName"]) ? $_SESSION["signUpName"] : "";
+$Email = isset($_SESSION["Email"]) ? $_SESSION["Email"] : "";
 
 unset($_SESSION["signUpName"]);
 unset($_SESSION["Email"]);
@@ -44,7 +44,7 @@ unset($_SESSION["Message"]);
         'animation.css'
     );
 
-    addCssFiles("../", $cssFiles);
+    addCssFiles("../../", $cssFiles);
     ?>
     <!-- End Styles -->
 
@@ -58,26 +58,23 @@ unset($_SESSION["Message"]);
 
     <main class="login-page-container d-flex align-items-center justify-content-center animate__fadeIn">
         <div id="login-form" class="<?php echo ($Message == "") ? "" : "d-none"; ?>">
-            <form action="php/process_login.php" method="post">
-                <h3 class="pb-4"
-                    style="color:var(--theme-color); font-weight: bold; font-family:  Playfair Display, serif;">
+            <form action="../process_login.php" method="post">
+                <h3 class="pb-4" style="color:var(--theme-color); font-weight: bold; font-family:  Playfair Display, serif;">
                     Login
                 </h3>
                 <?php
                 if ($loginMessage != "") {
-                    echo '<div id="login_alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    echo '<div id="login_alert" class="alert ' . ($loginMessage == "Registration successful, Login to continue" ? "alert-success" : "alert-danger") . ' alert-dismissible fade show" role="alert">
                 ' . $loginMessage . '
                 </div>';
                 }
                 ?>
                 <div class="form-floating mb-3">
-                    <input required name="loginEmail" type="email" class="form-control" id="loginEmail"
-                        value="<?php echo $Email; ?>" placeholder="Email address">
+                    <input required name="loginEmail" type="email" class="form-control" id="loginEmail" value="<?php echo $Email; ?>" placeholder="Email address">
                     <label for="loginEmail">Email address</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input required type="password" class="form-control" name="loginPassword" id="loginPassword"
-                        placeholder="Password">
+                    <input required type="password" class="form-control" name="loginPassword" id="loginPassword" placeholder="Password">
                     <label for="loginPassword">Password</label>
                 </div>
                 <button title="Login" type="submit" class="theme-btn">Login</button>
@@ -89,34 +86,29 @@ unset($_SESSION["Message"]);
         </div>
 
         <div id="signup-form" class="<?php echo ($Message == "") ? "d-none" : ""; ?>">
-            <form action="php/process_login.php" method="post">
-                <h3 class="pb-4"
-                    style="color:var(--theme-color); font-weight: bold; font-family:  Playfair Display, serif;">
+            <form action="../process_login.php" method="post">
+                <h3 class="pb-4" style="color:var(--theme-color); font-weight: bold; font-family:  Playfair Display, serif;">
                     Signup
                 </h3>
 
                 <?php
                 if ($Message != "") {
-                    echo '<div id="signup_alert" class="alert ' . ($Message == "Registration successful, Login to continue" ? "alert-success" : "alert-danger") . ' alert-dismissible fade show" role="alert">
+                    echo '<div id="signup_alert" class="alert alert-danger alert-dismissible fade show" role="alert">
                 ' . $Message . '
                 </div>';
                 }
                 ?>
 
                 <div class="form-floating mb-3">
-                    <input required name="signUpName" type="text" pattern="[a-zA-Z ]+"
-                        title="Only alphabets and spaces are allowed." class="form-control" id="signUpName"
-                        value="<?php echo $signUpName; ?>" placeholder="Full Name">
+                    <input required name="signUpName" type="text" pattern="[a-zA-Z ]+" title="Only alphabets and spaces are allowed." class="form-control" id="signUpName" value="<?php echo $signUpName; ?>" placeholder="Full Name">
                     <label for="signUpName">Full Name</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input required name="signUpEmail" type="email" class="form-control" value="<?php echo $Email; ?>"
-                        id="signUpEmail" placeholder="Email address">
+                    <input required name="signUpEmail" type="email" class="form-control" value="<?php echo $Email; ?>" id="signUpEmail" placeholder="Email address">
                     <label for="signUpEmail">Email address</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input required name="signUpPassword" type="password" class="form-control" id="signUpPassword"
-                        placeholder="Password">
+                    <input required name="signUpPassword" type="password" class="form-control" id="signUpPassword" placeholder="Password">
                     <label for="signUpPassword">Password</label>
                     <small id="passwordHelpBlock" class="form-text text-muted">
                         Your password must be 8-20 characters long, contain letters and numbers, and must not contain
@@ -124,8 +116,7 @@ unset($_SESSION["Message"]);
                     </small>
                 </div>
                 <div class="form-floating mb-3">
-                    <input required name="confirmSignUpPassword" type="password" class="form-control"
-                        id="confirmSignupPassword" placeholder="Confirm Password">
+                    <input required name="confirmSignUpPassword" type="password" class="form-control" id="confirmSignupPassword" placeholder="Confirm Password">
                     <label for="confirmSignupPassword">Confirm Password</label>
                 </div>
                 <button title="Signup" type="submit" class="theme-btn">Signup</button>
@@ -158,7 +149,7 @@ unset($_SESSION["Message"]);
         'custom.js'
     );
 
-    addJsFiles("../", $jsFiles);
+    addJsFiles("../../", $jsFiles);
     ?>
     <!-- End Scripts -->
 </body>

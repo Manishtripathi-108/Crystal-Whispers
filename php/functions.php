@@ -5,7 +5,7 @@ include "connection.php";
 // check user login
 function checkGetUserLoginStatus($returnID = false, $redirect = false)
 {
-    if (isset ($_SESSION['user_id'])) {
+    if (isset($_SESSION['user_id'])) {
         if ($returnID) {
             return $_SESSION['user_id'];
         } else {
@@ -23,7 +23,7 @@ function checkGetUserLoginStatus($returnID = false, $redirect = false)
 //header
 function getHeader($title = null, $notGetLogin = null)
 {
-    if (isset ($_SESSION['user_id']) && is_null($notGetLogin)) {
+    if (isset($_SESSION['user_id']) && is_null($notGetLogin)) {
         $cartQuantity = getCartQuantity();
 
         echo '
@@ -110,7 +110,7 @@ function getHeader($title = null, $notGetLogin = null)
                                 <a class="nav-link" href="jewellery.php">Jewellery</a>
                             </li>
                             ' . (is_null($notGetLogin) ? '<li class="nav-item">
-                                    <a class="nav-link simple-btn" id="login-button" href="login.php">Login</a>
+                                    <a class="nav-link simple-btn" id="login-button" href="../php/auth/login.php">Login</a>
                                 </li>' : '') . '
                             </ul>
                         </div>
@@ -141,7 +141,7 @@ function getCartQuantity()
 //footer
 function getFooter()
 {
-    if (isset ($_SESSION['sbsAlert'])) {
+    if (isset($_SESSION['sbsAlert'])) {
         echo '<div id="signup_alert" class="alert' . ($_SESSION['sbsAlert'] == "Error! Please try again" ? " alert-danger" : " alert-success") . '
         alert-dismissible fade show" role="alert">
                 ' . $_SESSION['sbsAlert'] . '
@@ -182,7 +182,7 @@ function getFooter()
                     var scrollPosition = window.scrollY;
                     document.getElementById("scrollPoint").value = scrollPosition;
                 }
-                var scrollPosition = ' . (isset ($_SESSION['scrollPoint']) ? $_SESSION['scrollPoint'] : 0) . ';
+                var scrollPosition = ' . (isset($_SESSION['scrollPoint']) ? $_SESSION['scrollPoint'] : 0) . ';
                 window.scrollTo(0, scrollPosition);
             </script>
         </section>
@@ -294,7 +294,7 @@ function getFooter()
     </footer>
     ';
 
-    if (isset ($_SESSION['scrollPoint'])) {
+    if (isset($_SESSION['scrollPoint'])) {
         unset($_SESSION['scrollPoint']);
     }
 }
@@ -514,5 +514,3 @@ function addJsFiles($toDir, $jsFiles)
         echo '<script src="' . $toDir . 'assets/js/' . $jsFile . '"></script>' . PHP_EOL;
     }
 }
-
-?>
