@@ -1,5 +1,5 @@
 <?php
-include "php/functions.php";
+include "../php/functions.php";
 $userIDD = checkGetUserLoginStatus(true);
 
 function fetchProductDetails($productID)

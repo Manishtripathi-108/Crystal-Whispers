@@ -1,5 +1,5 @@
 <?php
-include "php/functions.php";
+include "../php/functions.php";
 $userID = checkGetUserLoginStatus(true, true);
 
 $summary_arr = array();

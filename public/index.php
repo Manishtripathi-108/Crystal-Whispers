@@ -84,15 +84,15 @@ include "../php/functions.php";
 
           <?php
           $productData = fetchProducts();
-          if ($productData):
-            foreach ($productData as $product):
-              ?>
-          <div class="col-sm-6 col-md-4 col-lg-3 p-3">
-            <a class="text-reset" href="Product-details.php?pro=<?= $product['id'] ?>">
-              <div class="product-card">
-                <div class="p-badge">
+          if ($productData) :
+            foreach ($productData as $product) :
+          ?>
+              <div class="col-sm-6 col-md-4 col-lg-3 p-3">
+                <a class="text-reset" href="Product-details.php?pro=<?= $product['id'] ?>">
+                  <div class="product-card">
+                    <div class="p-badge">
 
-                  <?php
+                      <?php
                       $rating = $product['rating'];
                       if ($rating > 0) {
                         for ($i = 1; $i <= $rating; $i++) {
@@ -103,39 +103,39 @@ include "../php/functions.php";
                       }
                       ?>
 
-                </div>
-                <div class="product-tumb d-flex justify-content-center align-items-center">
-                  <img src="../assets/images/products/<?= $product['image'] ?>" alt="Product Image">
-                </div>
-                <div class="product-details">
-                  <span class="product-category">
-                    <?= $product['Gender'] . ', ' . $product['category'] ?>
-                  </span>
-                  <h5><a href="Product-details.php?pro=<?= $product['id'] ?>">
-                      <?= $product['name'] ?>
-                    </a></h5>
-                  <div class="product-bottom-details d-flex justify-content-between align-items-center">
-                    <div class="product-price">
-                      <small>₹
-                        <?= number_format($product['price'], 2) ?>
-                      </small>
-                      ₹
-                      <?= number_format(($product['price'] * ((100 - $product['discount']) / 100)), 2) ?>
                     </div>
-                    <div class="product-links">
-                      <form method="post" action="php/add_to_cart.php">
-                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                        <button type="submit"><i class="fa fa-shopping-cart"></i></button>
-                      </form>
+                    <div class="product-tumb d-flex justify-content-center align-items-center">
+                      <img src="../assets/images/products/<?= $product['image'] ?>" alt="Product Image">
+                    </div>
+                    <div class="product-details">
+                      <span class="product-category">
+                        <?= $product['Gender'] . ', ' . $product['category'] ?>
+                      </span>
+                      <h5><a href="Product-details.php?pro=<?= $product['id'] ?>">
+                          <?= $product['name'] ?>
+                        </a></h5>
+                      <div class="product-bottom-details d-flex justify-content-between align-items-center">
+                        <div class="product-price">
+                          <small>₹
+                            <?= number_format($product['price'], 2) ?>
+                          </small>
+                          ₹
+                          <?= number_format(($product['price'] * ((100 - $product['discount']) / 100)), 2) ?>
+                        </div>
+                        <div class="product-links">
+                          <form method="post" action="php/add_to_cart.php">
+                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                            <button type="submit"><i class="fa fa-shopping-cart"></i></button>
+                          </form>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
-            </a>
-          </div>
           <?php
             endforeach;
-          else:
+          else :
             echo '
             <div class="text-center p-3">
               We apologize, but there are no products available at the moment. Please check back later or contact our support team for assistance.
@@ -198,8 +198,7 @@ include "../php/functions.php";
                 <h2>
                   Upto 15% Off
                 </h2>
-                <a
-                  href="jewellery.php?category=1&gender=All&material=All&occasion=All&show=All+Products&display-filter=yes">
+                <a href="jewellery.php?category=1&gender=All&material=All&occasion=All&show=All+Products&display-filter=yes">
                   Shop Now
                 </a>
               </div>
@@ -212,8 +211,7 @@ include "../php/functions.php";
                 <h2>
                   Upto 10% Off
                 </h2>
-                <a
-                  href="jewellery.php?category=3&gender=All&material=All&occasion=All&show=All+Products&display-filter=yes">
+                <a href="jewellery.php?category=3&gender=All&material=All&occasion=All&show=All+Products&display-filter=yes">
                   Shop Now
                 </a>
               </div>
@@ -224,8 +222,7 @@ include "../php/functions.php";
                 <h2>
                   Upto 20% Off
                 </h2>
-                <a
-                  href="jewellery.php?category=6&gender=All&material=All&occasion=All&show=All+Products&display-filter=yes">
+                <a href="jewellery.php?category=6&gender=All&material=All&occasion=All&show=All+Products&display-filter=yes">
                   Shop Now
                 </a>
               </div>
@@ -249,60 +246,60 @@ include "../php/functions.php";
             <?php
             $shopReviewData = fetchShopReviews();
             $i = 0;
-            if (!empty ($shopReviewData)):
-              foreach ($shopReviewData as $shopReview):
-                ?>
-            <div class="carousel-item <?= ($i == 0 ? 'active' : '') ?> ">
-              <div class="row">
-                <div class="col-md-11 col-lg-10 mx-auto">
-                  <div class="box">
-                    <div class="img-box">
-                      <img src="../assets/images/users/<?= $shopReview['UserImage'] ?>">
-                    </div>
-                    <div class="detail-box">
-                      <div class="name">
-                        <h6>
-                          <?= $shopReview['UserName'] ?>
-                        </h6>
+            if (!empty($shopReviewData)) :
+              foreach ($shopReviewData as $shopReview) :
+            ?>
+                <div class="carousel-item <?= ($i == 0 ? 'active' : '') ?> ">
+                  <div class="row">
+                    <div class="col-md-11 col-lg-10 mx-auto">
+                      <div class="box">
+                        <div class="img-box">
+                          <img src="../assets/images/users/<?= $shopReview['UserImage'] ?>">
+                        </div>
+                        <div class="detail-box">
+                          <div class="name">
+                            <h6>
+                              <?= $shopReview['UserName'] ?>
+                            </h6>
+                          </div>
+                          <p>
+                            "
+                            <?= $shopReview['review'] ?>"
+                          </p>
+                          <i class="fa fa-quote-left" aria-hidden="true"></i>
+                        </div>
                       </div>
-                      <p>
-                        "
-                        <?= $shopReview['review'] ?>"
-                      </p>
-                      <i class="fa fa-quote-left" aria-hidden="true"></i>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <?php $i++;
+              <?php $i++;
               endforeach;
 
-            else:
+            else :
               ?>
-            <div class="carousel-item active">
-              <div class="row">
-                <div class="col-md-11 col-lg-10 mx-auto">
-                  <div class="box">
-                    <div class="img-box">
-                      <img src="../assets/images/client.jpg" alt="Client Image 2">
-                    </div>
-                    <div class="detail-box">
-                      <div class="name">
-                        <h6>
-                          Alex Turner
-                        </h6>
+              <div class="carousel-item active">
+                <div class="row">
+                  <div class="col-md-11 col-lg-10 mx-auto">
+                    <div class="box">
+                      <div class="img-box">
+                        <img src="../assets/images/client.jpg" alt="Client Image 2">
                       </div>
-                      <p>
-                        "The quality of the jewelry at Crystal Whispers is unparalleled. Each piece tells a unique
-                        story, and I appreciate the artistry that goes into every creation."
-                      </p>
-                      <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      <div class="detail-box">
+                        <div class="name">
+                          <h6>
+                            Alex Turner
+                          </h6>
+                        </div>
+                        <p>
+                          "The quality of the jewelry at Crystal Whispers is unparalleled. Each piece tells a unique
+                          story, and I appreciate the artistry that goes into every creation."
+                        </p>
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             <?php endif; ?>
 
           </div>
