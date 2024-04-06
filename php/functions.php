@@ -364,7 +364,7 @@ function insertOrderDetails($conn, $userID, $name, $email, $phone, $payMethod, $
 }
 
 // fetch products
-function fetchProducts($category = "All", $gender = "All", $material = "All", $occasion = "All", $OrderBy = 0, $limit = 12)
+function fetchProducts($category = "All", $gender = "All", $material = "All", $occasion = "All", $orderBy = 0, $limit = 12)
 {
     global $conn;
 
@@ -404,7 +404,7 @@ function fetchProducts($category = "All", $gender = "All", $material = "All", $o
 
     $sql .= " ORDER BY ";
 
-    switch ($OrderBy) {
+    switch ($orderBy) {
         case '1':
             $sql .= "p.ProductCreatedAt DESC";
             break;
