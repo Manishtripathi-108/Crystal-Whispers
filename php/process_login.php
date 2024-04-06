@@ -14,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUpName'], $_POST[
     $signUpEmail = strtolower($_POST['signUpEmail']);
     $signUpPassword = $_POST['signUpPassword'];
     $confirmSignUpPassword = $_POST['confirmSignUpPassword'];
+    $_SESSION["signUpName"] = $signUpName;
+    $_SESSION["Email"] = $signUpEmail;
+
 
     // Validate passwords
     if ($signUpPassword != $confirmSignUpPassword) {
@@ -27,15 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUpName'], $_POST[
     } else {
         //register the user
         if (handleUserRegistration($signUpName, $signUpEmail, $signUpPassword)) {
-            $_SESSION["Message"] = "Registration successful, Login to continue";
-            header('Location: ../Profile.php');
-            exit;
+            $_SESSION["loginMessage"] = "Registration successful, Login to continue";
         } else {
             $_SESSION["Message"] = "Something went wrong, Try again";
         }
     }
 
-    header('Location:../login.php');
+    header('Location:auth/login.php');
     exit;
 }
 
@@ -54,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['loginEmail'], $_POST[
         exit;
     } else {
         $_SESSION["loginMessage"] = "Incorrect email or password. Please try again.";
-        header('Location:../login.php');
+        header('Location:auth/login.php');
         exit;
     }
 }
@@ -94,7 +95,7 @@ function userExists($email)
     global $conn;
 
     $hashedEmail = hash('sha256', $email);
-    $sql = "SELECT user_id, user_password FROM users WHERE user_email = ?";
+    $sql = "SELECT UserID, UserPassword FROM users WHERE UserEmail = ?";
 
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $hashedEmail);
@@ -114,7 +115,7 @@ function handleUserRegistration($name, $email, $password)
     $hashedEmail = hash('sha256', $email);
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (name, user_email, user_password) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO users (UserName, UserEmail, UserPassword) VALUES (?, ?, ?)";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "sss", $name, $hashedEmail, $hashedPassword);
 
@@ -133,7 +134,7 @@ function handleUserLogin($email, $password)
     global $conn;
 
     $hashedEmail = hash('sha256', $email);
-    $sql = "SELECT user_id, user_password FROM users WHERE user_email = ?";
+    $sql = "SELECT UserID, UserPassword FROM users WHERE UserEmail = ?";
 
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $hashedEmail);
@@ -143,14 +144,13 @@ function handleUserLogin($email, $password)
 
     if ($result) {
         if ($row = mysqli_fetch_assoc($result)) {
-            $storedPassword = $row['user_password'];
+            $storedPassword = $row['UserPassword'];
 
             if (password_verify($password, $storedPassword)) {
-                return $row['user_id'];
+                return $row['UserID'];
             }
         }
     }
-
     return false;
 }
 ?>

@@ -110,7 +110,7 @@ function getHeader($title = null, $notGetLogin = null)
                                 <a class="nav-link" href="jewellery.php">Jewellery</a>
                             </li>
                             ' . (is_null($notGetLogin) ? '<li class="nav-item">
-                                    <a class="nav-link simple-btn" id="login-button" href="login.php">Login</a>
+                                    <a class="nav-link simple-btn" id="login-button" href="../php/auth/login.php">Login</a>
                                 </li>' : '') . '
                             </ul>
                         </div>

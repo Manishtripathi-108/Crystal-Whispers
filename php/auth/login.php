@@ -1,5 +1,5 @@
 <?php
-include "php/functions.php";
+include "../functions.php";
 
 // Redirect to Profile page if user is logged in
 if (checkGetUserLoginStatus()) {
@@ -44,7 +44,7 @@ unset($_SESSION["Message"]);
         'animation.css'
     );
 
-    addCssFiles("../", $cssFiles);
+    addCssFiles("../../", $cssFiles);
     ?>
     <!-- End Styles -->
 
@@ -58,14 +58,14 @@ unset($_SESSION["Message"]);
 
     <main class="login-page-container d-flex align-items-center justify-content-center animate__fadeIn">
         <div id="login-form" class="<?php echo ($Message == "") ? "" : "d-none"; ?>">
-            <form action="php/process_login.php" method="post">
+            <form action="../process_login.php" method="post">
                 <h3 class="pb-4"
                     style="color:var(--theme-color); font-weight: bold; font-family:  Playfair Display, serif;">
                     Login
                 </h3>
                 <?php
                 if ($loginMessage != "") {
-                    echo '<div id="login_alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    echo '<div id="login_alert" class="alert ' . ($loginMessage == "Registration successful, Login to continue" ? "alert-success" : "alert-danger") . ' alert-dismissible fade show" role="alert">
                 ' . $loginMessage . '
                 </div>';
                 }
@@ -89,7 +89,7 @@ unset($_SESSION["Message"]);
         </div>
 
         <div id="signup-form" class="<?php echo ($Message == "") ? "d-none" : ""; ?>">
-            <form action="php/process_login.php" method="post">
+            <form action="../process_login.php" method="post">
                 <h3 class="pb-4"
                     style="color:var(--theme-color); font-weight: bold; font-family:  Playfair Display, serif;">
                     Signup
@@ -97,7 +97,7 @@ unset($_SESSION["Message"]);
 
                 <?php
                 if ($Message != "") {
-                    echo '<div id="signup_alert" class="alert ' . ($Message == "Registration successful, Login to continue" ? "alert-success" : "alert-danger") . ' alert-dismissible fade show" role="alert">
+                    echo '<div id="signup_alert" class="alert alert-danger alert-dismissible fade show" role="alert">
                 ' . $Message . '
                 </div>';
                 }
@@ -158,7 +158,7 @@ unset($_SESSION["Message"]);
         'custom.js'
     );
 
-    addJsFiles("../", $jsFiles);
+    addJsFiles("../../", $jsFiles);
     ?>
     <!-- End Scripts -->
 </body>
