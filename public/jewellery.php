@@ -36,7 +36,7 @@ include "../php/functions.php";
 <body>
 
   <!-- header section starts -->
-  <?php getHeader("Jewellery") ?>
+  <?php getHeader("../", "", "Jewellery") ?>
   <!-- end header section -->
 
   <main id="jewellery-page" class="animate__fadeIn">

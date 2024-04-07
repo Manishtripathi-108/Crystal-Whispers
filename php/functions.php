@@ -21,7 +21,7 @@ function checkGetUserLoginStatus($returnID = false, $redirect = false)
 }
 
 //header
-function getHeader($title = null, $notGetLogin = null)
+function getHeader($dir = null, $fileDir = null, $title = null, $notGetLogin = null)
 {
     if (isset($_SESSION['user_id']) && is_null($notGetLogin)) {
         $cartQuantity = getCartQuantity();
@@ -35,46 +35,45 @@ function getHeader($title = null, $notGetLogin = null)
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <a class="navbar-brand" href="index.php">
-                        <img src="../assets/icon/favicon.png" alt="Crystal Whispers">
+                    <a class="navbar-brand" href="/index.php">
+                        <img src="' . $dir . 'assets/icon/favicon.png" alt="Crystal Whispers">
                         <span>Crystal Whispers</span>
                     </a>
                     
                     <div class="quote_btn-container navbar-toggler">
-                        <a href="cart.php" class="position-relative">
-                            <span style="left: 90%;"
-                            class="position-absolute top-0 translate-middle badge border border-light rounded-circle theme-bg-color">
+                        <a href="' . $fileDir . 'cart.php" class="position-relative">
+                            <span style="left: 90%;" class="position-absolute top-0 translate-middle badge border border-light rounded-circle theme-bg-color">
                             ' . $cartQuantity . '
                             </span>
-                            <img src="../assets/icon/shopping-cart.svg" alt="Cart">
+                            <img src="' . $dir . 'assets/icon/shopping-cart.svg" alt="Cart">
                         </a>
                     </div>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <div class="d-flex ms-auto flex-column flex-lg-row align-items-center">
                             <ul class="navbar-nav">
                                 <li class="nav-item ' . ($title == 'Home' ? 'active' : '') . '">
-                                <a class="nav-link" href="index.php">Home</a>
+                                <a class="nav-link" href="/index.php">Home</a>
                                 </li>
                                 <li class="nav-item ' . ($title == 'About' ? 'active' : '') . '">
-                                    <a class="nav-link" href="about.php">About</a>
+                                    <a class="nav-link" href="' . $fileDir . 'about.php">About</a>
                                 </li>
                                 <li class="nav-item ' . ($title == 'Jewellery' ? 'active' : '') . '">
-                                    <a class="nav-link" href="jewellery.php">Jewellery</a>
+                                    <a class="nav-link" href="' . $fileDir . 'jewellery.php">Jewellery</a>
                                 </li>
                                 <li class="nav-item ' . ($title == 'Profile' ? 'active' : '') . '">
-                                    <a class="nav-link op-btn" id="profile-button" href="Profile.php">
-                                    <img src="../assets/icon/Profile.svg" alt="Profile">
+                                    <a class="nav-link op-btn" id="profile-button" href="' . $fileDir . 'Profile.php">
+                                    <img src="' . $dir . 'assets/icon/Profile.svg" alt="Profile">
                                     </a>
                                 </li>
                             </ul>
                         </div>
                         <div class="quote_btn-container web-cart">
-                            <a href="cart.php" class="position-relative">
+                            <a href="' . $fileDir . 'cart.php" class="position-relative">
                                 <span style="left: 70%;"
                                     class="position-absolute top-0 translate-middle badge border border-light rounded-circle theme-bg-color">
                                     ' . $cartQuantity . '
                                     </span>
-                                <img src="../assets/icon/shopping-cart.svg" alt="Cart">
+                                <img src="' . $dir . 'assets/icon/shopping-cart.svg" alt="Cart">
                             </a>
                     </div>
                     </div>
@@ -92,8 +91,8 @@ function getHeader($title = null, $notGetLogin = null)
                     <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <a class="navbar-brand" href="index.php">
-                    <img src="../assets/icon/favicon.png" alt="Crystal Whispers">
+                    <a class="navbar-brand" href="/index.php">
+                    <img src="' . $dir . 'assets/icon/favicon.png" alt="Crystal Whispers">
                     <span>Crystal Whispers</span>
                     </a>
 
@@ -101,13 +100,13 @@ function getHeader($title = null, $notGetLogin = null)
                         <div class="d-flex ms-auto flex-column flex-lg-row align-items-center">
                             <ul class="navbar-nav">
                             <li class="nav-item ' . ($title == 'Home' ? 'active' : '') . '">
-                                <a class="nav-link" href="index.php">Home</a>
+                                <a class="nav-link" href="/index.php">Home</a>
                             </li>
                             <li class="nav-item ' . ($title == 'About' ? 'active' : '') . '">
-                                <a class="nav-link" href="about.php">About</a>
+                                <a class="nav-link" href="' . $fileDir . 'about.php">About</a>
                             </li>
                             <li class="nav-item ' . ($title == 'Jewellery' ? 'active' : '') . '">
-                                <a class="nav-link" href="jewellery.php">Jewellery</a>
+                                <a class="nav-link" href="' . $fileDir . 'jewellery.php">Jewellery</a>
                             </li>
                             ' . (is_null($notGetLogin) ? '<li class="nav-item">
                                     <a class="nav-link simple-btn" id="login-button" href="../php/auth/login.php">Login</a>
@@ -139,7 +138,7 @@ function getCartQuantity()
 }
 
 //footer
-function getFooter()
+function getFooter($dir = "../")
 {
     if (isset($_SESSION['sbsAlert'])) {
         echo '<div id="signup_alert" class="alert' . ($_SESSION['sbsAlert'] == "Error! Please try again" ? " alert-danger" : " alert-success") . '
@@ -194,16 +193,16 @@ function getFooter()
             </div>
             <div class="d-flex justify-content-around align-items-center gap-4">
                 <a href="" class="mr-4 text-reset">
-                <img src="../assets/icon/facebook.svg" alt="Facebook">
+                <img src="' . $dir . 'assets/icon/facebook.svg" alt="Facebook">
                 </a>
                 <a href="" class="mr-4 text-reset">
-                <img src="../assets/icon/twitter.svg" alt="Twitter">
+                <img src="' . $dir . 'assets/icon/twitter.svg" alt="Twitter">
                 </a>
                 <a href="" class="mr-4 text-reset">
-                <img src="../assets/icon/instagram.svg" alt="Instagram">
+                <img src="' . $dir . 'assets/icon/instagram.svg" alt="Instagram">
                 </a>
                 <a href="https://wa.me/916280600090" class="mr-4 text-reset">
-                <img src="../assets/icon/whatsapp.svg" alt="whatsapp">
+                <img src="' . $dir . 'assets/icon/whatsapp.svg" alt="whatsapp">
                 </a>
             </div>
         </section>
@@ -214,7 +213,7 @@ function getFooter()
                 <div class="row mt-3 justify-content-around">
                     <div class="col-md-3 text-center col-lg-3 mb-4">
                         <h6 class="text-uppercase fw-bold mb-4">
-                            <img width="50" src="../assets/icon/favicon.png" alt="Icon">
+                            <img width="50" src="' . $dir . 'assets/icon/favicon.png" alt="Icon">
                             <span class="shop-name">Crystal Whispers</span>
                         </h6>
                         <p>
@@ -259,24 +258,24 @@ function getFooter()
                     <div class="col-12 col-sm-5 mb-md-0 mb-4 row">
                         <h6 class="col-12 text-center text-sm-start col fw-bold mb-4 theme-color">Contact</h6>
                         <p class="col-sm-12 d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
-                            <img src="../assets/icon/address.png" alt="address"> <span>Sadar Bazar, Barnala, <br>
+                            <img src="' . $dir . 'assets/icon/address.png" alt="address"> <span>Sadar Bazar, Barnala, <br>
                                 Punjab-148101.</span>
                         </p>
                         <p class="col-sm-12 d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
                             <a href="mailto:crystalwhisper@gmail.com">
-                                <img src="../assets/icon/email.png" alt="email">
+                                <img src="' . $dir . 'assets/icon/email.png" alt="email">
                                 <span>crystals@gmail.com</span>
                             </a>
                         </p>
                         <p class="col-sm-12 d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
                             <a href="tel:+916280600090">
-                                <img src="../assets/icon/phone.png" alt="phone">
+                                <img src="' . $dir . 'assets/icon/phone.png" alt="phone">
                                 <span>+91 62806-00090</span>
                             </a>
                         </p>
                         <p class="col-sm-12 d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
                             <a href="https://wa.me/916280600090" target="_blank">
-                                <img src="../assets/icon/whatsapp.png" alt="whatsapp">
+                                <img src="' . $dir . 'assets/icon/whatsapp.png" alt="whatsapp">
                                 <span>+91 62806-00090</span>
                             </a>
                         </p>
@@ -475,11 +474,12 @@ function fetchShopReviews()
     global $conn;
 
     $sql = "SELECT 
-                UserName,
+                firstName,
+                LastName,
                 ShopReview,
                 UserImage
             FROM Users
-            WHERE ShopReview IS NOT NULL
+            WHERE ShopReview IS NOT NULL AND ShopReview != ''
             LIMIT 6";
     $Test_Result = $conn->query($sql);
 
@@ -487,7 +487,7 @@ function fetchShopReviews()
 
         while ($row = $Test_Result->fetch_assoc()) {
             $shopReview = array(
-                'UserName' => $row['UserName'],
+                'UserName' => $row['firstName'] . ' ' . $row['LastName'],
                 'review' => $row['ShopReview'],
                 'UserImage' => $row['UserImage']
             );
@@ -498,6 +498,61 @@ function fetchShopReviews()
     }
 }
 
+//fetch order details for user
+function fetchOrderDetails()
+{
+    global $conn;
+
+    $sql = "SELECT o.*, 
+                    oi.ProductID, 
+                    oi.Quantity, 
+                    oi.UnitPrice, 
+                    oi.TotalPrice,
+                    p.ProductName, 
+                    p.ProductTargetGender, 
+                    c.CategoryName, 
+                    p.ProImg1 
+            FROM orders o 
+            JOIN orderItems oi ON o.OrderID = oi.OrderID 
+            JOIN Products p ON oi.ProductID = p.ProductID 
+            JOIN Categories c ON p.CategoryID = c.CategoryID 
+            WHERE o.UserID = ? 
+            ORDER BY o.OrderCreatedAt DESC";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $orderData = array();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $orderDetails = array(
+                'orderID' => $row['OrderID'],
+                'RCVName' => $row['RCVName'],
+                'RCVEmail' => $row['RCVEmail'],
+                'RCVPhone' => $row['RCVPhone'],
+                'PayMethod' => $row['PayMethod'],
+                'ShipAddress' => $row['ShipAddress'],
+                'MsgSeller' => $row['MsgSeller'],
+                'TotalPrice' => $row['TotalPrice'],
+                'OrderStatus' => $row['OrderStatus'],
+                'OrderCreatedAt' => $row['OrderCreatedAt'],
+                'ProductID' => $row['ProductID'],
+                'Quantity' => $row['Quantity'],
+                'ProductName' => $row['ProductName'],
+                'ProductTargetGender' => $row['ProductTargetGender'],
+                'CategoryName' => $row['CategoryName'],
+                'UnitPrice' => $row['UnitPrice'],
+                'ProductImage' => $row['ProImg1']
+            );
+            $orderData[] = $orderDetails;
+        }
+    }
+
+    return $orderData;
+}
 
 // add css files
 function addCssFiles($toDir, $cssFiles)

@@ -91,7 +91,7 @@ function isActive($page, $activePage)
 <body>
 
     <!-- header section starts -->
-    <?php getHeader("Profile") ?>
+    <?php getHeader("../", "", "Profile") ?>
     <!-- end header section -->
 
     <!-- user-profile -->
@@ -244,56 +244,50 @@ function isActive($page, $activePage)
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT o.*,
-                                        p.product_name, p.gender, p.price AS product_price, p.discount,  p.occasion,
-                                        oi.quantity,
-                                        c.category_name,
-                                        pi.img_1
-                                    FROM orders o
-                                    JOIN order_items oi ON o.order_id = oi.orderID
-                                    JOIN products p ON oi.productID = p.product_id
-                                    JOIN categories c ON p.category = c.ID
-                                    JOIN product_img pi ON p.product_id = pi.img_to_pro
-                                    WHERE o.user_id = $user
-                                    ORDER BY o.order_id desc;";
-
-                            $result = $conn->query($sql);
-
-                            if ($result->num_rows > 0) {
+                            $orderDetails = fetchOrderDetails();
+                            if ($orderDetails) :
                                 $sNo = 0;
-                                while ($row = $result->fetch_assoc()) {
+                                foreach ($orderDetails as $order) :
                                     $sNo++;
-                                    $priceAfterDiscount = number_format($row['product_price'] * ((100 - $row['discount']) / 100), 2);
-                                    $finalPrice = number_format($row['quantity'] * ($row['product_price'] * ((100 - $row['discount']) / 100)), 2);
-
-                                    echo '<tr>
-                                            <td cell-name="Order ID">
-                                                ' . $sNo . '
-                                            </td>
-                                            <td cell-name="Product">
-                                                <div class="product-img" style="background-image: url(images/products/' . $row['img_1'] . ');"></div>
-                                            </td>
-                                            <td cell-name="Product Name">
-                                                <div class="product-name">
-                                                    <span>' . $row['product_name'] . '</span>
-                                                    <span>' . $row['category_name'] . ', ' . $row['gender'] . '</span>
-                                                </div>
-                                            </td>
-                                            <td cell-name="Price">₹' . $priceAfterDiscount . '</td>
-                                            <td cell-name="Quantity">' . $row['quantity'] . '</td>
-                                            <td cell-name="Total">₹' . $finalPrice . '</td>
-                                            <td cell-name="Status" class="order-status">
-                                                <img src="icon/' . $row['status'] . '.svg" alt="' . $row['status'] . '">
-                                                <div class="status-tooltip">' . $row['status'] . '</div>
-                                            </td>
-                                        </tr>';
-                                }
-                            } else {
-                                echo '<p>No orders found</p>';
-                            }
-
-                            $conn->close();
                             ?>
+                                    <tr>
+                                        <td cell-name="Order ID">
+                                            <?= $sNo ?>
+                                        </td>
+                                        <td cell-name="Product">
+                                            <div class="product-img" style="background-image: url(../assets/images/products/<?= $order['productImage'] ?>);"></div>
+                                        </td>
+                                        <td cell-name="Product Name">
+                                            <div class="product-name">
+                                                <span>
+                                                    <?= $order['productName'] ?>
+                                                </span>
+                                                <span>
+                                                    <?= $order['categoryName'] . ', ' . $order['productTargetGender'] ?>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td cell-name="Price">₹<?= $order['productPrice'] ?>
+                                        </td>
+                                        <td cell-name="Quantity">
+                                            <?= $order['quantity'] ?>
+                                        </td>
+                                        <td cell-name="Total">₹<?= $order['TotalAmount'] ?>
+                                        </td>
+                                        <td cell-name="Status" class="order-status">
+                                            <img src="icon/<?= $order['OrderStatus'] ?>.svg" alt="<?= $order['OrderStatus'] ?>">
+                                            <div class="status-tooltip">
+                                                <?= $order['OrderStatus'] ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            <?php
+                                endforeach;
+                            else :
+                                echo '<tr><td colspan="7" class="text-center">No Orders Found</td></tr>';
+                            endif;
+                            ?>
+
                         </tbody>
                     </table>
                 </div>
@@ -316,7 +310,7 @@ function isActive($page, $activePage)
                                                     Feel Free to contact us any time. We will get back to you as soon as
                                                     we can!
                                                 </p>
-                                                <form action="php/contactUS_action.php" method="post">
+                                                <form action="../php/contactUS_action.php" method="post">
                                                     <input type="hidden" name="user_id" value="<?= $user ?>">
                                                     <input name="name" type="text" class="form-control mb-3 form-group" placeholder="Name" required />
                                                     <input name="email" type="text" class="form-control mb-3 form-group" placeholder="Email" required />
@@ -330,15 +324,15 @@ function isActive($page, $activePage)
                                 <div class="contact_info_sec">
                                     <h4>Contact Info</h4>
                                     <div class="d-flex info_single align-items-center">
-                                        <img src="icon/phone.png">
+                                        <img src="../assets/icon/phone.png">
                                         <span style="margin-left: 5px;">+91 62806-00090</span>
                                     </div>
                                     <div class="d-flex info_single align-items-center">
-                                        <img src="icon/email.png">
+                                        <img src="../assets/icon/email.png">
                                         <span style="margin-left: 5px;">crystals@gmail.com</span>
                                     </div>
                                     <div class="d-flex info_single align-items-center">
-                                        <img src="icon/address.png">
+                                        <img src="../assets/icon/address.png">
                                         <span style="margin-left: 5px;">Sadar Bazar, Barnala, <br>
                                             Punjab-148101.
                                         </span>
@@ -387,7 +381,7 @@ function isActive($page, $activePage)
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <form action="php/logout.php" method="post">
+                    <form action="../php/auth/logout.php" method="post">
                         <input type="hidden" name="logout" value="user_logOut">
                         <button class="btn btn-danger">Logout</button>
                     </form>

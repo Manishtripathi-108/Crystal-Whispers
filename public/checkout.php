@@ -49,7 +49,7 @@ $_SESSION["confirm_order"] = True;
 <body>
 
     <!-- header section -->
-    <?php getHeader() ?>
+    <?php getHeader("../", "") ?>
     <!-- end header section -->
 
     <main class="animate__fadeIn">

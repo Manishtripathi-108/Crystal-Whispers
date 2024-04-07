@@ -38,7 +38,7 @@ include "../php/functions.php";
 <body>
 
   <!-- header section starts -->
-  <?php getHeader("About") ?>
+  <?php getHeader("../", "", "About") ?>
   <!-- end header section -->
 
   <main id="about-page" class="animate__fadeIn">
@@ -184,13 +184,12 @@ include "../php/functions.php";
           <div class="team-members team-carousel">
             <?php
             $workersData = fetchWorkerDetails();
-            if (!empty ($workersData)):
-              foreach ($workersData as $worker): ?>
+            if (!empty($workersData)) :
+              foreach ($workersData as $worker) : ?>
                 <div class="team-member">
                   <div class="img-container">
                     <div class="img-inner">
-                      <div class="inner-skew"
-                        style="background-repeat: no-repeat;background-size: cover;object-fit: contain;background-image: url(../assets/images/workers/<?= $worker['image'] ?>);">
+                      <div class="inner-skew" style="background-repeat: no-repeat;background-size: cover;object-fit: contain;background-image: url(../assets/images/workers/<?= $worker['image'] ?>);">
                         <span data-position="<?= htmlspecialchars($worker['position']) ?>"></span>
                         <!-- <img src=""> -->
                       </div>
@@ -206,7 +205,7 @@ include "../php/functions.php";
                   </div>
                 </div>
               <?php endforeach;
-            else: ?>
+            else : ?>
               <p>No workers data available.</p>
             <?php endif; ?>
           </div>
@@ -238,9 +237,9 @@ include "../php/functions.php";
             <?php
             $shopReviewData = fetchShopReviews();
             $i = 0;
-            if (!empty ($shopReviewData)):
-              foreach ($shopReviewData as $shopReview):
-                ?>
+            if (!empty($shopReviewData)) :
+              foreach ($shopReviewData as $shopReview) :
+            ?>
                 <div class="carousel-item <?= ($i == 0 ? 'active' : '') ?> ">
                   <div class="row">
                     <div class="col-md-11 col-lg-10 mx-auto">
@@ -264,10 +263,10 @@ include "../php/functions.php";
                     </div>
                   </div>
                 </div>
-                <?php $i++;
+              <?php $i++;
               endforeach;
 
-            else:
+            else :
               ?>
               <div class="carousel-item active">
                 <div class="row">

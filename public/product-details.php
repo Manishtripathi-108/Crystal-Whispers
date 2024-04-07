@@ -127,19 +127,19 @@ function getReview($productID)
 <body>
 
     <!-- header section starts -->
-    <?php getHeader() ?>
+    <?php getHeader("../", "") ?>
     <!-- end header section -->
 
     <?php
-    if (isset ($_SESSION['reviewSuccessMessage']) || isset ($_SESSION['reviewErrorMessage'])) {
-        echo '<div id="signup_alert" class="alert' . (isset ($_SESSION['reviewErrorMessage']) ? " alert-danger" : " alert-success") . '  alert-dismissible fade show" role="alert">
-            ' . (isset ($_SESSION['reviewErrorMessage']) ? $_SESSION['reviewErrorMessage'] : $_SESSION['reviewSuccessMessage']) . '
+    if (isset($_SESSION['reviewSuccessMessage']) || isset($_SESSION['reviewErrorMessage'])) {
+        echo '<div id="signup_alert" class="alert' . (isset($_SESSION['reviewErrorMessage']) ? " alert-danger" : " alert-success") . '  alert-dismissible fade show" role="alert">
+            ' . (isset($_SESSION['reviewErrorMessage']) ? $_SESSION['reviewErrorMessage'] : $_SESSION['reviewSuccessMessage']) . '
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>';
 
-        if (isset ($_SESSION['reviewErrorMessage'])) {
+        if (isset($_SESSION['reviewErrorMessage'])) {
             unset($_SESSION['reviewErrorMessage']);
-        } else if (isset ($_SESSION['reviewSuccessMessage'])) {
+        } else if (isset($_SESSION['reviewSuccessMessage'])) {
             unset($_SESSION['reviewSuccessMessage']);
         }
     }
@@ -157,7 +157,7 @@ function getReview($productID)
                                 $product = fetchProductDetails($_GET["pro"]);
                                 $active = true;
                                 foreach (['img_1', 'img_2', 'img_3'] as $imgKey) {
-                                    if (!empty ($product[$imgKey])) {
+                                    if (!empty($product[$imgKey])) {
                                         echo '<div class="carousel-item ' . ($active ? 'active' : '') . '">
                                                     <img src="images/products/' . $product[$imgKey] . '" alt="">
                                                 </div>';
@@ -167,13 +167,11 @@ function getReview($productID)
                                 ?>
                             </div>
                             <div class="carousel_btn-container">
-                                <a class="carousel-control-prev" href="#testimonialCarousel" role="button"
-                                    data-slide="prev">
+                                <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-slide="prev">
                                     <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
                                     <span class="sr-only">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" href="#testimonialCarousel" role="button"
-                                    data-slide="next">
+                                <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-slide="next">
                                     <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                     <span class="sr-only">Next</span>
                                 </a>
@@ -199,8 +197,7 @@ function getReview($productID)
                             </div>
                             <div class="mb-3">
                                 <span class="h4 theme-color">
-                                    <small
-                                        style="margin-right: 5px;display: inline-block;color: black;text-decoration: line-through;">
+                                    <small style="margin-right: 5px;display: inline-block;color: black;text-decoration: line-through;">
                                         ₹
                                         <?= number_format($product['price'], 2) ?>
                                     </small>
@@ -231,9 +228,7 @@ function getReview($productID)
                                     <div class="col-md-4 col-6 mb-3">
                                         <label class="mb-2 d-block">Quantity</label>
                                         <div class="input-group mb-3">
-                                            <select name="quantity"
-                                                class=" text-center form-select border border-secondary"
-                                                style="height: 35px;">
+                                            <select name="quantity" class=" text-center form-select border border-secondary" style="height: 35px;">
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -246,8 +241,7 @@ function getReview($productID)
                                     <div class="col-md-4 col-6 mb-3">
                                         <label class="mb-2 d-block">Weight</label>
                                         <div class="input-group mb-3" style="width: 100px;">
-                                            <input class="text-center" type="text"
-                                                value="<?= $product['weight'] . ' g' ?>" disabled>
+                                            <input class="text-center" type="text" value="<?= $product['weight'] . ' g' ?>" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -347,7 +341,7 @@ function getReview($productID)
 
                         <?php
                         $reviews = getReview($_GET["pro"]);
-                        foreach ($reviews as $review): ?>
+                        foreach ($reviews as $review) : ?>
                             <div class="review-item">
                                 <div class="review-author">
                                     <div class="review-author-Image">
@@ -359,7 +353,7 @@ function getReview($productID)
                                             <?= $review['l_name'] ?>
                                             <br>
 
-                                            <?php for ($i = 1; $i <= round($review['rating']); $i++): ?>
+                                            <?php for ($i = 1; $i <= round($review['rating']); $i++) : ?>
                                                 <?= '<i class="fa fa-star" style="color: #ffd43b;"></i>' ?>
                                             <?php endfor; ?>
                                         </span>
@@ -393,8 +387,7 @@ function getReview($productID)
                             </div>
 
                             <div class="form-floating mb-3">
-                                <textarea name="review_text" style="height: 200px;" type="text" class="form-control"
-                                    id="Review" placeholder="Write your review here" required></textarea>
+                                <textarea name="review_text" style="height: 200px;" type="text" class="form-control" id="Review" placeholder="Write your review here" required></textarea>
                                 <label for="Review">Review</label>
                             </div>
                             <input name="product_id" value="<?php echo $_GET["pro"] ?>" type="hidden">

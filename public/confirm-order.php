@@ -2,12 +2,12 @@
 include "../php/functions.php";
 $userID = checkGetUserLoginStatus(true, true);
 
-$con_order = isset ($_SESSION["confirm_order"]) ? "" : "";
+$con_order = isset($_SESSION["confirm_order"]) ? "" : "";
 unset($_SESSION["confirm_order"]);
 
 $summary_arr = array(0);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset ($_POST['f_name']) && isset ($_POST['l_name']) && isset ($_POST['p_number']) && isset ($_POST['email']) && isset ($_POST['address']) && isset ($_POST['address']) && isset ($_POST['city']) && isset ($_POST['zip']) && isset ($_POST['msg_seller']) && isset ($_POST['pay_method']) && isset ($_POST['price'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['f_name']) && isset($_POST['l_name']) && isset($_POST['p_number']) && isset($_POST['email']) && isset($_POST['address']) && isset($_POST['address']) && isset($_POST['city']) && isset($_POST['zip']) && isset($_POST['msg_seller']) && isset($_POST['pay_method']) && isset($_POST['price'])) {
     $f_name = $_POST["f_name"];
     $l_name = $_POST["l_name"];
     $p_number = $_POST["p_number"];
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset ($_POST['f_name']) && isset ($
 <body>
 
     <!-- header section starts -->
-    <?php getHeader() ?>
+    <?php getHeader("../", "") ?>
     <!-- end header section -->
 
     <main id="about-page" class="animate__fadeIn">

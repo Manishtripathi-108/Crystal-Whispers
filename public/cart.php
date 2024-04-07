@@ -6,7 +6,7 @@ checkGetUserLoginStatus(false, true);
 $cat_arr = array();
 $summary_arr = array();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset ($_POST['dltProduct_ID'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dltProduct_ID'])) {
     $dltID = $_POST['dltProduct_ID'];
     dltProduct($dltID, $conn);
 }
@@ -53,7 +53,7 @@ function dltProduct($dltID, $conn)
 
 <body>
     <!-- header section starts -->
-    <?php getHeader("Cart") ?>
+    <?php getHeader("../", "", "Cart") ?>
     <!-- end header section -->
 
     <!-- Cart -->
@@ -82,7 +82,7 @@ function dltProduct($dltID, $conn)
                             <tbody>
 
                                 <?php
-                                if (isset ($_SESSION["user_id"])) {
+                                if (isset($_SESSION["user_id"])) {
                                     $sql = "SELECT * FROM cart WHERE userID =" . $_SESSION["user_id"];
                                     $cartTable = $conn->query($sql);
 
@@ -198,8 +198,7 @@ function dltProduct($dltID, $conn)
                                     </p>
                                 </div>
                                 <div class="mt-3">
-                                    <a href="checkout.php" class="text-center theme-btn m-0 w-100" title="Purchase"
-                                        type="submit">
+                                    <a href="checkout.php" class="text-center theme-btn m-0 w-100" title="Purchase" type="submit">
                                         Purchase
                                     </a>
                                 </div>
@@ -220,7 +219,7 @@ function dltProduct($dltID, $conn)
                 </div>
                 <div class="row m-0 justify-content-center">
                     <?php
-                    if (!empty ($cat_arr)) {
+                    if (!empty($cat_arr)) {
                         foreach ($cat_arr as $pCategory) {
                             $sql = "SELECT
                                     p.product_id,
