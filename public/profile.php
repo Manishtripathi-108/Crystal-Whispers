@@ -4,46 +4,51 @@ include "../php/functions.php";
 $user = checkGetUserLoginStatus(true);
 
 $sql = "SELECT 
-    name,
-    l_name,
+    firstName,
+    LastName,
     gender,
-    Address,
-    Address_2,
+    Address1,
+    Address2,
     City,
     State,
     Zip,
-    user_profilePhoto
-    FROM users WHERE user_id = ?";
+    UserImage
+    FROM users WHERE UserID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user);
 $stmt->execute();
 $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $user_name = $row['name'];
-    $l_name = $row['l_name'];
+
+    $firstName = $row['firstName'];
+    $lastName = $row['LastName'];
     $gender = $row['gender'];
-    $userAddress = $row['Address'];
-    $userAddress_2 = $row['Address_2'];
+    $userAddress = $row['Address1'];
+    $userAddress_2 = $row['Address2'];
     $userCity = $row['City'];
     $userState = $row['State'];
     $userZip = $row['Zip'];
-    $user_profilePhoto = $row['user_profilePhoto'];
+    $user_profilePhoto = $row['UserImage'];
 } else {
-    echo "No user found, Login Again.";
+    echo '
+    <body>
+        <h1 class="d-flex justify-content-center align-items-center">No user found, Login Again.</h1>
+    </body>
+    ';
     sleep(5);
-    header('Location:login.php');
+    header('Location:../php/auth/login.php');
     exit();
 }
 $stmt->close();
 
 
 // error msg
-$profileMessage = isset ($_SESSION["profileMessage"]) ? $_SESSION["profileMessage"] : "";
+$profileMessage = isset($_SESSION["profileMessage"]) ? $_SESSION["profileMessage"] : "";
 unset($_SESSION["profileMessage"]);
 
 // active page
-$activePage = isset ($_POST['page']) ? $_POST['page'] : "Profile";
+$activePage = isset($_POST['page']) ? $_POST['page'] : "Profile";
 
 function isActive($page, $activePage)
 {
@@ -66,16 +71,20 @@ function isActive($page, $activePage)
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Crystal Whispers</title>
+    <title>Profile | Crystal Whispers</title>
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-    <!-- animation css -->
-    <link rel="stylesheet" href="css/animation.css">
+    <!-- Get Styles -->
+    <?php
+    $cssFiles = array(
+        'bootstrap.css',
+        'style.css',
+        'responsive.css',
+        'animation.css'
+    );
+
+    addCssFiles("../", $cssFiles);
+    ?>
+    <!-- End Styles -->
 
 </head>
 
@@ -92,10 +101,9 @@ function isActive($page, $activePage)
             <!-- sideNav -->
             <section class="sideNav col-md-auto layout_padding">
                 <div class="profile p-2">
-                    <img src="images/users/<?php echo $user_profilePhoto; ?>" class="mx-auto d-block mb-2"
-                        alt="Profile Image">
+                    <img src="../assets/images/users/<?php echo $user_profilePhoto; ?>" class="mx-auto d-block mb-2" alt="Profile Image">
                     <div class="user-name text-center">
-                        <?php echo $user_name; ?>
+                        <?php echo $firstName; ?>
                     </div>
                 </div>
 
@@ -112,8 +120,7 @@ function isActive($page, $activePage)
                     <div class="url margin-auto">
                         <form action="" method="post">
                             <input type="hidden" name="page" value="Orders">
-                            <button class="<?php echo isActive('Orders', $activePage); ?>" title="View your orders"
-                                type="submit">
+                            <button class="<?php echo isActive('Orders', $activePage); ?>" title="View your orders" type="submit">
                                 Orders
                             </button>
                         </form>
@@ -122,16 +129,14 @@ function isActive($page, $activePage)
                     <div class="url margin-auto">
                         <form action="" method="post">
                             <input type="hidden" name="page" value="Contact Us">
-                            <button class="<?php echo isActive('Contact Us', $activePage); ?>"
-                                title="Get in touch with us" type="submit">
+                            <button class="<?php echo isActive('Contact Us', $activePage); ?>" title="Get in touch with us" type="submit">
                                 Contact Us
                             </button>
                         </form>
                         <hr align="center" style="border-color: var(--theme-color);">
                     </div>
                     <div class="url margin-auto">
-                        <button class="<?php echo isActive('Logout', $activePage); ?>" title="Logout"
-                            data-toggle="modal" data-target="#logoutModal">
+                        <button class="<?php echo isActive('Logout', $activePage); ?>" title="Logout" data-toggle="modal" data-target="#logoutModal">
                             Logout
                         </button>
                     </div>
@@ -149,21 +154,18 @@ function isActive($page, $activePage)
                 </div>
 
                 <div class="container p-4 mt-3">
-                    <form action="php/process_profile.php" method="post" class="row g-3" enctype="multipart/form-data">
+                    <form action="../php/process_profile.php" method="post" class="row g-3" enctype="multipart/form-data">
                         <!--Avatar-->
                         <div>
                             <div class="d-flex justify-content-center mb-4">
-                                <img id="selectedAvatar" src="images/users/<?php echo $user_profilePhoto; ?>"
-                                    class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
+                                <img id="selectedAvatar" src="../assets/images/users/<?php echo $user_profilePhoto; ?>" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
                             </div>
 
                             <div class="d-flex justify-content-center">
                                 <div class="simple-btn">
-                                    <input type="hidden" name="oldProfilePhoto"
-                                        value="<?php echo $user_profilePhoto; ?>">
+                                    <input type="hidden" name="oldProfilePhoto" value="<?php echo $user_profilePhoto; ?>">
                                     <label class="form-label m-1" for="profilePhoto">Change Profile Photo</label>
-                                    <input type="file" class="form-control d-none" id="profilePhoto" name="profilePhoto"
-                                        accept="image/*" onchange="displaySelectedImage(event, 'selectedAvatar')" />
+                                    <input type="file" class="form-control d-none" id="profilePhoto" name="profilePhoto" accept="image/*" onchange="displaySelectedImage(event, 'selectedAvatar')" />
                                 </div>
                             </div>
                         </div>
@@ -176,15 +178,13 @@ function isActive($page, $activePage)
                         }
                         ?>
                         <div class="col-md-4 form-floating mb-3">
-                            <input type="text" class="form-control" id="f_name" name="f_name"
-                                value="<?php echo $user_name; ?>" placeholder="First Name">
-                            <label for="f_name" class="form-label">First Name:</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $firstName; ?>" placeholder="First Name">
+                            <label for="firstName" class="form-label">First Name:</label>
                         </div>
 
                         <div class="col-md-4 form-floating mb-3">
-                            <input type="text" class="form-control" id="l_name" name="l_name"
-                                value="<?php echo $l_name; ?>" placeholder="Last Name">
-                            <label for="l_name" class="form-label">Last Name:</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $lastName; ?>" placeholder="Last Name">
+                            <label for="lastName" class="form-label">Last Name:</label>
                         </div>
                         <div class="col-md-4 form-floating mb-3">
                             <select name="gender" class="form-select">
@@ -196,33 +196,27 @@ function isActive($page, $activePage)
                             <label for="show">Gender:</label>
                         </div>
                         <div class="col-12 form-floating mb-3">
-                            <input type="text" class="form-control" id="userAddress" name="userAddress"
-                                value="<?php echo $userAddress; ?>" placeholder="Address:">
+                            <input type="text" class="form-control" id="userAddress" name="userAddress" value="<?php echo $userAddress; ?>" placeholder="Address:">
                             <label for="userAddress" class="form-label">Address:</label>
                         </div>
                         <div class="col-12 form-floating mb-3">
-                            <input type="text" class="form-control" id="userAddress_2" name="userAddress_2"
-                                value="<?php echo $userAddress_2; ?>" placeholder="Apartment, studio, or floor">
+                            <input type="text" class="form-control" id="userAddress_2" name="userAddress_2" value="<?php echo $userAddress_2; ?>" placeholder="Apartment, studio, or floor">
                             <label for="userAddress_2" class="form-label">Apartment, studio, or floor:</label>
                         </div>
                         <div class="col-md-6 form-floating mb-3">
-                            <input type="text" class="form-control" id="userCity" name="userCity"
-                                value="<?php echo $userCity; ?>" placeholder="City">
+                            <input type="text" class="form-control" id="userCity" name="userCity" value="<?php echo $userCity; ?>" placeholder="City">
                             <label for="userCity" class="form-label">City:</label>
                         </div>
                         <div class="col-md-4 form-floating mb-3">
-                            <input type="text" class="form-control" id="userState" name="userState"
-                                value="<?php echo $userState; ?>" placeholder="State">
+                            <input type="text" class="form-control" id="userState" name="userState" value="<?php echo $userState; ?>" placeholder="State">
                             <label for="userState" class="form-label">State:</label>
                         </div>
                         <div class="col-md-2 form-floating mb-3">
-                            <input type="text" class="form-control" id="userZip" name="userZip"
-                                value="<?php echo $userZip; ?>" placeholder="Zip">
+                            <input type="text" class="form-control" id="userZip" name="userZip" value="<?php echo $userZip; ?>" placeholder="Zip">
                             <label for="userZip" class="form-label">Zip:</label>
                         </div>
                         <div class="col-12 d-flex justify-content-center">
-                            <button type="submit" style="width: 200px; margin: 10px auto 0px;"
-                                class="theme-btn">Update</button>
+                            <button type="submit" style="width: 200px; margin: 10px auto 0px;" class="theme-btn">Update</button>
                         </div>
                     </form>
                 </div>
@@ -261,8 +255,7 @@ function isActive($page, $activePage)
                                     JOIN categories c ON p.category = c.ID
                                     JOIN product_img pi ON p.product_id = pi.img_to_pro
                                     WHERE o.user_id = $user
-                                    ORDER BY o.order_id desc;"
-                            ;
+                                    ORDER BY o.order_id desc;";
 
                             $result = $conn->query($sql);
 
@@ -325,12 +318,9 @@ function isActive($page, $activePage)
                                                 </p>
                                                 <form action="php/contactUS_action.php" method="post">
                                                     <input type="hidden" name="user_id" value="<?= $user ?>">
-                                                    <input name="name" type="text" class="form-control mb-3 form-group"
-                                                        placeholder="Name" required />
-                                                    <input name="email" type="text" class="form-control mb-3 form-group"
-                                                        placeholder="Email" required />
-                                                    <textarea name="message" class="form-control mb-3 form-group"
-                                                        placeholder="Message" required></textarea>
+                                                    <input name="name" type="text" class="form-control mb-3 form-group" placeholder="Name" required />
+                                                    <input name="email" type="text" class="form-control mb-3 form-group" placeholder="Email" required />
+                                                    <textarea name="message" class="form-control mb-3 form-group" placeholder="Message" required></textarea>
                                                     <button type="submit" class="theme-btn">Send</button>
                                                 </form>
                                             </div>
@@ -367,10 +357,7 @@ function isActive($page, $activePage)
                                     <p>Visit our store in Sadar Bazar, Barnala, Punjab-148101. Use the interactive map
                                         below to find the best route to our store.</p>
                                     <div class="map_bind">
-                                        <iframe
-                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3442.2026810456155!2d75.54581047554548!3d30.37360207475956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3910f2179e8e2fc5%3A0xc9859b4c430f6163!2sSadar%20Bazar%20Rd%2C%20Barnala%2C%20Punjab%20148101!5e0!3m2!1sen!2sin!4v1704290123428!5m2!1sen!2sin"
-                                            width="100%" height="450" style="border:0;" allowfullscreen=""
-                                            loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3442.2026810456155!2d75.54581047554548!3d30.37360207475956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3910f2179e8e2fc5%3A0xc9859b4c430f6163!2sSadar%20Bazar%20Rd%2C%20Barnala%2C%20Punjab%20148101!5e0!3m2!1sen!2sin!4v1704290123428!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                                         </iframe>
                                     </div>
                                 </div>
@@ -386,8 +373,7 @@ function isActive($page, $activePage)
     <!--End user-profile -->
 
     <!-- Logout Modal -->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

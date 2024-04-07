@@ -13,7 +13,7 @@ function checkGetUserLoginStatus($returnID = false, $redirect = false)
         }
     } else {
         if ($redirect) {
-            header('Location: login.php');
+            header('Location: ../php/auth/login.php');
             exit();
         }
         return false;
