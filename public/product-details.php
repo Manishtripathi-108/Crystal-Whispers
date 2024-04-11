@@ -244,7 +244,7 @@ function getReview($productID)
                                     </div>
                                 </div>
 
-                                <input name="ProductID" value="<?= $_GET["pro"] ?>" type="hidden">
+                                <input name="product_id" value="<?= $_GET["pro"] ?>" type="hidden">
                                 <button class="theme-btn ms-auto" title="Cart" type="submit">
                                     <i class="fa-solid fa-bag-shopping"></i> Add to Cart
                                 </button>

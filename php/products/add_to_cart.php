@@ -1,11 +1,10 @@
 <?php
-session_start();
-require_once("connection.php");
+include("../functions.php");
+$userID = checkGetUserLoginStatus(true, true);
 
 // Check if it's a POST request and the required parameters are set
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"]) && isset($_SESSION["user_id"])) {
     $productID = $_POST["product_id"];
-    $userID = $_SESSION["user_id"];
 
     // Check if the product is already in the user's cart
     $cartExists = doesCartExist($conn, $userID, $productID);
@@ -17,10 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"]) && isset
         addToCart($conn, $userID, $productID);
     }
 
-    header("Location: ../cart.php");
+    header("Location: ../../public/cart.php");
     exit;
 } else {
-    header("Location: ../cart.php");
+    header("Location: ../../public/cart.php");
     exit;
 }
 
@@ -64,4 +63,3 @@ function addToCart($conn, $userID, $productID)
     $stmt->execute();
     $stmt->close();
 }
-?>
