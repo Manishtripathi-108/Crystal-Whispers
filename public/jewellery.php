@@ -195,7 +195,7 @@ include "../php/functions.php";
                             ₹<?= number_format(($product['price'] * ((100 - $product['discount']) / 100)), 2) ?>
                           </div>
                           <div class="product-links">
-                            <form method="post" action="php/add_to_cart.php">
+                            <form method="post" action="../php/products/add_to_cart.php">
                               <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                               <button type="submit"><i class="fa fa-shopping-cart"></i></button>
                             </form>

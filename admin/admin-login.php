@@ -72,21 +72,25 @@ unset($_SESSION["adminLoginMessage"]);
 
     <title>Crystal Whispers</title>
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-    <!-- animation css -->
-    <link rel="stylesheet" href="css/animation.css">
+    <!-- Get Styles -->
+    <?php
+    $cssFiles = array(
+        'bootstrap.css',
+        'style.css',
+        'responsive.css',
+        'animation.css'
+    );
+
+    addCssFiles("../", $cssFiles);
+    ?>
+    <!-- End Styles -->
 
 </head>
 
 <body>
 
     <!-- header section starts -->
-    <?php getHeader(null, true) ?>
+    <?php getHeader("../","../public/",null, true) ?>
     <!-- end header section -->
 
     <main id="adminlogin" class="login-page-container d-flex align-items-center justify-content-center animate__fadeIn">

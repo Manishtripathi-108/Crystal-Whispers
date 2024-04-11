@@ -1,10 +1,10 @@
 <?php
 session_start();
-include "connection.php";
+include "../connection.php";
 
 // Redirect to login page if admin is not logged in
-if (!isset($_SESSION["admin_id"])) {
-    header('Location: ../admin-login.php');
+if (!isset($_SESSION["AdminID"])) {
+    header('Location: ../../admin/admin-login.php');
     exit;
 }
 
@@ -50,18 +50,15 @@ function handleProductAddition()
     $occasion = $_POST['occasion'];
     $stockQuantity = $_POST['stock_quantity'];
 
-    $sql = "INSERT INTO products (product_name, category, price, discount, weight, color_plating, gender, material, occasion, stock_quantity)
+    $sql = "INSERT INTO products (ProductName, CategoryID, ProductPrice, ProductDiscount, ProductWeight, ProductColor, ProductTargetGender, ProductMaterial, OccasionID, ProductStock)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssdddsssss", $productName, $category, $price, $discount, $weight, $color, $gender, $material, $occasion, $stockQuantity);
 
     if ($stmt->execute()) {
         $_SESSION['productMessage'] = "Product added successfully.";
-
         $product_id = $conn->insert_id;
         handleImageUploads($product_id, $productName, $category, $gender, $color);
-
-
     } else {
         $_SESSION['productMessage'] = "Error: " . $stmt->error;
     }
@@ -157,7 +154,7 @@ function handleImageUploads($product_id, $productName, $category, $gender, $colo
     $imageFields = $isUpdate ? ['update_productImage1', 'update_productImage2', 'update_productImage3']
         : ['productImage1', 'productImage2', 'productImage3'];
 
-    $target_dir = "../images/products/";
+    $target_dir = "../../assets/images/products/";
 
     foreach ($imageFields as $key => $image) {
         if (isset($_FILES[$image]['name']) && $_FILES[$image]['error'] === UPLOAD_ERR_OK) {
@@ -172,7 +169,7 @@ function handleImageUploads($product_id, $productName, $category, $gender, $colo
             // Check if the first image is empty
             if ($key === 0 && empty($img_name)) {
                 $_SESSION['productMessage'] .= "<br>Image 1 is required.";
-                $dlt_sql = "DELETE FROM products WHERE product_id = ?";
+                $dlt_sql = "DELETE FROM products WHERE ProductID = ?";
                 $stmt = $conn->prepare($dlt_sql);
                 $stmt->bind_param("i", $product_id);
                 $stmt->execute();
@@ -197,12 +194,12 @@ function getCategoryName($category)
 {
     global $conn;
 
-    $getCategoryName = "SELECT category_name FROM categories WHERE ID = ?";
+    $getCategoryName = "SELECT CategoryName FROM categories WHERE CategoryID = ?";
     $stmt = $conn->prepare($getCategoryName);
     $stmt->bind_param("i", $category);
     $stmt->execute();
     $categoryNameResult = $stmt->get_result();
-    $categoryName = $categoryNameResult->fetch_assoc()['category_name'];
+    $categoryName = $categoryNameResult->fetch_assoc()['CategoryName'];
 
     return $categoryName;
 }
@@ -222,34 +219,27 @@ function handleImageDatabaseUpdate($product_id, $img_name, $key, $isUpdate)
 {
     global $conn;
 
-    $column_name = 'img_' . ($key + 1);
+    $column_name = 'ProImg' . ($key + 1);
 
     if ($isUpdate) {
-        $getOldImage = "SELECT $column_name FROM product_img WHERE img_to_pro = ?";
+        $getOldImage = "SELECT $column_name FROM products WHERE ProductID = ?";
         $stmt = $conn->prepare($getOldImage);
         $stmt->bind_param("i", $product_id);
         $stmt->execute();
         $oldImageResult = $stmt->get_result();
         $oldImage = $oldImageResult->fetch_assoc()[$column_name];
 
-        if ($oldImage != 'add-image.png' && $oldImage != null && file_exists("../images/products/" . $oldImage)) {
-            unlink("../images/products/" . $oldImage);
+        if ($oldImage != 'add-image.png' && $oldImage != null && file_exists("../../assets/images/products/" . $oldImage)) {
+            unlink("../../assets/images/products/" . $oldImage);
         }
 
-        $sql = "UPDATE product_img SET $column_name = ? WHERE img_to_pro = ?";
+        $sql = "UPDATE products SET $column_name = ? WHERE ProductID = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("si", $img_name, $product_id);
-
     } else {
-        if ($key === 0) {
-            $sql = "INSERT INTO product_img (img_to_pro, $column_name) VALUES (?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("is", $product_id, $img_name);
-        } else {
-            $sql = "UPDATE product_img SET $column_name = ? WHERE img_to_pro = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("si", $img_name, $product_id);
-        }
+        $sql = "UPDATE products SET $column_name = ? WHERE ProductID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $img_name, $product_id);
     }
 
     if ($stmt->execute()) {
@@ -263,7 +253,6 @@ function handleImageDatabaseUpdate($product_id, $img_name, $key, $isUpdate)
 // Function to redirect to admin page
 function redirectToAdminPage()
 {
-    header('Location: ../admin.php');
+    header('Location: ../../admin/');
     exit;
 }
-?>

@@ -1,21 +1,21 @@
 <?php
 include "../php/functions.php";
 
-if (!isset ($_SESSION['AdminID'])) {
+if (!isset($_SESSION['AdminID'])) {
     header("Location: admin-login.php");
     exit();
 } else {
     $admin = $_SESSION['AdminID'];
 }
 
-$productMessage = isset ($_SESSION['productMessage']) ? $_SESSION['productMessage'] : "";
+$productMessage = isset($_SESSION['productMessage']) ? $_SESSION['productMessage'] : "";
 unset($_SESSION['productMessage']);
 
-$workerMessage = isset ($_SESSION['workerMessage']) ? $_SESSION['workerMessage'] : "";
+$workerMessage = isset($_SESSION['workerMessage']) ? $_SESSION['workerMessage'] : "";
 unset($_SESSION['workerMessage']);
 
 // active page
-$activePage = isset ($_SESSION['section']) ? $_SESSION['section'] : "Products";
+$activePage = isset($_SESSION['section']) ? $_SESSION['section'] : "Products";
 unset($_SESSION['section']);
 
 function isActive($page, $activePage)
@@ -164,7 +164,7 @@ function fetchContacts()
 <body>
 
     <!-- header section starts -->
-    <?php getHeader(null, true); ?>
+    <?php getHeader("../", "../public/", null, true); ?>
     <!-- end header section -->
 
     <!-- Admin -->
@@ -174,8 +174,7 @@ function fetchContacts()
             <section class="sideNav col-md-auto layout_padding">
                 <div class="profile p-2">
                     <?php $adminDetails = fetchAdminDetails(); ?>
-                    <img src="../images/admin/<?= $adminDetails['AdminImage'] ?>" class="mx-auto d-block mb-2"
-                        alt="Profile Image">
+                    <img src="../assets/images/admin/<?= $adminDetails['AdminImage'] ?>" class="mx-auto d-block mb-2" alt="Profile Image">
                     <div class="user-name text-center">
                         <?= $adminDetails['AdminName'] ?>
                     </div>
@@ -183,7 +182,7 @@ function fetchContacts()
 
                 <div class="sideNav-url margin-auto">
                     <div class="url margin-auto">
-                        <form action="php/change_section.php" method="post">
+                        <form action="../php/change_section.php" method="post">
                             <input type="hidden" name="section" value="Products">
                             <button class="<?php echo isActive('Products', $activePage); ?>" title="View Products">
                                 Products
@@ -192,7 +191,7 @@ function fetchContacts()
                         <hr align="center" style="border-color: var(--theme-color);">
                     </div>
                     <div class="url margin-auto">
-                        <form action="php/change_section.php" method="post">
+                        <form action="../php/change_section.php" method="post">
                             <input type="hidden" name="section" value="Orders">
                             <button class="<?php echo isActive('Orders', $activePage); ?>" title="View Orders">
                                 Orders
@@ -201,7 +200,7 @@ function fetchContacts()
                         <hr align="center" style="border-color: var(--theme-color);">
                     </div>
                     <div class="url margin-auto">
-                        <form action="php/change_section.php" method="post">
+                        <form action="../php/change_section.php" method="post">
                             <input type="hidden" name="section" value="Workers">
                             <button class="<?php echo isActive('Workers', $activePage); ?>" title="View Workers">
                                 Workers
@@ -210,7 +209,7 @@ function fetchContacts()
                         <hr align="center" style="border-color: var(--theme-color);">
                     </div>
                     <div class="url margin-auto">
-                        <form action="php/change_section.php" method="post">
+                        <form action="../php/change_section.php" method="post">
                             <input type="hidden" name="section" value="Enquiries">
                             <button class="<?php echo isActive('Enquiries', $activePage); ?>" title="View Enquiries">
                                 Enquiries
@@ -233,18 +232,14 @@ function fetchContacts()
                     <!-- add new product -->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseProductOne" aria-expanded="true"
-                                aria-controls="collapseProductOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProductOne" aria-expanded="true" aria-controls="collapseProductOne">
                                 Add New Product
                             </button>
                         </h2>
-                        <div id="collapseProductOne" class="accordion-collapse collapse show"
-                            data-bs-parent="#productsAccordion">
+                        <div id="collapseProductOne" class="accordion-collapse collapse show" data-bs-parent="#productsAccordion">
                             <div class="accordion-body">
                                 <div id="add_product" class="p-4 mt-3 upping_shadow">
-                                    <form action="php/process_product.php" method="post" class="row g-3"
-                                        enctype="multipart/form-data">
+                                    <form action="../php/products/process_product.php" method="post" class="row g-3" enctype="multipart/form-data">
 
                                         <div class="heading_container text-start">
                                             <h4>
@@ -254,46 +249,36 @@ function fetchContacts()
                                         <div id="add_product_img" class="row mb-2 justify-content-center">
                                             <div class="imgBox col-sm-5 col-md-4 p-4">
                                                 <div class="d-flex justify-content-center mb-4">
-                                                    <img id="selectedImage1" src="images/add-image.png" />
+                                                    <img id="selectedImage1" src="../assets/images/add-image.png" />
                                                 </div>
                                                 <div class=" d-flex justify-content-center">
                                                     <div class="simple-btn">
-                                                        <label class="form-label m-1" for="productImage1">Add Image 1
-                                                            (Required)</label>
-                                                        <input type="file" class="form-control d-none"
-                                                            id="productImage1" name="productImage1" accept="image/*"
-                                                            onchange="displaySelectedImage(event, 'selectedImage1')"
-                                                            required />
+                                                        <label class="form-label m-1" for="productImage1">Add Image 1 (Required)</label>
+                                                        <input type="file" class="form-control d-none" id="productImage1" name="productImage1" accept="image/*" onchange="displaySelectedImage(event, 'selectedImage1')" required />
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="imgBox col-sm-5 mt-3 mt-md-auto col-md-4 p-4">
                                                 <div class="d-flex justify-content-center mb-4">
-                                                    <img id="selectedImage2" src="images/add-image.png" />
+                                                    <img id="selectedImage2" src="../assets/images/add-image.png" />
                                                 </div>
                                                 <div class=" d-flex justify-content-center">
                                                     <div class="simple-btn">
-                                                        <label class="form-label m-1" for="productImage2">Add Image
-                                                            2</label>
-                                                        <input type="file" class="form-control d-none"
-                                                            id="productImage2" name="productImage2" accept="image/*"
-                                                            onchange="displaySelectedImage(event, 'selectedImage2')" />
+                                                        <label class="form-label m-1" for="productImage2">Add Image 2</label>
+                                                        <input type="file" class="form-control d-none" id="productImage2" name="productImage2" accept="image/*" onchange="displaySelectedImage(event, 'selectedImage2')" />
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="imgBox col-sm-5 mt-3 mt-md-auto col-md-4 p-4">
                                                 <div class="d-flex justify-content-center mb-4">
-                                                    <img id="selectedImage3" src="images/add-image.png" />
+                                                    <img id="selectedImage3" src="../assets/images/add-image.png" />
                                                 </div>
                                                 <div class=" d-flex justify-content-center">
                                                     <div class="simple-btn">
-                                                        <label class="form-label m-1" for="productImage3">Add Image
-                                                            3</label>
-                                                        <input type="file" class="form-control d-none"
-                                                            id="productImage3" name="productImage3" accept="image/*"
-                                                            onchange="displaySelectedImage(event, 'selectedImage3')" />
+                                                        <label class="form-label m-1" for="productImage3">Add Image 3</label>
+                                                        <input type="file" class="form-control d-none" id="productImage3" name="productImage3" accept="image/*" onchange="displaySelectedImage(event, 'selectedImage3')" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -313,8 +298,7 @@ function fetchContacts()
                                             </h4>
                                         </div>
                                         <div class="col-md-4 form-floating mb-3">
-                                            <input type="text" class="form-control" id="product_name"
-                                                name="product_name" placeholder="Product Name" required>
+                                            <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" required>
                                             <label for="product_name" class="form-label">Product Name</label>
                                         </div>
 
@@ -327,7 +311,7 @@ function fetchContacts()
 
                                                 if ($cat_result->num_rows > 0) {
                                                     while ($row = $cat_result->fetch_assoc()) {
-                                                        echo '<option value="' . $row['ID'] . '">' . $row['category_name'] . '</option>';
+                                                        echo '<option value="' . $row['CategoryID'] . '">' . $row['CategoryName'] . '</option>';
                                                     }
                                                 }
 
@@ -338,23 +322,19 @@ function fetchContacts()
                                         </div>
 
                                         <div class="col-md-4 form-floating mb-3">
-                                            <input type="number" class="form-control" id="price" name="price"
-                                                placeholder="Price" required>
+                                            <input type="number" class="form-control" id="price" name="price" placeholder="Price" required>
                                             <label for="price" class="form-label">Price</label>
                                         </div>
                                         <div class="col-md-4 form-floating mb-3">
-                                            <input type="tel" class="form-control" id="discount" name="discount"
-                                                maxlength="2" pattern="\d{1,2}" placeholder="Discount" required>
+                                            <input type="tel" class="form-control" id="discount" name="discount" maxlength="2" pattern="\d{1,2}" placeholder="Discount" required>
                                             <label for="discount" class="form-label">Discount (1-99)</label>
                                         </div>
                                         <div class="col-md-4 form-floating mb-3">
-                                            <input type="number" step="any" class="form-control" id="weight"
-                                                name="weight" placeholder="Weight (in g)" required>
+                                            <input type="number" step="any" class="form-control" id="weight" name="weight" placeholder="Weight (in g)" required>
                                             <label for="weight" class="form-label">Weight (in g)</label>
                                         </div>
                                         <div class="col-md-4 form-floating mb-3">
-                                            <input type="text" class="form-control" id="color" name="color"
-                                                placeholder="Color" required pattern="^[a-zA-Z]+$">
+                                            <input type="text" class="form-control" id="color" name="color" placeholder="Color" required pattern="^[a-zA-Z]+$">
                                             <label for="color" class="form-label">Color</label>
                                         </div>
                                         <div class="col-md-4 form-floating mb-3">
@@ -382,7 +362,7 @@ function fetchContacts()
                                                 $occ_result = $conn->query($sql);
                                                 if ($occ_result->num_rows > 0) {
                                                     while ($row = $occ_result->fetch_assoc()) {
-                                                        echo '<option value="' . $row['ID'] . '">' . $row['value'] . '</option>';
+                                                        echo '<option value="' . $row['OccasionID'] . '">' . $row['OccasionName'] . '</option>';
                                                     }
                                                 }
                                                 $occ_result->close();
@@ -392,15 +372,13 @@ function fetchContacts()
                                         </div>
 
                                         <div class="col-md-4 form-floating mb-3">
-                                            <input type="number" class="form-control" id="stock_quantity"
-                                                name="stock_quantity" placeholder="Stock Quantity" required>
+                                            <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" placeholder="Stock Quantity" required>
                                             <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                         </div>
 
                                         <div class="col-12 d-flex justify-content-center">
                                             <input type="hidden" name="do" id="addProduct" value="addProduct">
-                                            <button type="submit" style="width: 200px; margin: 10px auto 0px;"
-                                                class="theme-btn">
+                                            <button type="submit" style="width: 200px; margin: 10px auto 0px;" class="theme-btn">
                                                 Add Product
                                             </button>
                                         </div>
@@ -413,22 +391,17 @@ function fetchContacts()
                     <!-- products table -->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseProductTwo" aria-expanded="false"
-                                aria-controls="collapseProductTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProductTwo" aria-expanded="false" aria-controls="collapseProductTwo">
                                 Products Table
                             </button>
                         </h2>
-                        <div id="collapseProductTwo" class="accordion-collapse collapse"
-                            data-bs-parent="#productsAccordion">
+                        <div id="collapseProductTwo" class="accordion-collapse collapse show" data-bs-parent="#productsAccordion">
                             <div class="accordion-body">
                                 <!-- Filter -->
                                 <div id="filter-bar" class="animate__slideDown mt-5">
                                     <div class="container-fluid">
                                         <nav class="navbar navbar-expand-lg custom_nav-container">
-                                            <button class="navbar-toggler" type="button" data-toggle="collapse"
-                                                data-target="#filter" aria-controls="filter" aria-expanded="false"
-                                                aria-label="Toggle filter">
+                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#filter" aria-controls="filter" aria-expanded="false" aria-label="Toggle filter">
                                                 <span class="navbar-toggler-icon"></span>
                                             </button>
 
@@ -440,12 +413,10 @@ function fetchContacts()
 
                                             <form action="" method="get">
                                                 <div class="collapse navbar-collapse" id="filter">
-                                                    <div
-                                                        class="d-flex gap-2 ms-auto flex-column flex-lg-row align-items-center flex-wrap">
+                                                    <div class="d-flex gap-2 ms-auto flex-column flex-lg-row align-items-center flex-wrap">
                                                         <!-- Category -->
                                                         <div class="form-floating">
-                                                            <select name="category" class="form-select"
-                                                                style="width: 150px;" id="category">
+                                                            <select name="category" class="form-select" style="width: 150px;" id="category">
                                                                 <option>All</option>
                                                                 <?php
                                                                 $sql = "SELECT * FROM categories";
@@ -453,10 +424,10 @@ function fetchContacts()
 
                                                                 if ($cat_result->num_rows > 0) {
                                                                     while ($row = $cat_result->fetch_assoc()) {
-                                                                        if (isset ($_GET['category']) && $row['ID'] == $_GET['category']) {
-                                                                            echo '<option value="' . $row['ID'] . '"selected>' . $row['category_name'] . '</option>';
+                                                                        if (isset($_GET['category']) && $row['ID'] == $_GET['categoryID']) {
+                                                                            echo '<option value="' . $row['CategoryID'] . '"selected>' . $row['CategoryName'] . '</option>';
                                                                         } else {
-                                                                            echo '<option value="' . $row['ID'] . '">' . $row['category_name'] . '</option>';
+                                                                            echo '<option value="' . $row['CategoryID'] . '">' . $row['CategoryName'] . '</option>';
                                                                         }
                                                                     }
                                                                 }
@@ -469,36 +440,28 @@ function fetchContacts()
 
                                                         <!-- Gender -->
                                                         <div class="form-floating">
-                                                            <select name="gender" class="form-select"
-                                                                style="width: 150px;" id="Gender">
+                                                            <select name="gender" class="form-select" style="width: 150px;" id="Gender">
                                                                 <option>All</option>
-                                                                <option value="Male" <?php echo (isset ($_GET['gender']) && $_GET['gender'] == 'Male') ? 'selected' : ''; ?>>
-                                                                    Male</option>
-                                                                <option value="Female" <?php echo (isset ($_GET['gender']) && $_GET['gender'] == 'Female') ? 'selected' : ''; ?>>
-                                                                    Female</option>
+                                                                <option value="Male" <?php echo (isset($_GET['gender']) && $_GET['gender'] == 'Male') ? 'selected' : ''; ?>>Male</option>
+                                                                <option value="Female" <?php echo (isset($_GET['gender']) && $_GET['gender'] == 'Female') ? 'selected' : ''; ?>>Female</option>
                                                             </select>
                                                             <label for="Gender">Gender</label>
                                                         </div>
 
                                                         <!-- Material -->
                                                         <div class="form-floating">
-                                                            <select name="material" class="form-select"
-                                                                style="width: 150px;" id="Material">
+                                                            <select name="material" class="form-select" style="width: 150px;" id="Material">
                                                                 <option>All</option>
-                                                                <option value="Gold" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Gold') ? 'selected' : ''; ?>>
-                                                                    Gold</option>
-                                                                <option value="Silver" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Silver') ? 'selected' : ''; ?>>
-                                                                    Silver</option>
-                                                                <option value="Platinum" <?php echo (isset ($_GET['material']) && $_GET['material'] == 'Platinum') ? 'selected' : ''; ?>>Platinum
-                                                                </option>
+                                                                <option value="Gold" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Gold') ? 'selected' : ''; ?>>Gold</option>
+                                                                <option value="Silver" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Silver') ? 'selected' : ''; ?>>Silver</option>
+                                                                <option value="Platinum" <?php echo (isset($_GET['material']) && $_GET['material'] == 'Platinum') ? 'selected' : ''; ?>>Platinum</option>
                                                             </select>
                                                             <label for="Material">Material</label>
                                                         </div>
 
                                                         <!-- Occasion -->
                                                         <div class="form-floating">
-                                                            <select name="occasion" class="form-select"
-                                                                style="width: 150px;" id="occasion">
+                                                            <select name="occasion" class="form-select" style="width: 150px;" id="occasion">
                                                                 <option>All</option>
                                                                 <?php
                                                                 $sql = "SELECT * FROM occasions";
@@ -506,10 +469,10 @@ function fetchContacts()
 
                                                                 if ($occ_result->num_rows > 0) {
                                                                     while ($row = $occ_result->fetch_assoc()) {
-                                                                        if (isset ($_GET['occasion']) && $row['ID'] == $_GET['occasion']) {
-                                                                            echo '<option value="' . $row['ID'] . '" selected>' . $row['value'] . '</option>';
+                                                                        if (isset($_GET['occasion']) && $row['ID'] == $_GET['occasion']) {
+                                                                            echo '<option value="' . $row['OccasionID'] . '" selected>' . $row['OccasionName'] . '</option>';
                                                                         } else {
-                                                                            echo '<option value="' . $row['ID'] . '">' . $row['value'] . '</option>';
+                                                                            echo '<option value="' . $row['OccasionID'] . '">' . $row['OccasionName'] . '</option>';
                                                                         }
                                                                     }
                                                                 }
@@ -522,21 +485,15 @@ function fetchContacts()
 
                                                         <!-- display -->
                                                         <div class="form-floating">
-                                                            <select name="show" class="form-select"
-                                                                style="width: 150px;" id="show">
+                                                            <select name="show" class="form-select" style="width: 150px;" id="show">
                                                                 <option>All Products</option>
-                                                                <option value="1" <?php echo (isset ($_GET['show']) && $_GET['show'] == '1') ? 'selected' : ''; ?>>
-                                                                    Latest Products</option>
-                                                                <option value="2" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
-                                                                    Bestsellers</option>
-                                                                <option value="3" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
-                                                                    Product ID</option>
-                                                                <option value="4" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
-                                                                    Stock Quantity</option>
-                                                                <option value="5" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
-                                                                    Weight</option>
-                                                                <option value="6" <?php echo (isset ($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>
-                                                                    Discount</option>
+                                                                <option value="1" <?php echo (isset($_GET['show']) && $_GET['show'] == '1') ? 'selected' : ''; ?>>Latest Products</option>
+                                                                <option value="2" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Bestsellers</option>
+                                                                <option value="3" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Discount</option>
+                                                                <option value="4" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Rating</option>
+                                                                <option value="5" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Weight</option>
+                                                                <option value="6" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Stock Quantity</option>
+                                                                <option value="7" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Product ID</option>
                                                             </select>
                                                             <label for="show">Order By</label>
                                                         </div>
@@ -544,10 +501,8 @@ function fetchContacts()
                                                         <input name="display-filter" type="hidden" value="yes">
 
                                                         <div class="form-floating">
-                                                            <button class="simple-btn" type="submit" title="filter">
-                                                                Filter
-                                                            </button>
-                                                            <a href="admin.php" class="simple-btn">Reset</a>
+                                                            <button class="simple-btn" type="submit" title="filter">Filter</button>
+                                                            <a href="index.php" class="simple-btn">Reset</a>
                                                         </div>
 
                                                     </div>
@@ -583,104 +538,59 @@ function fetchContacts()
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $category = isset ($_GET['category']) ? $_GET['category'] : 'All';
-                                            $gender = isset ($_GET['gender']) ? $_GET['gender'] : 'All';
-                                            $material = isset ($_GET['material']) ? $_GET['material'] : 'All';
-                                            $occasion = isset ($_GET['occasion']) ? $_GET['occasion'] : 'All';
-                                            $show = isset ($_GET['show']) ? $_GET['show'] : '0';
-                                            $sql = "SELECT 
-                                                    p.*,
-                                                    i.img_1, 
-                                                    c.category_name
-                                                    FROM products p
-                                                    JOIN categories c ON p.category = c.ID
-                                                    JOIN product_img i ON p.product_id = i.img_to_pro";
-                                            if ($category !== 'All') {
-                                                $sql .= " AND p.category = '$category'";
-                                            }
-
-                                            if ($gender !== 'All') {
-                                                $sql .= " AND p.gender = '$gender'";
-                                            }
-
-                                            if ($material !== 'All') {
-                                                $sql .= " AND p.material = '$material'";
-                                            }
-
-                                            if ($occasion !== 'All') {
-                                                $sql .= " AND p.occasion = '$occasion'";
-                                            }
-
-                                            $sql .= " ORDER BY ";
-
-                                            switch ($show) {
-                                                case '1':
-                                                    $sql .= "p.date_added DESC";
-                                                    break;
-                                                case '2':
-                                                    $sql .= "p.units_sold DESC";
-                                                    break;
-                                                case '3':
-                                                    $sql .= "p.product_id DESC";
-                                                    break;
-                                                case '4':
-                                                    $sql .= "p.stock_quantity DESC";
-                                                    break;
-                                                case '5':
-                                                    $sql .= "p.weight DESC";
-                                                    break;
-                                                case '6':
-                                                    $sql .= "p.discount DESC";
-                                                    break;
-                                                default:
-                                                    $sql .= "p.date_added DESC";
-                                            }
-                                            $result = $conn->query($sql);
-                                            if ($result->num_rows > 0) {
+                                            $category = isset($_GET['category']) ? $_GET['category'] : 'All';
+                                            $gender = isset($_GET['gender']) ? $_GET['gender'] : 'All';
+                                            $material = isset($_GET['material']) ? $_GET['material'] : 'All';
+                                            $occasion = isset($_GET['occasion']) ? $_GET['occasion'] : 'All';
+                                            $show = isset($_GET['show']) ? $_GET['show'] : '0';
+                                            $productData = fetchProducts($category, $gender, $material, $occasion, $show);
+                                            if ($productData) :
                                                 $sno = 0;
-                                                while ($row = mysqli_fetch_assoc($result)) {
-                                                    echo '
-                                                    <td cell-name="S No.">
-                                                    <div>
-                                                        ' . ++$sno . '
-                                                    </div>
-                                                    </td>
-                                                    <td cell-name="image">
-                                                        <div class="product-img" style="background-image: url(images/products/' . $row['img_1'] . ');">
-                                                        </div>
-                                                    </td>
-                                                    <td cell-name="Product">
-                                                        <div class="product-name">
-                                                        <a href="Product-details.php?pro=' . $row['product_id'] . '"><span>' . $row['product_name'] . ' </span></a>
-                                                        </div>
-                                                    </td>
-                                                    ';
-                                                    echo "<td cell-name='Category'>" . $row['category_name'] . "</td>";
-                                                    echo "<td cell-name='Price' class='text-end'>₹" . number_format($row['price'], 2) . "</td>";
-                                                    echo "<td cell-name='Size' class='text-end'>" . $row['discount'] . "%</td>";
-                                                    echo "<td cell-name='Stock Quantity' class='text-end'>" . number_format($row['stock_quantity']) . "</td>";
-                                                    echo "<td cell-name='Units Sold' class='text-end'>" . number_format($row['units_sold']) . "</td>";
-                                                    echo "<td cell-name='Material'>" . $row['material'] . "</td>";
-                                                    echo "<td cell-name='Weight' class='text-nowrap'>" . $row['weight'] . " g</td>";
-                                                    echo "<td cell-name='Color'>" . $row['color_plating'] . "</td>";
-                                                    echo '
+                                                foreach ($productData as $product) : ?>
+                                                    <tr>
+                                                        <td cell-name="SNo.">
+                                                            <div>
+                                                                <?= ++$sno ?>
+                                                            </div>
+                                                        </td>
+
+                                                        <td cell-name="image">
+                                                            <div class="product-img" style="background-image: url(../assets/images/products/<?= $product['image'] ?>);"></div>
+                                                        </td>
+
+                                                        <td cell-name="Product">
+                                                            <div class="product-name">
+                                                                <a href="../public/Product-details.php?pro=<?= $product['id'] ?>"><span>
+                                                                        <?= $product['name'] ?>
+                                                                    </span></a>
+                                                            </div>
+                                                        </td>
+
+                                                        <td cell-name='Category'><?= $product['category'] ?></td>
+                                                        <td cell-name='Price' class='text-end'>₹<?= number_format($product['price'], 2) ?></td>
+                                                        <td cell-name='Discount' class='text-end'><?= $product['discount'] ?>%</td>
+                                                        <td cell-name='Stock Quantity' class='text-end'><?= number_format($product['stock']) ?></td>
+                                                        <td cell-name='Units Sold' class='text-end'><?= number_format($product['sold']) ?></td>
+                                                        <td cell-name='Material'><?= $product['material'] ?></td>
+                                                        <td cell-name='Weight' class='text-nowrap'><?= $product['weight'] ?> g</td>
+                                                        <td cell-name='Color'><?= $product['color'] ?></td>
+
                                                         <td>
-                                                            <button type="button" class="edit-btn edit-product m-1" title="Edit Product" data-toggle="modal" data-target="#editModal" data-product-id="' . $row['product_id'] . '">
-                                                                <img width="20" src="icon/edit.svg">
+                                                            <button type="button" class="edit-btn edit-product m-1" title="Edit Product" data-toggle="modal" data-target="#editModal" data-product-id="<?= $product['id'] ?>">
+                                                                <img width="20" src="../assets/icon/edit.svg">
                                                             </button>
 
-                                                            <button type="button" data-toggle="modal" data-target="#deleteProductModal"
-                                                                onclick="setDeleteId(\'deleteProductWithId\', \'' . $row['product_id'] . '\')" 
-                                                                class="delete-btn m-1" title="delete">
-                                                                <img width="20" src="icon/delete.svg">
+                                                            <!-- if problem then  \'<questionmark= $product['id'] ?>\')" -->
+                                                            <button type="button" data-toggle="modal" data-target="#deleteProductModal" onclick="setDeleteId('deleteProductWithId', '<?= $product['id'] ?>')" class="delete-btn m-1" title="delete">
+                                                                <img width="20" src="../assets/icon/delete.svg">
                                                             </button>
-                                                        </td>';
-                                                    echo "</tr>";
-                                                }
-                                            } else {
+                                                        </td>
+                                                    </tr>
+                                            <?php
+                                                endforeach;
+                                            else :
                                                 echo "<tr><td class='text-center' colspan='13'>No Product found</td></tr>";
-                                            }
-                                            $result->close();
+                                            endif;
                                             ?>
                                         </tbody>
                                     </table>
@@ -688,6 +598,7 @@ function fetchContacts()
                             </div>
                         </div>
                     </div>
+
                 </div>
             </section>
 
@@ -719,14 +630,13 @@ function fetchContacts()
                         <!-- Table Body -->
                         <tbody>
                             <?php $orders = fetchOrders(); ?>
-                            <?php foreach ($orders as $order): ?>
+                            <?php foreach ($orders as $order) : ?>
                                 <tr>
                                     <td cell-name="Order ID">
                                         <?= strval($order['order_id']) ?>
                                     </td>
                                     <td cell-name="Status">
-                                        <form action="php/update_status.php" method="POST"
-                                            class="d-flex justify-content-center align-items-center flex-column">
+                                        <form action="php/update_status.php" method="POST" class="d-flex justify-content-center align-items-center flex-column">
                                             <input type="hidden" name="orderId" value="<?= strval($order['order_id']) ?>">
                                             <select class="form-select" style="width: fit-content;" name="newStatus">
                                                 <option value="Processing" <?= ($order['status'] == 'Processing') ? 'selected' : '' ?>>Processing
@@ -767,18 +677,17 @@ function fetchContacts()
                                         </address>
                                     </td>
                                     <td cell-name="Items">
-                                        <?php if (!empty ($order['items'])): ?>
+                                        <?php if (!empty($order['items'])) : ?>
                                             <ul>
-                                                <?php foreach ($order['items'] as $item): ?>
+                                                <?php foreach ($order['items'] as $item) : ?>
                                                     <li class="text-nowrap">
-                                                        <?= $item['items_count'] ?> x <a class="pro_link"
-                                                            href="Product-details.php?pro=<?= $item['product_id'] ?>">
+                                                        <?= $item['items_count'] ?> x <a class="pro_link" href="Product-details.php?pro=<?= $item['product_id'] ?>">
                                                             <?= $item['item_name'] ?>
                                                         </a>
                                                     </li>
                                                 <?php endforeach; ?>
                                             </ul>
-                                        <?php else: ?>
+                                        <?php else : ?>
                                             <div>No items found</div>
                                         <?php endif; ?>
                                     </td>
@@ -793,7 +702,7 @@ function fetchContacts()
                                 </tr>
                             <?php endforeach; ?>
 
-                            <?php if (empty ($orders)): ?>
+                            <?php if (empty($orders)) : ?>
                                 <tr>
                                     <td class="text-center" colspan="13">No Order found</td>
                                 </tr>
@@ -814,31 +723,25 @@ function fetchContacts()
                 <div class="accordion" id="WorkersAccordion">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 Add New Worker
                             </button>
                         </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show"
-                            data-bs-parent="#WorkersAccordion">
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#WorkersAccordion">
                             <div class="accordion-body">
                                 <div class="p-4 mt-3 upping_shadow">
-                                    <form action="php/process_worker.php" method="post" class="row g-3"
-                                        enctype="multipart/form-data">
+                                    <form action="php/process_worker.php" method="post" class="row g-3" enctype="multipart/form-data">
 
                                         <div class="workerProfilePhoto">
                                             <div class="d-flex justify-content-center mb-4">
-                                                <img id="workerAvatar" src="images/profile.png" class="rounded-circle"
-                                                    style="width: 150px; height: 150px; object-fit: cover;" />
+                                                <img id="workerAvatar" src="images/profile.png" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
                                             </div>
 
                                             <div class="d-flex justify-content-center">
                                                 <div class="simple-btn">
                                                     <label class="form-label m-1" for="profilePhoto">Change Profile
                                                         Photo</label>
-                                                    <input type="file" class="form-control d-none" id="profilePhoto"
-                                                        name="profilePhoto" accept="image/*"
-                                                        onchange="displaySelectedImage(event, 'workerAvatar')" />
+                                                    <input type="file" class="form-control d-none" id="profilePhoto" name="profilePhoto" accept="image/*" onchange="displaySelectedImage(event, 'workerAvatar')" />
                                                 </div>
                                             </div>
                                         </div>
@@ -852,14 +755,12 @@ function fetchContacts()
                                         }
                                         ?>
                                         <div class="col-md-4 form-floating mb-3">
-                                            <input type="text" class="form-control" id="f_name" name="f_name"
-                                                pattern="[A-Za-z]+" placeholder="First Name" required>
+                                            <input type="text" class="form-control" id="f_name" name="f_name" pattern="[A-Za-z]+" placeholder="First Name" required>
                                             <label for="f_name" class="form-label">First Name:</label>
                                         </div>
 
                                         <div class="col-md-4 form-floating mb-3">
-                                            <input type="text" class="form-control" id="l_name" name="l_name"
-                                                pattern="[A-Za-z]+" placeholder="Last Name" required>
+                                            <input type="text" class="form-control" id="l_name" name="l_name" pattern="[A-Za-z]+" placeholder="Last Name" required>
                                             <label for="l_name" class="form-label">Last Name:</label>
                                         </div>
                                         <div class="col-md-3 form-floating mb-3">
@@ -871,13 +772,11 @@ function fetchContacts()
                                             <label for="show">Gender:</label>
                                         </div>
                                         <div class="col-3 form-floating mb-3">
-                                            <input type="text" class="form-control" id="phone" maxlength="10"
-                                                pattern="[0-9]{10}" name="phone" placeholder="Phone:" required>
+                                            <input type="text" class="form-control" id="phone" maxlength="10" pattern="[0-9]{10}" name="phone" placeholder="Phone:" required>
                                             <label for="phone" class="form-label">Phone:</label>
                                         </div>
                                         <div class="col-4 form-floating mb-3">
-                                            <input type="email" class="form-control" id="email" name="email"
-                                                placeholder="Email:" required>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email:" required>
                                             <label for="email" class="form-label">Email:</label>
                                         </div>
 
@@ -897,32 +796,27 @@ function fetchContacts()
                                         </div>
 
                                         <div class="col-4 form-floating mb-3">
-                                            <input type="number" class="form-control" id="salary" name="salary"
-                                                placeholder="Salary:" step="any" required>
+                                            <input type="number" class="form-control" id="salary" name="salary" placeholder="Salary:" step="any" required>
                                             <label for="salary" class="form-label">Salary:</label>
                                         </div>
                                         <hr>
                                         <div class="col-6 form-floating mb-3">
-                                            <input type="text" class="form-control" id="userAddress" name="userAddress"
-                                                placeholder="Address:" required>
+                                            <input type="text" class="form-control" id="userAddress" name="userAddress" placeholder="Address:" required>
                                             <label for="userAddress" class="form-label">Address:</label>
                                         </div>
                                         <div class="col-6 form-floating mb-3">
-                                            <input type="text" class="form-control" id="userAddress_2"
-                                                name="userAddress_2" placeholder=" Apartment, studio, or floor">
+                                            <input type="text" class="form-control" id="userAddress_2" name="userAddress_2" placeholder=" Apartment, studio, or floor">
                                             <label for="userAddress_2" class="form-label">Apartment, studio, or
                                                 floor:</label>
                                         </div>
                                         <div class="col-md-3 form-floating mb-3">
-                                            <input type="text" class="form-control" id="userCity" name="userCity"
-                                                placeholder="City" required>
+                                            <input type="text" class="form-control" id="userCity" name="userCity" placeholder="City" required>
                                             <label for="userCity" class="form-label">City:</label>
                                         </div>
                                         <div class="col-sm-3 col-6 mb-3">
                                             <div class="form-floating">
                                                 <div class="form-floating">
-                                                    <select required name="userState" class="form-select" id="userState"
-                                                        placeholder="State">
+                                                    <select required name="userState" class="form-select" id="userState" placeholder="State">
                                                         <option value="">Select State</option>
                                                         <option value="Andaman and Nicobar Islands">Andaman and Nicobar
                                                             Islands</option>
@@ -967,25 +861,21 @@ function fetchContacts()
                                         </div>
 
                                         <div class="col-md-2 form-floating mb-3">
-                                            <input type="text" class="form-control" id="userZip" name="userZip"
-                                                placeholder="Zip" maxlength="6" pattern="[0-9]{1,6}" required>
+                                            <input type="text" class="form-control" id="userZip" name="userZip" placeholder="Zip" maxlength="6" pattern="[0-9]{1,6}" required>
                                             <label for="userZip" class="form-label">Zip:</label>
                                         </div>
 
                                         <hr>
 
                                         <div class="col-12 form-floating mb-3">
-                                            <textarea style="height: 150px;" class="form-control" id="description"
-                                                name="description" placeholder="Write Description (Words remaining: 50)"
-                                                required></textarea>
+                                            <textarea style="height: 150px;" class="form-control" id="description" name="description" placeholder="Write Description (Words remaining: 50)" required></textarea>
                                             <label id="wordCount" for="description" class="form-label">Write Description
                                                 (Words remaining: 50):</label>
                                         </div>
 
                                         <div class="col-12 d-flex justify-content-center">
                                             <input type="hidden" name="do" id="addWorker" value="addWorker">
-                                            <button type="submit" style="width: 200px; margin: 10px auto 0px;"
-                                                class="theme-btn">
+                                            <button type="submit" style="width: 200px; margin: 10px auto 0px;" class="theme-btn">
                                                 Add Worker
                                             </button>
                                         </div>
@@ -997,8 +887,7 @@ function fetchContacts()
 
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 Workers Table
                             </button>
                         </h2>
@@ -1095,7 +984,7 @@ function fetchContacts()
                             $contacts = fetchContacts();
                             $sno = 0;
                             ?>
-                            <?php foreach ($contacts as $contact): ?>
+                            <?php foreach ($contacts as $contact) : ?>
                                 <tr>
                                     <td cell-name="S No.">
                                         <?= ++$sno; ?>
@@ -1115,7 +1004,7 @@ function fetchContacts()
                                 </tr>
                             <?php endforeach; ?>
 
-                            <?php if (empty ($contacts)): ?>
+                            <?php if (empty($contacts)) : ?>
                                 <tr>
                                     <td class="text-center" colspan="4">No Contacts found</td>
                                 </tr>
@@ -1130,8 +1019,7 @@ function fetchContacts()
     <!--End Admin -->
 
     <!-- Edit product Modal  -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document" style="max-width: 700px;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1158,8 +1046,7 @@ function fetchContacts()
     </div>
 
     <!-- Edit worker Modal -->
-    <div class="modal fade" id="editWorkerModal" tabindex="-1" role="dialog" aria-labelledby="editWorkerModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editWorkerModal" tabindex="-1" role="dialog" aria-labelledby="editWorkerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document" style="max-width: 700px;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1184,8 +1071,7 @@ function fetchContacts()
     </div>
 
     <!-- Delete Product Modal -->
-    <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog"
-        aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1210,8 +1096,7 @@ function fetchContacts()
     </div>
 
     <!-- Delete Worker Modal -->
-    <div class="modal fade" id="deleteWorkerModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkerModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="deleteWorkerModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1236,8 +1121,7 @@ function fetchContacts()
     </div>
 
     <!-- Logout Modal -->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

@@ -363,7 +363,7 @@ function insertOrderDetails($conn, $userID, $name, $email, $phone, $payMethod, $
 }
 
 // fetch products
-function fetchProducts($category = "All", $gender = "All", $material = "All", $occasion = "All", $orderBy = 0, $limit = 12)
+function fetchProducts($category = "All", $gender = "All", $material = "All", $occasion = "All", $orderBy = 0, $limit = 0)
 {
     global $conn;
 
@@ -373,16 +373,21 @@ function fetchProducts($category = "All", $gender = "All", $material = "All", $o
             p.ProductTargetGender,
             p.ProductPrice,
             p.ProductDiscount,
-            p.ProductOccasion,
             p.ProductRating,
-            i.img_1,
+            p.ProductStock,
+            p.ProductUnitsSold,
+            p.ProductMaterial,
+            p.ProductWeight,
+            p.ProductColor,
+            p.ProImg1,
+            o.OccasionName,
             c.CategoryName
         FROM
             Products p
         JOIN
-            product_img i ON p.ProductID = i.ProductID
-        JOIN
             Categories c ON p.CategoryID = c.CategoryID
+        JOIN
+            Occasions o ON p.OccasionID = o.OccasionID
         WHERE 1";
 
     if ($category !== 'All') {
@@ -398,7 +403,7 @@ function fetchProducts($category = "All", $gender = "All", $material = "All", $o
     }
 
     if ($occasion !== 'All') {
-        $sql .= " AND p.ProductOccasion = '$occasion'";
+        $sql .= " AND p.OccasionID = '$occasion'";
     }
 
     $sql .= " ORDER BY ";
@@ -416,11 +421,22 @@ function fetchProducts($category = "All", $gender = "All", $material = "All", $o
         case '4':
             $sql .= "p.ProductRating DESC";
             break;
-        default:
+        case '5':
+            $sql .= "p.ProductWeight DESC";
+            break;
+        case '6':
+            $sql .= "p.ProductStock DESC";
+            break;
+        case '7':
             $sql .= "p.ProductID DESC";
+            break;
+        default:
+            $sql .= "p.ProductCreatedAt DESC";
     }
 
-    $sql .= " LIMIT " . $limit;
+    if ($limit > 0) {
+        $sql .= " LIMIT " . $limit;
+    }
     $result = $conn->query($sql);
     if ($result) {
         if ($result->num_rows > 0) {
@@ -429,8 +445,13 @@ function fetchProducts($category = "All", $gender = "All", $material = "All", $o
                     'id' => $row['ProductID'],
                     'name' => $row['ProductName'],
                     'price' => $row['ProductPrice'],
-                    'image' => $row['ProductImage'],
+                    'image' => $row['ProImg1'],
                     'category' => $row['CategoryName'],
+                    'stock' => $row['ProductStock'],
+                    'material' => $row['ProductMaterial'],
+                    'weight' => $row['ProductWeight'],
+                    'color' => $row['ProductColor'],
+                    'sold' => $row['ProductUnitsSold'],
                     'rating' => $row['ProductRating'],
                     'discount' => $row['ProductDiscount'],
                     'Gender' => $row['ProductTargetGender']
