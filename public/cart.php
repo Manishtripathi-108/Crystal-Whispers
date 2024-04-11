@@ -83,38 +83,37 @@ function dltProduct($dltID, $conn)
 
                                 <?php
                                 if (isset($_SESSION["user_id"])) {
-                                    $sql = "SELECT * FROM cart WHERE userID =" . $_SESSION["user_id"];
+                                    $sql = "SELECT * FROM cart WHERE UserID =" . $_SESSION["user_id"];
                                     $cartTable = $conn->query($sql);
 
                                     if ($cartTable->num_rows > 0) {
                                         while ($row = mysqli_fetch_array($cartTable)) {
                                             $productID = $row["ProductID"];
-                                            $userID = $row["userID"];
-                                            $quantity = $row["quantity"];
+                                            $userID = $row["UserID"];
+                                            $quantity = $row["Quantity"];
                                             $sql = "SELECT 
-                                                    p.product_name, 
-                                                    p.price,
-                                                    p.discount,
-                                                    c.category_name,
-                                                    i.img_1
+                                                    p.ProductName, 
+                                                    p.ProductPrice,
+                                                    p.ProductDiscount,
+                                                    c.CategoryName,
+                                                    p.ProImg1
                                                 FROM products p
-                                                JOIN product_img i ON p.product_id = i.img_to_pro
-                                                JOIN categories c ON p.category = c.ID
-                                                WHERE p.product_id =" . $productID;
+                                                JOIN categories c ON p.CategoryID = c.CategoryID
+                                                WHERE p.ProductID =" . $productID;
 
                                             $result = $conn->query($sql);
                                             if ($result->num_rows > 0) {
                                                 while ($row2 = mysqli_fetch_array($result)) {
-                                                    $name = $row2["product_name"];
-                                                    $image = $row2["img_1"];
-                                                    $price = $row2['price'] * ((100 - $row2['discount']) / 100);
-                                                    $category = $row2["category_name"];
+                                                    $name = $row2["ProductName"];
+                                                    $image = $row2["ProImg1"];
+                                                    $price = $row2['ProductPrice'] * ((100 - $row2['ProductDiscount']) / 100);
+                                                    $category = $row2["CategoryName"];
                                                     $cat_arr[] = $category;
 
                                                     echo '
                                                         <tr>
                                                         <td>
-                                                            <div cell-name="product" class="product-img" style="background-size: contain; background-image: url(images/products/' . $image . ');">
+                                                            <div cell-name="product" class="product-img" style="background-size: contain; background-image: url(../assets/images/products/' . $image . ');">
                                                             </div>
                                                         </td>
                                                         <td cell-name="product name">
@@ -136,7 +135,7 @@ function dltProduct($dltID, $conn)
                                                             <form action="" method="post">
                                                                 <input type="hidden" name="dltProduct_ID" value="' . $productID . '">
                                                             <button title="Delete item from cart" type="submit" class="delete-btn">
-                                                                <img width="20" src="icon/delete.svg">
+                                                                <img width="20" src="../assets/icon/delete.svg">
                                                             </button>
                                                             </form>
                                                         </td>
@@ -222,32 +221,28 @@ function dltProduct($dltID, $conn)
                     if (!empty($cat_arr)) {
                         foreach ($cat_arr as $pCategory) {
                             $sql = "SELECT
-                                    p.product_id,
-                                    p.product_name,
-                                    p.gender,
-                                    p.price,
-                                    p.discount,
-                                    i.img_1,
-                                    c.category_name AS category
+                                    p.ProductID,
+                                    p.ProductName,
+                                    p.ProductTargetGender,
+                                    p.ProductPrice,
+                                    p.ProductDiscount,
+                                    p.ProImg1,
+                                    p.ProductRating,
+                                    c.CategoryName AS category
                                     FROM
                                     products p
                                     JOIN
-                                    product_img i ON p.product_id = i.img_to_pro
-                                    JOIN
-                                    categories c ON p.category = c.ID
+                                    categories c ON p.CategoryID = c.CategoryID
                                     WHERE 
-                                    c.category_name='" . $pCategory . "'
+                                    c.CategoryName='" . $pCategory . "'
                                     ORDER BY
-                                    p.units_sold DESC
+                                    p.ProductUnitsSold DESC
                                     LIMIT 2";
                             $result = $conn->query($sql);
 
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
-                                    $getRating = "SELECT AVG(rating) AS rating FROM reviews WHERE product_id=" . $row['product_id'];
-                                    $rating = $conn->query($getRating);
-                                    $rating = $rating->fetch_assoc();
-                                    $rating = round($rating['rating']);
+                                    $rating = round($row['ProductRating']);
                                     echo '
                                         <div class="col-sm-6 col-md-4 col-lg-3 p-3">
                                         <div class="product-card">
@@ -264,20 +259,20 @@ function dltProduct($dltID, $conn)
                                         </div>
                                         <div class="product-tumb d-flex justify-content-center align-items-center">
                                             <img 
-                                            src="images/products/' . $row['img_1'] . '" 
+                                            src="../assets/images/products/' . $row['ProImg1'] . '" 
                                             alt="Product Image">
                                         </div>
                                         <div class="product-details">
-                                            <span class="product-category">' . $row['gender'] . ',' . $row['category'] . '</span>
-                                            <h5><a href="Product-details.php?pro=' . $row['product_id'] . '">' . $row['product_name'] . '</a></h5>
+                                            <span class="product-category">' . $row['ProductTargetGender'] . ',' . $row['category'] . '</span>
+                                            <h5><a href="Product-details.php?pro=' . $row['ProductID'] . '">' . $row['ProductName'] . '</a></h5>
                                             <div class="product-bottom-details d-flex justify-content-between align-items-center">
                                             <div class="product-price">
-                                                <small>₹' . number_format($row['price'], 2) . '</small>
-                                                ₹' . number_format(($row['price'] * ((100 - $row['discount']) / 100)), 2) .
+                                                <small>₹' . number_format($row['ProductPrice'], 2) . '</small>
+                                                ₹' . number_format(($row['ProductPrice'] * ((100 - $row['ProductDiscount']) / 100)), 2) .
                                         '</div>
                                             <div class="product-links">
-                                                <form method="post" action="php/add_to_cart.php">
-                                                <input type="hidden" name="product_id" value="' . $row['product_id'] . '">
+                                                <form method="post" action="../products/php/add_to_cart.php">
+                                                <input type="hidden" name="product_id" value="' . $row['ProductID'] . '">
                                                 <button type="submit"><i class="fa fa-shopping-cart"></i></button>
                                                 </form>
                                             </div>
