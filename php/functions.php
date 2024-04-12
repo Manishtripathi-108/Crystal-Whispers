@@ -35,7 +35,7 @@ function getHeader($dir = null, $fileDir = null, $title = null, $notGetLogin = n
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <a class="navbar-brand" href="/index.php">
+                    <a class="navbar-brand" href="' . ($title == 'Home' ? '' : '../') . 'index.php">
                         <img src="' . $dir . 'assets/icon/favicon.png" alt="Crystal Whispers">
                         <span>Crystal Whispers</span>
                     </a>
@@ -52,7 +52,7 @@ function getHeader($dir = null, $fileDir = null, $title = null, $notGetLogin = n
                         <div class="d-flex ms-auto flex-column flex-lg-row align-items-center">
                             <ul class="navbar-nav">
                                 <li class="nav-item ' . ($title == 'Home' ? 'active' : '') . '">
-                                <a class="nav-link" href="/index.php">Home</a>
+                                <a class="nav-link" href="' . ($title == 'Home' ? '' : '../') . 'index.php">Home</a>
                                 </li>
                                 <li class="nav-item ' . ($title == 'About' ? 'active' : '') . '">
                                     <a class="nav-link" href="' . $fileDir . 'about.php">About</a>
@@ -91,7 +91,7 @@ function getHeader($dir = null, $fileDir = null, $title = null, $notGetLogin = n
                     <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <a class="navbar-brand" href="/index.php">
+                    <a class="navbar-brand" href="' . ($title == 'Home' ? '' : '../') . 'index.php">
                     <img src="' . $dir . 'assets/icon/favicon.png" alt="Crystal Whispers">
                     <span>Crystal Whispers</span>
                     </a>
@@ -100,7 +100,7 @@ function getHeader($dir = null, $fileDir = null, $title = null, $notGetLogin = n
                         <div class="d-flex ms-auto flex-column flex-lg-row align-items-center">
                             <ul class="navbar-nav">
                             <li class="nav-item ' . ($title == 'Home' ? 'active' : '') . '">
-                                <a class="nav-link" href="/index.php">Home</a>
+                                <a class="nav-link" href="' . ($title == 'Home' ? '' : '../') . 'index.php">Home</a>
                             </li>
                             <li class="nav-item ' . ($title == 'About' ? 'active' : '') . '">
                                 <a class="nav-link" href="' . $fileDir . 'about.php">About</a>
@@ -152,7 +152,7 @@ function getFooter($dir = "../")
     echo '
     <footer class="text-lg-start bg-light text-white fadeInUp">
         <section class="pt-3">
-            <form action="php/subscribe-news.php" method="post">
+            <form action="' . $dir . 'php/subscribe-news.php" method="post">
                 <input type="hidden" id="scrollPoint" name="scrollPoint" value="">
                 <div class="row d-flex justify-content-center align-items-baseline mx-0 ">
                     <div class="col-auto">
@@ -306,10 +306,10 @@ function moveItemsFromCartToOrder($conn, $userID, $order_id)
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $productID = $row['productID'];
-            $quantity = $row['quantity'];
+            $productID = $row['ProductID'];
+            $quantity = $row['Quantity'];
 
-            $insertOrderItems = "INSERT INTO order_items (OrderID, ProductID, Quantity) VALUES (?, ?, ?)";
+            $insertOrderItems = "INSERT INTO orderItems (OrderID, ProductID, Quantity) VALUES (?, ?, ?)";
             $insertOrderItemsStmt = $conn->prepare($insertOrderItems);
             $insertOrderItemsStmt->bind_param("iii", $order_id, $productID, $quantity);
             $inOrderItems = $insertOrderItemsStmt->execute();
@@ -354,7 +354,7 @@ function updateProductDetails($conn, $userID)
 // insert order details into the orders table (confirm order)
 function insertOrderDetails($conn, $userID, $name, $email, $phone, $payMethod, $shipAddress, $msgSeller, $totalAmount)
 {
-    $insertOrderStmt = $conn->prepare("INSERT INTO orders (UserID, ReceiverName, email, phone, PayMethod, ShipAddress, MsgSeller, TotalAmount)
+    $insertOrderStmt = $conn->prepare("INSERT INTO orders (UserID, RCVName, RCVEmail, RCVPhone, PayMethod, ShipAddress, MsgSeller, TotalAmount)
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $insertOrderStmt->bind_param("issssssd", $userID, $name, $email, $phone, $payMethod, $shipAddress, $msgSeller, $totalAmount);
     $inOrders = $insertOrderStmt->execute();
@@ -586,7 +586,12 @@ function addCssFiles($toDir, $cssFiles)
 // add js files
 function addJsFiles($toDir, $jsFiles)
 {
+    $i = 1;
     foreach ($jsFiles as $jsFile) {
+        if ($i == 1) {
+            echo '    <script src="https://kit.fontawesome.com/34176f497f.js" crossorigin="anonymous"></script>' . PHP_EOL;
+            $i++;
+        }
         echo '<script src="' . $toDir . 'assets/js/' . $jsFile . '"></script>' . PHP_EOL;
     }
 }

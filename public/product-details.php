@@ -106,7 +106,6 @@ function getReview($productID)
 
     <title>Crystal Whispers</title>
 
-    <script src="https://kit.fontawesome.com/34176f497f.js" crossorigin="anonymous"></script>
     <!-- Get Styles -->
     <?php
     $cssFiles = array(

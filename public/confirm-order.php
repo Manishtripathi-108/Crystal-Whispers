@@ -161,53 +161,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['f_name']) && isset($_P
                                 <table class="table table-borderless">
                                     <tbody>
                                         <?php
-                                        $sql_order_items = "SELECT productID, quantity FROM order_items WHERE orderID = $order_id";
+                                        $sql_order_items = "SELECT ProductID, Quantity FROM orderItems WHERE orderID = $order_id";
                                         $result_order_items = $conn->query($sql_order_items);
 
-                                        if ($result_order_items->num_rows > 0) {
-                                            while ($row_order_items = $result_order_items->fetch_assoc()) {
-                                                $productID = $row_order_items['productID'];
-                                                $quantity = $row_order_items['quantity'];
+                                        if ($result_order_items->num_rows > 0) :
+                                            while ($row_order_items = $result_order_items->fetch_assoc()) :
+                                                $productID = $row_order_items['ProductID'];
+                                                $quantity = $row_order_items['Quantity'];
 
                                                 $sql_product_details = "SELECT 
-                                        p.product_name,
-                                        p.price,
-                                        p.discount,
-                                        i.img_1
-                                        FROM products p
-                                        JOIN product_img i ON p.product_id = i.img_to_pro
-                                        WHERE p.product_id = $productID";
+                                                                        p.ProductName,
+                                                                        p.ProductPrice,
+                                                                        p.ProductDiscount,
+                                                                        p.ProImg1
+                                                                        FROM products p
+                                                                        WHERE p.ProductID = $productID";
+
                                                 $result_product_details = $conn->query($sql_product_details);
 
-                                                if ($result_product_details->num_rows > 0) {
+                                                if ($result_product_details->num_rows > 0) :
                                                     $row_product_details = $result_product_details->fetch_assoc();
-                                                    $productName = $row_product_details['product_name'];
-                                                    $img1 = $row_product_details['img_1'];
-                                                    $price = $row_product_details['price'] * ((100 - $row_product_details['discount']) / 100);
-
-                                                    echo '
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="d-flex mb-2">
-                                                                        <div class="flex-shrink-0">
-                                                                            <img src="images/products/' . $img1 . '" alt="" width="35" class="img-fluid">
-                                                                        </div>
-                                                                        <div class="flex-lg-grow-1 ms-3">
-                                                                            <p>
-                                                                                <a href="#" class="text-reset">
-                                                                                    ' . $productName . '
-                                                                                </a>
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>' . $quantity . '</td>
-                                                                <td class="text-end">₹' . number_format($quantity * $price, 2) . '</td>';
+                                                    $productName = $row_product_details['ProductName'];
+                                                    $img1 = $row_product_details['ProImg1'];
+                                                    $price = $row_product_details['ProductPrice'] * ((100 - $row_product_details['ProductDiscount']) / 100);
+                                        ?>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex mb-2">
+                                                                <div class="flex-shrink-0">
+                                                                    <img src="../assets/images/products/<?= $img1 ?>" alt="" width="35" class="img-fluid">
+                                                                </div>
+                                                                <div class="flex-lg-grow-1 ms-3">
+                                                                    <p>
+                                                                        <a href="#" class="text-reset">
+                                                                            <?= $productName ?>
+                                                                        </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><?= $quantity ?></td>
+                                                        <td class="text-end">₹<?= number_format($quantity * $price, 2) ?></td>
+                                                    </tr>
+                                        <?php
                                                     $summary_arr[] = $quantity * $price;
-                                                    echo '</tr>';
-                                                }
-                                            }
-                                        }
+                                                endif;
+                                            endwhile;
+                                        endif;
                                         ?>
                                     </tbody>
 
@@ -249,7 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['f_name']) && isset($_P
                                         <tr class="fw-bold theme-color">
                                             <td colspan="3">
                                                 <div class="float-end mt-5">
-                                                    <a href="index.php" class="simple-btn">Return Home</a>
+                                                    <a href="../index.php" class="simple-btn">Return Home</a>
                                                 </div>
                                             </td>
                                         </tr>
