@@ -70,47 +70,6 @@ updateTeamMembersPerSlide();
 window.addEventListener("resize", updateTeamMembersPerSlide);
 //End Artisans Carousal
 
-//for worker update
-$(document).ready(function () {
-    $('.edit-worker').click(function () {
-        var workerId = $(this).data('worker-id');
-
-        $.ajax({
-            url: 'php/get_worker_details.php',
-            type: 'POST',
-            data: { worker_id: workerId },
-            success: function (response) {
-                $('#editWorkerModal .modal-body').html(response);
-            },
-            error: function () {
-                // console.error('Failed to fetch worker details.');
-                $('#editModal .modal-body').html('Failed to fetch product details.');
-            }
-        });
-    });
-});
-//end worker update
-
-// product update
-$(document).ready(function () {
-    $('.edit-product').click(function () {
-        var productId = $(this).data('product-id');
-
-        $.ajax({
-            url: 'php/get_product_details.php',
-            type: 'POST',
-            data: { product_id: productId },
-            success: function (response) {
-                $('#editModal .modal-body').html(response);
-            },
-            error: function () {
-                // console.error('Failed to fetch product details.');
-                $('#editModal .modal-body').html('Failed to fetch product details.');
-            }
-        });
-    });
-});
-//end product update
 
 //for image preview
 function displaySelectedImage(event, elementId) {
@@ -128,34 +87,3 @@ function displaySelectedImage(event, elementId) {
     }
 }
 //end image preview
-
-//for delete id
-function setDeleteId(setIdName, IdToDelete) {
-    document.getElementById(setIdName).value = IdToDelete;
-}
-
-//for description word count
-document.getElementById('description').addEventListener('input', function () {
-    var words = this.value.split(/\s+/).length;
-    var maxWords = 50;
-
-    if (words > maxWords) {
-        this.value = this.value.split(/\s+/).slice(0, maxWords).join(' ');
-        words = maxWords;
-    }
-
-    document.getElementById('wordCount').innerText = 'Write Description (Words remaining: ' + (maxWords - words) + '):';
-});
-
-document.getElementById('update_description').addEventListener('input', function () {
-    var words = this.value.split(/\s+/).length;
-    var maxWords = 50;
-
-    if (words > maxWords) {
-        this.value = this.value.split(/\s+/).slice(0, maxWords).join(' ');
-        words = maxWords;
-    }
-
-    document.getElementById('update_wordCount').innerText = 'Update Description (Words remaining: ' + (maxWords - words) + '):';
-});
-//end description word count

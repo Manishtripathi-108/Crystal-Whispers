@@ -1,10 +1,10 @@
 <?php
 session_start();
-include "connection.php";
+include "../connection.php";
 
 // Redirect to admin login page if admin is not logged in
-if (!isset($_SESSION["admin_id"])) {
-    header('Location: ../admin-login.php');
+if (!isset($_SESSION["AdminID"])) {
+    header('Location: ../../admin/admin-login.php');
     exit;
 }
 
@@ -48,7 +48,7 @@ function handleWorkerAddition()
     $salary = $_POST['salary'];
     $description = isset($_POST['description']) ? $_POST['description'] : 'No Description Available';
 
-    $stmt = $conn->prepare("INSERT INTO workers (name, position, gender, email, phone_number, address, salary, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO workers (WorkerName, WorkerPosition, WorkerGender, WorkerEmail, WorkerPhone, WorkerAddress, WorkerSalary, WorkerDescription) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssss", $name, $position, $gender, $email, $phone, $address, $salary, $description);
 
     if ($stmt->execute()) {
@@ -78,7 +78,7 @@ function handleWorkerUpdate()
     $update_salary = $_POST['update_salary'];
     $update_description = isset($_POST['update_description']) ? $_POST['update_description'] : 'No Description Available';
 
-    $stmt = $conn->prepare("UPDATE workers SET name = ?, position = ?, gender = ?, email = ?, phone_number = ?, address = ?, salary = ?, description = ? WHERE worker_id = ?");
+    $stmt = $conn->prepare("UPDATE workers SET WorkerName = ?, WorkerPosition = ?, WorkerGender = ?, WorkerEmail = ?, WorkerPhone = ?, WorkerAddress = ?, WorkerSalary = ?, WorkerDescription = ? WHERE WorkerID = ?");
     $stmt->bind_param("ssssssssi", $update_name, $update_position, $update_gender, $update_email, $update_phone, $update_address, $update_salary, $update_description, $update_worker_id);
 
     if ($stmt->execute()) {
@@ -106,10 +106,10 @@ function handleWorkerProfilePhotoUpdate($name, $worker_id, $isUpdate = false)
         $profilePhoto = $name . '_' . $worker_id . '_' . time() . '_.' . $fileExtension;
         $profilePhoto = str_replace([' ', '(', ')'], ['_', '_', '_'], $profilePhoto);
         $temp_name = $_FILES[$profilePhotoKey]['tmp_name'];
-        $path = '../images/workers/' . $profilePhoto;
+        $path = '../../assets/images/workers/' . $profilePhoto;
 
         if (move_uploaded_file($temp_name, $path)) {
-            $sql = "UPDATE workers SET image = ? WHERE worker_id = ?";
+            $sql = "UPDATE workers SET WorkerImage = ? WHERE WorkerID = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("si", $profilePhoto, $worker_id);
 
@@ -134,12 +134,12 @@ function getOldImage($worker_id)
 {
     global $conn;
 
-    $getOldImage = "SELECT image FROM workers WHERE worker_id = ?";
+    $getOldImage = "SELECT WorkerImage FROM workers WHERE WorkerID = ?";
     $stmt = $conn->prepare($getOldImage);
     $stmt->bind_param("i", $worker_id);
     $stmt->execute();
     $oldImageResult = $stmt->get_result();
-    $oldImage = $oldImageResult->fetch_assoc()['image'];
+    $oldImage = $oldImageResult->fetch_assoc()['WorkerImage'];
     $stmt->close();
 
     return $oldImage;
@@ -148,10 +148,9 @@ function getOldImage($worker_id)
 // Function to remove old image 
 function removeOldImage($oldImage)
 {
-    if ($oldImage != 'profile.png' && $oldImage != null && file_exists('../images/workers/' . $oldImage)) {
-        unlink('../images/workers/' . $oldImage);
+    if ($oldImage != 'profile.png' && $oldImage != null && file_exists('../../assets/images/workers/' . $oldImage)) {
+        unlink('../../assets/images/workers/' . $oldImage);
     }
-
 }
 
 // Function to handle worker deletion
@@ -163,7 +162,7 @@ function handleWorkerDeletion()
 
     removeOldImage(getOldImage($workerId));
 
-    $sql = "DELETE FROM workers WHERE worker_id = " . $workerId;
+    $sql = "DELETE FROM workers WHERE WorkerID = " . $workerId;
     $result = $conn->query($sql);
     if ($result) {
         $_SESSION["workerMessage"] = "Worker deleted successfully.";
@@ -178,7 +177,6 @@ function handleWorkerDeletion()
 function redirectToAdminPage()
 {
     $_SESSION['section'] = 'Workers';
-    header('Location: ../admin.php');
+    header('Location: ../../admin/index.php');
     exit;
 }
-?>

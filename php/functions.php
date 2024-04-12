@@ -308,10 +308,15 @@ function moveItemsFromCartToOrder($conn, $userID, $order_id)
         while ($row = $result->fetch_assoc()) {
             $productID = $row['ProductID'];
             $quantity = $row['Quantity'];
+            $fetch_price = "SELECT ProductPrice, ProductDiscount FROM Products WHERE ProductID = $productID";
+            $result_price = $conn->query($fetch_price);
+            $row_price = $result_price->fetch_assoc();
+            $unitPrice = $row_price['ProductPrice'] * ((100 - $row_price['ProductDiscount']) / 100);
+            $totalPrice = $unitPrice * $quantity;
 
-            $insertOrderItems = "INSERT INTO orderItems (OrderID, ProductID, Quantity) VALUES (?, ?, ?)";
+            $insertOrderItems = "INSERT INTO orderItems (OrderID, ProductID, Quantity, UnitPrice, TotalPrice) VALUES (?, ?, ?, ?, ?)";
             $insertOrderItemsStmt = $conn->prepare($insertOrderItems);
-            $insertOrderItemsStmt->bind_param("iii", $order_id, $productID, $quantity);
+            $insertOrderItemsStmt->bind_param("iiidi", $order_id, $productID, $quantity, $unitPrice, $totalPrice);
             $inOrderItems = $insertOrderItemsStmt->execute();
 
             if ($inOrderItems) {
@@ -323,7 +328,7 @@ function moveItemsFromCartToOrder($conn, $userID, $order_id)
 }
 
 // update units_sold and stock in products table (confirm order)
-function updateProductDetails($conn, $userID)
+function updateProductStockDetails($conn, $userID)
 {
     $sql = "SELECT ProductID, Quantity FROM cart WHERE UserID = $userID";
     $result = $conn->query($sql);

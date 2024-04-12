@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['f_name']) && isset($_P
         $order_id = $conn->insert_id;
 
         // Update units_sold and stock in products table
-        updateProductDetails($conn, $userID);
+        updateProductStockDetails($conn, $userID);
 
         // Move items from cart to order_items
         moveItemsFromCartToOrder($conn, $userID, $order_id);

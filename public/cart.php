@@ -271,7 +271,7 @@ function dltProduct($dltID, $conn)
                                                 ₹' . number_format(($row['ProductPrice'] * ((100 - $row['ProductDiscount']) / 100)), 2) .
                                         '</div>
                                             <div class="product-links">
-                                                <form method="post" action="../products/php/add_to_cart.php">
+                                                <form method="post" action="../php/products/add_to_cart.php">
                                                 <input type="hidden" name="product_id" value="' . $row['ProductID'] . '">
                                                 <button type="submit"><i class="fa fa-shopping-cart"></i></button>
                                                 </form>

@@ -65,10 +65,10 @@ include "../php/functions.php";
 
                     if ($cat_result->num_rows > 0) {
                       while ($row = $cat_result->fetch_assoc()) {
-                        if (isset($_GET['category']) && $row['ID'] == $_GET['category']) {
-                          echo '<option value="' . $row['ID'] . '" selected>' . $row['category_name'] . '</option>';
+                        if (isset($_GET['category']) && $row['CategoryID'] == $_GET['category']) {
+                          echo '<option value="' . $row['CategoryID'] . '" selected>' . $row['CategoryName'] . '</option>';
                         } else {
-                          echo '<option value="' . $row['ID'] . '">' . $row['category_name'] . '</option>';
+                          echo '<option value="' . $row['CategoryID'] . '">' . $row['CategoryName'] . '</option>';
                         }
                       }
                     }
@@ -108,10 +108,10 @@ include "../php/functions.php";
 
                     if ($occ_result->num_rows > 0) {
                       while ($row = $occ_result->fetch_assoc()) {
-                        if (isset($_GET['occasion']) && $row['ID'] == $_GET['occasion']) {
-                          echo '<option value="' . $row['ID'] . '" selected>' . $row['value'] . '</option>';
+                        if (isset($_GET['occasion']) && $row['OccasionID'] == $_GET['occasion']) {
+                          echo '<option value="' . $row['OccasionID'] . '" selected>' . $row['OccasionName'] . '</option>';
                         } else {
-                          echo '<option value="' . $row['ID'] . '">' . $row['value'] . '</option>';
+                          echo '<option value="' . $row['OccasionID'] . '">' . $row['OccasionName'] . '</option>';
                         }
                       }
                     }
@@ -259,7 +259,7 @@ include "../php/functions.php";
                             ₹<?= number_format(($product['price'] * ((100 - $product['discount']) / 100)), 2) ?>
                           </div>
                           <div class="product-links">
-                            <form method="post" action="php/add_to_cart.php">
+                            <form method="post" action="../php/products/add_to_cart.php">
                               <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                               <button type="submit"><i class="fa fa-shopping-cart"></i></button>
                             </form>
@@ -320,7 +320,7 @@ include "../php/functions.php";
                             ₹<?= number_format(($product['price'] * ((100 - $product['discount']) / 100)), 2) ?>
                           </div>
                           <div class="product-links">
-                            <form method="post" action="php/add_to_cart.php">
+                            <form method="post" action="../php/products/add_to_cart.php">
                               <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                               <button type="submit"><i class="fa fa-shopping-cart"></i></button>
                             </form>

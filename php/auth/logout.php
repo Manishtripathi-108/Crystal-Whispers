@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
 
     switch ($logoutType) {
         case 'admin_logOut':
-            unset($_SESSION['admin_id']);
+            unset($_SESSION['AdminID']);
             header('Location:../../admin/admin-login.php');
             exit;
 
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
 
         default:
             unset($_SESSION['user_id']);
-            unset($_SESSION['admin_id']);
+            unset($_SESSION['AdminID']);
             header('Location:.././index.php');
             exit;
     }

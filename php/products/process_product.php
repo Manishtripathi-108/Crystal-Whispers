@@ -84,7 +84,7 @@ function handleProductUpdate()
     $updateOccasion = $_POST['update_occasion'];
     $updateStockQuantity = $_POST['update_stock_quantity'];
 
-    $sql = "UPDATE products SET product_name = ?, category = ?, price = ?, discount = ?, weight = ?, color_plating = ?, gender = ?, material = ?, occasion = ?, stock_quantity = ? WHERE product_id = ?";
+    $sql = "UPDATE products SET ProductName = ?, CategoryID = ?, ProductPrice = ?, ProductDiscount = ?, ProductWeight = ?, ProductColor = ?, ProductTargetGender = ?, ProductMaterial = ?, OccasionID = ?, ProductStock = ? WHERE ProductID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssdddsssssi", $updateProductName, $updateCategory, $updatePrice, $updateDiscount, $updateWeight, $updateColor, $updateGender, $updateMaterial, $updateOccasion, $updateStockQuantity, $productId);
 
@@ -107,7 +107,7 @@ function handleProductDeletion()
 
     $product_id = $_POST['deleteProductWithId'];
 
-    $getProductImages = "SELECT img_1, img_2, img_3 FROM product_img WHERE img_to_pro = ?";
+    $getProductImages = "SELECT ProImg1, ProImg2, ProImg3 FROM products WHERE ProductID = ?";
     $stmt = $conn->prepare($getProductImages);
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
@@ -117,7 +117,7 @@ function handleProductDeletion()
     if ($productImages != null) {
         foreach ($productImages as $image) {
             if ($image != null) {
-                $imagePath = "../images/products/" . $image;
+                $imagePath = "../../assets/images/products/" . $image;
 
                 if ($image != 'add-image.png' && file_exists($imagePath)) {
                     unlink($imagePath);
@@ -126,7 +126,7 @@ function handleProductDeletion()
         }
     }
 
-    $sql = "DELETE FROM products WHERE product_id = ?";
+    $sql = "DELETE FROM products WHERE ProductID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $product_id);
     $result = $stmt->execute();

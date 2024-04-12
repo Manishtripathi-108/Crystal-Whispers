@@ -47,24 +47,24 @@ function fetchOrders()
     global $conn;
     $orders = [];
 
-    $sql = "SELECT * FROM orders ORDER BY order_id DESC";
+    $sql = "SELECT * FROM orders ORDER BY orderID DESC";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
             $order = [
-                'order_id' => $row['order_id'],
-                'status' => $row['status'],
-                'receiver_name' => $row['receiver_name'],
-                'phone' => $row['phone'],
-                'email' => $row['email'],
-                'total_amount' => $row['total_amount'],
-                'payment_method' => $row['payment_method'],
-                'payment_status' => $row['payment_status'],
-                'shipping_address' => $row['shipping_address'],
-                'order_date' => $row['order_date'],
-                'msg_seller' => $row['msg_seller'],
-                'items' => fetchOrderItems($row['order_id']),
+                'order_id' => $row['OrderID'],
+                'status' => $row['OrderStatus'],
+                'receiver_name' => $row['RCVName'],
+                'phone' => $row['RCVPhone'],
+                'email' => $row['RCVEmail'],
+                'total_amount' => $row['TotalAmount'],
+                'payment_method' => $row['PayMethod'],
+                'payment_status' => $row['PayStatus'],
+                'shipping_address' => $row['ShipAddress'],
+                'order_date' => $row['OrderCreatedAt'],
+                'msg_seller' => $row['MsgSeller'],
+                'items' => fetchOrderItems($row['OrderID']),
             ];
 
             $orders[] = $order;
@@ -82,9 +82,9 @@ function fetchOrderItems($orderId)
     global $conn;
     $items = [];
 
-    $itemsQuery = "SELECT oi.quantity as items_count, p.product_name as item_name, p.product_id
-                                FROM order_items oi
-                                JOIN products p ON oi.productID = p.product_id
+    $itemsQuery = "SELECT oi.Quantity as items_count, p.ProductName as item_name, p.ProductID
+                                FROM orderItems oi
+                                JOIN products p ON oi.productID = p.ProductID
                                 WHERE oi.orderID = $orderId";
 
     $itemsResult = $conn->query($itemsQuery);
@@ -94,7 +94,7 @@ function fetchOrderItems($orderId)
             $items[] = [
                 'items_count' => $itemRow['items_count'],
                 'item_name' => $itemRow['item_name'],
-                'product_id' => $itemRow['product_id'],
+                'product_id' => $itemRow['ProductID'],
             ];
         }
     }
@@ -114,9 +114,9 @@ function fetchContacts()
         while ($row = mysqli_fetch_assoc($result)) {
             $contact = [
                 'ID' => $row['ID'],
-                'name' => $row['name'],
-                'email' => $row['email'],
-                'Message' => $row['message'],
+                'name' => $row['Name'],
+                'email' => $row['Email'],
+                'Message' => $row['Message'],
             ];
 
             $contacts[] = $contact;
@@ -171,6 +171,7 @@ function fetchContacts()
     <main id="admin-page" class="use-side-nav">
         <div class="row m-0 gap-3">
 
+            <!-- Side Navigation -->
             <section class="sideNav col-md-auto layout_padding">
                 <div class="profile p-2">
                     <?php $adminDetails = fetchAdminDetails(); ?>
@@ -225,6 +226,7 @@ function fetchContacts()
                 </div>
             </section>
 
+            <!-- Products Section -->
             <section class="Products-section col-md animate__fadeIn layout_padding me-3 table-responsive px-3 px-md-auto
                 <?php echo isActive('Products', $activePage) == "active" ? "" : "d-none"; ?>">
                 <div class="accordion" id="productsAccordion">
@@ -395,7 +397,7 @@ function fetchContacts()
                                 Products Table
                             </button>
                         </h2>
-                        <div id="collapseProductTwo" class="accordion-collapse collapse show" data-bs-parent="#productsAccordion">
+                        <div id="collapseProductTwo" class="accordion-collapse collapse" data-bs-parent="#productsAccordion">
                             <div class="accordion-body">
                                 <!-- Filter -->
                                 <div id="filter-bar" class="animate__slideDown mt-5">
@@ -424,7 +426,7 @@ function fetchContacts()
 
                                                                 if ($cat_result->num_rows > 0) {
                                                                     while ($row = $cat_result->fetch_assoc()) {
-                                                                        if (isset($_GET['category']) && $row['ID'] == $_GET['categoryID']) {
+                                                                        if (isset($_GET['category']) && $row['CategoryID'] == $_GET['category']) {
                                                                             echo '<option value="' . $row['CategoryID'] . '"selected>' . $row['CategoryName'] . '</option>';
                                                                         } else {
                                                                             echo '<option value="' . $row['CategoryID'] . '">' . $row['CategoryName'] . '</option>';
@@ -469,7 +471,7 @@ function fetchContacts()
 
                                                                 if ($occ_result->num_rows > 0) {
                                                                     while ($row = $occ_result->fetch_assoc()) {
-                                                                        if (isset($_GET['occasion']) && $row['ID'] == $_GET['occasion']) {
+                                                                        if (isset($_GET['occasion']) && $row['OccasionID'] == $_GET['occasion']) {
                                                                             echo '<option value="' . $row['OccasionID'] . '" selected>' . $row['OccasionName'] . '</option>';
                                                                         } else {
                                                                             echo '<option value="' . $row['OccasionID'] . '">' . $row['OccasionName'] . '</option>';
@@ -489,11 +491,11 @@ function fetchContacts()
                                                                 <option>All Products</option>
                                                                 <option value="1" <?php echo (isset($_GET['show']) && $_GET['show'] == '1') ? 'selected' : ''; ?>>Latest Products</option>
                                                                 <option value="2" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Bestsellers</option>
-                                                                <option value="3" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Discount</option>
-                                                                <option value="4" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Rating</option>
-                                                                <option value="5" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Weight</option>
-                                                                <option value="6" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Stock Quantity</option>
-                                                                <option value="7" <?php echo (isset($_GET['show']) && $_GET['show'] == '2') ? 'selected' : ''; ?>>Product ID</option>
+                                                                <option value="3" <?php echo (isset($_GET['show']) && $_GET['show'] == '3') ? 'selected' : ''; ?>>Discount</option>
+                                                                <option value="4" <?php echo (isset($_GET['show']) && $_GET['show'] == '4') ? 'selected' : ''; ?>>Rating</option>
+                                                                <option value="5" <?php echo (isset($_GET['show']) && $_GET['show'] == '5') ? 'selected' : ''; ?>>Weight</option>
+                                                                <option value="6" <?php echo (isset($_GET['show']) && $_GET['show'] == '6') ? 'selected' : ''; ?>>Stock Quantity</option>
+                                                                <option value="7" <?php echo (isset($_GET['show']) && $_GET['show'] == '7') ? 'selected' : ''; ?>>Product ID</option>
                                                             </select>
                                                             <label for="show">Order By</label>
                                                         </div>
@@ -580,7 +582,6 @@ function fetchContacts()
                                                                 <img width="20" src="../assets/icon/edit.svg">
                                                             </button>
 
-                                                            <!-- if problem then  \'<questionmark= $product['id'] ?>\')" -->
                                                             <button type="button" data-toggle="modal" data-target="#deleteProductModal" onclick="setDeleteId('deleteProductWithId', '<?= $product['id'] ?>')" class="delete-btn m-1" title="delete">
                                                                 <img width="20" src="../assets/icon/delete.svg">
                                                             </button>
@@ -602,6 +603,8 @@ function fetchContacts()
                 </div>
             </section>
 
+
+            <!-- orders section -->
             <section class="orders-section col-md animate__fadeIn layout_padding me-3 table-responsive px-3 px-md-auto 
                 <?php echo isActive('Orders', $activePage) == "active" ? "" : "d-none"; ?>">
                 <div class="heading_container heading_center mb-3">
@@ -636,7 +639,7 @@ function fetchContacts()
                                         <?= strval($order['order_id']) ?>
                                     </td>
                                     <td cell-name="Status">
-                                        <form action="php/update_status.php" method="POST" class="d-flex justify-content-center align-items-center flex-column">
+                                        <form action="../php/update_status.php" method="POST" class="d-flex justify-content-center align-items-center flex-column">
                                             <input type="hidden" name="orderId" value="<?= strval($order['order_id']) ?>">
                                             <select class="form-select" style="width: fit-content;" name="newStatus">
                                                 <option value="Processing" <?= ($order['status'] == 'Processing') ? 'selected' : '' ?>>Processing
@@ -671,17 +674,12 @@ function fetchContacts()
                                     <td cell-name="Payment Status">
                                         <?= $order['payment_status'] ?>
                                     </td>
-                                    <td cell-name="Shipping Address">
-                                        <address>
-                                            <?= $order['shipping_address'] ?>
-                                        </address>
-                                    </td>
                                     <td cell-name="Items">
                                         <?php if (!empty($order['items'])) : ?>
                                             <ul>
                                                 <?php foreach ($order['items'] as $item) : ?>
                                                     <li class="text-nowrap">
-                                                        <?= $item['items_count'] ?> x <a class="pro_link" href="Product-details.php?pro=<?= $item['product_id'] ?>">
+                                                        <?= $item['items_count'] ?> x <a class="pro_link" href="../public/Product-details.php?pro=<?= $item['product_id'] ?>">
                                                             <?= $item['item_name'] ?>
                                                         </a>
                                                     </li>
@@ -690,6 +688,11 @@ function fetchContacts()
                                         <?php else : ?>
                                             <div>No items found</div>
                                         <?php endif; ?>
+                                    </td>
+                                    <td cell-name="Shipping Address">
+                                        <address>
+                                            <?= $order['shipping_address'] ?>
+                                        </address>
                                     </td>
                                     <td cell-name="Message">
                                         <div style="height: 100px; width: 200px; overflow-y: scroll;">
@@ -712,6 +715,7 @@ function fetchContacts()
                 </div>
             </section>
 
+            <!-- workers section -->
             <section class="Workers-section col-md animate__fadeIn layout_padding me-3 table-responsive px-3 px-md-auto 
                 <?php echo isActive('Workers', $activePage) == "active" ? "" : "d-none"; ?>">
                 <div class="heading_container heading_center mb-3">
@@ -730,11 +734,11 @@ function fetchContacts()
                         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#WorkersAccordion">
                             <div class="accordion-body">
                                 <div class="p-4 mt-3 upping_shadow">
-                                    <form action="php/process_worker.php" method="post" class="row g-3" enctype="multipart/form-data">
+                                    <form action="../php/workers/process_worker.php" method="post" class="row g-3" enctype="multipart/form-data">
 
                                         <div class="workerProfilePhoto">
                                             <div class="d-flex justify-content-center mb-4">
-                                                <img id="workerAvatar" src="images/profile.png" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
+                                                <img id="workerAvatar" src="../assets/images/profile.png" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
                                             </div>
 
                                             <div class="d-flex justify-content-center">
@@ -916,43 +920,42 @@ function fetchContacts()
                                             <?php
                                             $sqlWorkers = "SELECT * FROM workers";
                                             $workerResult = $conn->query($sqlWorkers);
-                                            if ($workerResult->num_rows > 0) {
+                                            if ($workerResult->num_rows > 0) :
                                                 $sNo = 0;
-                                                while ($row = $workerResult->fetch_assoc()) {
-                                                    echo '
-                                                        <tr>
-                                                            <td>' . ++$sNo . '</td>                                                            
-                                                            <td cell-name="Image">
-                                                                <div class="product-img" style="background-image: url(images/workers/' . $row['image'] . ');">
-                                                                </div>
-                                                            </td>
-                                                            <td cell-name="Name">' . $row['name'] . '</td>
-                                                            <td cell-name="Position">' . $row['position'] . '</td>
-                                                            <td cell-name="Gender">' . $row['gender'] . '</td>
-                                                            <td cell-name="Email">' . $row['email'] . '</td>
-                                                            <td class="text-nowrap" cell-name="Phone Number">' . $row['phone_number'] . '</td>
-                                                            <td cell-name="Salary">₹' . number_format($row['salary'], 2) . '</td>
-                                                            <td cell-name="Address">' . preg_replace("/\//", ", ", $row['address']) . '</td>
-                                                            <td cell-name="Description">' . preg_replace("/\//", ", ", $row['description']) . '</td>
-                                                            <td class="text-nowrap" cell-name="Hire Date">' . $row['hire_date'] . '</td>
-                                                            <td>
-                                                                <button type="button" class="edit-btn edit-worker m-1" title="Edit Worker" data-toggle="modal" data-target="#editWorkerModal" data-worker-id="' . $row['worker_id'] . '">
-                                                                    <img width="20" src="icon/edit.svg">
-                                                                </button>
-                                                        
-                                                                <button type="button" data-toggle="modal" data-target="#deleteWorkerModal"
-                                                                    onclick="setDeleteId(\'deleteWorkerWithId\', \'' . $row['worker_id'] . '\')" 
-                                                                    class="delete-btn m-1" title="delete">
-                                                                    <img width="20" src="icon/delete.svg">
-                                                                </button>
+                                                while ($row = $workerResult->fetch_assoc()) :
+                                            ?>
+                                                    <tr>
+                                                        <td><?= ++$sNo ?></td>
+                                                        <td cell-name="Image">
+                                                            <div class="product-img" style="background-image: url(../assets/images/workers/<?= $row['WorkerImage'] ?>);">
+                                                            </div>
+                                                        </td>
+                                                        <td cell-name="Name"><?= $row['WorkerName'] ?></td>
+                                                        <td cell-name="Position"><?= $row['WorkerPosition'] ?></td>
+                                                        <td cell-name="Gender"><?= $row['WorkerGender'] ?></td>
+                                                        <td cell-name="Email"><?= $row['WorkerEmail'] ?></td>
+                                                        <td class="text-nowrap" cell-name="Phone Number"><?= $row['WorkerPhone'] ?></td>
+                                                        <td cell-name="Salary">₹<?= number_format($row['WorkerSalary'], 2) ?></td>
+                                                        <td cell-name="Address"><?= preg_replace("/\//", ", ", $row['WorkerAddress']) ?></td>
+                                                        <td cell-name="Description"><?= preg_replace("/\//", ", ", $row['WorkerDescription']) ?></td>
+                                                        <td class="text-nowrap" cell-name="Hire Date"><?= $row['HireDate'] ?></td>
+                                                        <td>
+                                                            <button type="button" class="edit-btn edit-worker m-1" title="Edit Worker" data-toggle="modal" data-target="#editWorkerModal" data-worker-id="<?= $row['WorkerID'] ?>">
+                                                                <img width="20" src="../assets/icon/edit.svg">
+                                                            </button>
 
-                                                            </td>
-                                                        </tr>
-                                                        ';
-                                                }
-                                            }
+                                                            <button type="button" data-toggle="modal" data-target="#deleteWorkerModal" onclick="setDeleteId('deleteWorkerWithId', '<?= $row['WorkerID'] ?>')" class="delete-btn m-1" title="delete">
+                                                                <img width="20" src="../assets/icon/delete.svg">
+                                                            </button>
+
+                                                        </td>
+                                                    </tr>
+                                            <?php
+                                                endwhile;
+                                            endif;
                                             ?>
                                         </tbody>
+
                                     </table>
                                 </div>
                             </div>
@@ -961,6 +964,7 @@ function fetchContacts()
                 </div>
             </section>
 
+            <!-- enquiries section -->
             <section class="Enquiries-section col-md animate__fadeIn layout_padding me-3 table-responsive px-3 px-md-auto 
                 <?php echo isActive('Enquiries', $activePage) == "active" ? "" : "d-none"; ?>">
                 <div class="heading_container heading_center mb-3">
@@ -1029,7 +1033,7 @@ function fetchContacts()
                     </button>
                 </div>
 
-                <form action="php/process_product.php" method="post" enctype="multipart/form-data">
+                <form action="../php/products/process_product.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="do" value="updateProduct">
                     <div class="modal-body">
 
@@ -1056,7 +1060,7 @@ function fetchContacts()
                     </button>
                 </div>
 
-                <form action="php/process_worker.php" method="post" enctype="multipart/form-data">
+                <form action="../php/workers/process_worker.php" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
 
                     </div>
@@ -1085,7 +1089,7 @@ function fetchContacts()
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <form action="php/process_product.php" method="post">
+                    <form action="../php/products/process_product.php" method="post">
                         <input type="hidden" name="do" id="deleteProduct" value="deleteProduct">
                         <input type="hidden" id="deleteProductWithId" name="deleteProductWithId" value=" ">
                         <button class="btn btn-danger">Delete</button>
@@ -1110,7 +1114,7 @@ function fetchContacts()
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <form action="php/process_worker.php" method="post">
+                    <form action="../php/workers/process_worker.php" method="post">
                         <input type="hidden" name="do" id="deleteWorker" value="deleteWorker">
                         <input type="hidden" id="deleteWorkerWithId" name="deleteWorkerWithId" value=" ">
                         <button class="btn btn-danger">Delete</button>
@@ -1135,7 +1139,7 @@ function fetchContacts()
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <form action="php/logout.php" method="post">
+                    <form action="../php/auth/logout.php" method="post">
                         <input type="hidden" name="logout" value="admin_logOut">
                         <button class="btn btn-danger">Logout</button>
                     </form>
@@ -1167,6 +1171,84 @@ function fetchContacts()
 
     addJsFiles("../", $jsFiles);
     ?>
+    <script>
+        // product update
+        $(document).ready(function() {
+            $('.edit-product').click(function() {
+                var productId = $(this).data('product-id');
+
+                $.ajax({
+                    url: '../php/products/get_product_details.php',
+                    type: 'POST',
+                    data: {
+                        product_id: productId
+                    },
+                    success: function(response) {
+                        $('#editModal .modal-body').html(response);
+                    },
+                    error: function() {
+                        $('#editModal .modal-body').html('Failed to fetch product details.');
+                    }
+                });
+            });
+        });
+        //end product update
+
+        //for worker update
+        $(document).ready(function() {
+            $('.edit-worker').click(function() {
+                var workerId = $(this).data('worker-id');
+
+                $.ajax({
+                    url: '../php/workers/get_worker_details.php',
+                    type: 'POST',
+                    data: {
+                        worker_id: workerId
+                    },
+                    success: function(response) {
+                        $('#editWorkerModal .modal-body').html(response);
+                    },
+                    error: function() {
+                        // console.error('Failed to fetch worker details.');
+                        $('#editModal .modal-body').html('Failed to fetch product details.');
+                    }
+                });
+            });
+        });
+        //end worker update
+
+
+        //for delete id
+        function setDeleteId(setIdName, IdToDelete) {
+            document.getElementById(setIdName).value = IdToDelete;
+        }
+
+        //for description word count
+        document.getElementById('description').addEventListener('input', function() {
+            var words = this.value.split(/\s+/).length;
+            var maxWords = 50;
+
+            if (words > maxWords) {
+                this.value = this.value.split(/\s+/).slice(0, maxWords).join(' ');
+                words = maxWords;
+            }
+
+            document.getElementById('wordCount').innerText = 'Write Description (Words remaining: ' + (maxWords - words) + '):';
+        });
+
+        document.getElementById('update_description').addEventListener('input', function() {
+            var words = this.value.split(/\s+/).length;
+            var maxWords = 50;
+
+            if (words > maxWords) {
+                this.value = this.value.split(/\s+/).slice(0, maxWords).join(' ');
+                words = maxWords;
+            }
+
+            document.getElementById('update_wordCount').innerText = 'Update Description (Words remaining: ' + (maxWords - words) + '):';
+        });
+        //end description word count
+    </script>
     <!-- End Scripts -->
 
 </body>

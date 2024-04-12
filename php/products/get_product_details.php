@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
 
     $sql = "SELECT 
         p.*,
-        c.CategoryName,
+        c.CategoryName
         FROM products p
         JOIN Categories c ON p.CategoryID = c.CategoryID
         WHERE ProductID = $product_id";
@@ -16,19 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc(); ?>
         <div class="row m-0 p-2">
-            <input type="hidden" name="product_id" value="<?php echo $row['product_id'] ?>">
+            <input type="hidden" name="product_id" value="<?php echo $row['ProductID'] ?>">
 
             <div id="add_product_img" class="row mb-2 justify-content-center">
                 <!-- Image Box 1 -->
                 <div class="imgBox col-sm-5 col-md-4 p-4">
                     <div class="d-flex justify-content-center mb-4">
-                        <img id="updateSelectedImage1" src="images/products/<?php echo isset($row['img_1']) ? $row['img_1'] : "add-image.png"; ?>" alt="Image 1">
+                        <img id="updateSelectedImage1" src="../assets/images/products/<?php echo isset($row['ProImg1']) ? $row['ProImg1'] : "add-image.png"; ?>" alt="Image 1">
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="simple-btn">
                             <label class="form-label m-1" for="update_productImage1">Add Image 1
                                 (Required)</label>
-                            <input type="file" class="form-control d-none" id="update_productImage1" name="update_productImage1" accept="image/*" <?php echo isset($row['img_1']) ? 'value="' . $row['img_1'] . '"' : 'required'; ?> onchange="displaySelectedImage(event, 'updateSelectedImage1')" />
+                            <input type="file" class="form-control d-none" id="update_productImage1" name="update_productImage1" accept="image/*" <?php echo isset($row['ProImg1']) ? 'value="' . $row['ProImg1'] . '"' : 'required'; ?> onchange="displaySelectedImage(event, 'updateSelectedImage1')" />
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
                 <!-- Image Box 2 -->
                 <div class="imgBox col-sm-5 mt-3 mt-md-auto col-md-4 p-4">
                     <div class="d-flex justify-content-center mb-4">
-                        <img id="updateSelectedImage2" src="images/products/<?php echo isset($row['img_2']) ? $row['img_2'] : "add-image.png"; ?>" alt="Image 2">
+                        <img id="updateSelectedImage2" src="../assets/images/products/<?php echo isset($row['ProImg2']) ? $row['ProImg2'] : "add-image.png"; ?>" alt="Image 2">
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="simple-btn">
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
                 <!-- Image Box 3 -->
                 <div class="imgBox col-sm-5 mt-3 mt-md-auto col-md-4 p-4">
                     <div class="d-flex justify-content-center mb-4">
-                        <img id="updateSelectedImage3" src="images/products/<?php echo isset($row['img_3']) ? $row['img_3'] : "add-image.png"; ?>" alt="Image 3">
+                        <img id="updateSelectedImage3" src="../assets/images/products/<?php echo isset($row['ProImg3']) ? $row['ProImg3'] : "add-image.png"; ?>" alt="Image 3">
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="simple-btn">
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
                 </h4>
             </div>
             <div class="col-md-4 form-floating mb-3">
-                <input type="text" class="form-control" id="update_product_name" name="update_product_name" placeholder="Product Name" required value="<?php echo $row['product_name']; ?>">
+                <input type="text" class="form-control" id="update_product_name" name="update_product_name" placeholder="Product Name" required value="<?php echo $row['ProductName']; ?>">
                 <label for="update_product_name" class="form-label">Product Name</label>
             </div>
 
@@ -81,8 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
 
                     if ($cat_result->num_rows > 0) {
                         while ($cat_row = $cat_result->fetch_assoc()) {
-                            $selected = ($cat_row['CategoryID'] == $row['CategoryName']) ? 'selected' : '';
-                            echo '<option value="' . $cat_row['ID'] . '" ' . $selected . '>' . $cat_row['category_name'] . '</option>';
+                            $selected = ($cat_row['CategoryID'] == $row['CategoryID']) ? 'selected' : '';
+                            echo '<option value="' . $cat_row['CategoryID'] . '" ' . $selected . '>' . $cat_row['CategoryName'] . '</option>';
                         }
                     }
 
@@ -93,40 +93,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
             </div>
 
             <div class="col-md-4 form-floating mb-3">
-                <input type="number" class="form-control" id="update_price" name="update_price" placeholder="Price" required value="<?php echo $row['price']; ?>">
+                <input type="number" class="form-control" id="update_price" name="update_price" placeholder="Price" required value="<?php echo $row['ProductPrice']; ?>">
                 <label for="update_price" class="form-label">Price</label>
             </div>
             <div class="col-md-4 form-floating mb-3">
-                <input type="tel" class="form-control" id="update_discount" name="update_discount" maxlength="2" pattern="\d{1,2}" placeholder="Discount" required value="<?php echo $row['discount']; ?>">
+                <input type="tel" class="form-control" id="update_discount" name="update_discount" maxlength="2" pattern="\d{1,2}" placeholder="Discount" required value="<?php echo $row['ProductDiscount']; ?>">
                 <label for="update_discount" class="form-label">Discount (1-99)</label>
             </div>
             <div class="col-md-4 form-floating mb-3">
-                <input type="number" step="any" class="form-control" id="update_weight" name="update_weight" placeholder="Weight" required value="<?php echo $row['weight']; ?>">
+                <input type="number" step="any" class="form-control" id="update_weight" name="update_weight" placeholder="Weight" required value="<?php echo $row['ProductWeight']; ?>">
                 <label for="update_weight" class="form-label">Weight</label>
             </div>
             <div class="col-md-4 form-floating mb-3">
-                <input type="text" class="form-control" id="update_color" name="update_color" placeholder="Color" required pattern="^[a-zA-Z]+$" value="<?php echo $row['color_plating']; ?>">
+                <input type="text" class="form-control" id="update_color" name="update_color" placeholder="Color" required pattern="^[a-zA-Z]+$" value="<?php echo $row['ProductColor']; ?>">
                 <label for="update_color" class="form-label">Color</label>
             </div>
             <div class="col-md-4 form-floating mb-3">
                 <select name="update_gender" class="form-select" required>
                     <option value="">Select Gender</option>
-                    <option value="Male" <?php echo ($row['gender'] == 'Male') ? 'selected' : ''; ?>>Male
-                    </option>
-                    <option value="Female" <?php echo ($row['gender'] == 'Female') ? 'selected' : ''; ?>>
-                        Female</option>
+                    <option value="Male" <?php echo ($row['ProductTargetGender'] == 'Male') ? 'selected' : ''; ?>>Male</option>
+                    <option value="Female" <?php echo ($row['ProductTargetGender'] == 'Female') ? 'selected' : ''; ?>>Female</option>
                 </select>
                 <label for="update_gender">Gender:</label>
             </div>
             <div class="col-md-4 form-floating mb-3">
                 <select name="update_material" class="form-select" required>
                     <option value="">Select Material</option>
-                    <option value="Gold" <?php echo ($row['material'] == 'Gold') ? 'selected' : ''; ?>>
-                        Gold
-                    </option>
-                    <option value="Silver" <?php echo ($row['material'] == 'Silver') ? 'selected' : ''; ?>>
-                        Silver</option>
-                    <option value="Platinum" <?php echo ($row['material'] == 'Platinum') ? 'selected' : ''; ?>>Platinum</option>
+                    <option value="Gold" <?php echo ($row['ProductMaterial'] == 'Gold') ? 'selected' : ''; ?>>Gold</option>
+                    <option value="Silver" <?php echo ($row['ProductMaterial'] == 'Silver') ? 'selected' : ''; ?>>Silver</option>
+                    <option value="Platinum" <?php echo ($row['ProductMaterial'] == 'Platinum') ? 'selected' : ''; ?>>Platinum</option>
                 </select>
                 <label for="update_material">Material</label>
             </div>
@@ -138,8 +133,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
                     $occ_result = $conn->query($sql);
                     if ($occ_result->num_rows > 0) {
                         while ($occ_row = $occ_result->fetch_assoc()) {
-                            $selected = ($occ_row['OccasionID'] == $row['OccasionName']) ? 'selected' : '';
-                            echo '<option value="' . $occ_row['ID'] . '" ' . $selected . '>' . $occ_row['value'] . '</option>';
+                            $selected = ($occ_row['OccasionID'] == $row['OccasionID']) ? 'selected' : '';
+                            echo '<option value="' . $occ_row['OccasionID'] . '" ' . $selected . '>' . $occ_row['OccasionName'] . '</option>';
                         }
                     }
                     $occ_result->close();
@@ -149,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
             </div>
 
             <div class="col-md-4 form-floating mb-3">
-                <input type="number" class="form-control" id="update_stock_quantity" name="update_stock_quantity" placeholder="Stock Quantity" required value="<?php echo $row['stock_quantity']; ?>">
+                <input type="number" class="form-control" id="update_stock_quantity" name="update_stock_quantity" placeholder="Stock Quantity" required value="<?php echo $row['ProductStock']; ?>">
                 <label for="update_stock_quantity" class="form-label">Stock Quantity</label>
             </div>
         </div>

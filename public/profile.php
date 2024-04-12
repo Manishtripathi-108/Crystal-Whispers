@@ -255,27 +255,27 @@ function isActive($page, $activePage)
                                             <?= $sNo ?>
                                         </td>
                                         <td cell-name="Product">
-                                            <div class="product-img" style="background-image: url(../assets/images/products/<?= $order['productImage'] ?>);"></div>
+                                            <div class="product-img" style="background-image: url(../assets/images/products/<?= $order['ProductImage'] ?>);"></div>
                                         </td>
                                         <td cell-name="Product Name">
                                             <div class="product-name">
                                                 <span>
-                                                    <?= $order['productName'] ?>
+                                                    <?= $order['ProductName'] ?>
                                                 </span>
                                                 <span>
-                                                    <?= $order['categoryName'] . ', ' . $order['productTargetGender'] ?>
+                                                    <?= $order['CategoryName'] . ', ' . $order['ProductTargetGender'] ?>
                                                 </span>
                                             </div>
                                         </td>
-                                        <td cell-name="Price">₹<?= $order['productPrice'] ?>
+                                        <td cell-name="Price">₹<?= $order['UnitPrice'] ?>
                                         </td>
                                         <td cell-name="Quantity">
-                                            <?= $order['quantity'] ?>
+                                            <?= $order['Quantity'] ?>
                                         </td>
-                                        <td cell-name="Total">₹<?= $order['TotalAmount'] ?>
+                                        <td cell-name="Total">₹<?= $order['TotalPrice'] ?>
                                         </td>
                                         <td cell-name="Status" class="order-status">
-                                            <img src="icon/<?= $order['OrderStatus'] ?>.svg" alt="<?= $order['OrderStatus'] ?>">
+                                            <img src="../assets/icon/<?= $order['OrderStatus'] ?>.svg" alt="<?= $order['OrderStatus'] ?>">
                                             <div class="status-tooltip">
                                                 <?= $order['OrderStatus'] ?>
                                             </div>
