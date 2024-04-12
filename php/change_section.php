@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: ../admin_login.php");
+if (!isset($_SESSION['AdminID'])) {
+    header("Location: ../admin/admin-login.php");
     exit();
 }
 
@@ -12,4 +12,3 @@ if (isset($_POST['section'])) {
 
 header("Location: " . $_SERVER['HTTP_REFERER']);
 exit;
-?>
